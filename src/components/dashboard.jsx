@@ -35,7 +35,7 @@ import {
   Milk,
   FlaskConical,
   Info,
-  ChevronDown,
+  ChevronDown
 } from "lucide-react"
 
 // Dark mode context
@@ -498,7 +498,7 @@ function StatsCard({ icon: Icon, title, value, change, isDark = false, userData 
           description: `Daily workout calorie target (${userData.workoutSplit}% of deficit goal)`,
           breakdown: `Cardio: ${cardioBurned} • Strength: ${strengthBurned} • Other: ${otherBurned}`
         }
-      case "Remaining Calories":
+              case "Calorie Deficit":
         if (!userData?.recommendedCalories) {
           return {
             target: "Set Goals",
@@ -802,10 +802,19 @@ function MealCard({ meal, isDark = false, onDelete }) {
       'eggs': 'https://images.unsplash.com/photo-1506084868230-bb9d95c24759?w=400&h=200&fit=crop&crop=center',
       
       // Beverages & Snacks
+      'mixed berries smoothies': 'https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=400&h=200&fit=crop&crop=center',
       'protein smoothie': 'https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=400&h=200&fit=crop&crop=center',
       'smoothie': 'https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=400&h=200&fit=crop&crop=center',
       'yogurt': 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&h=200&fit=crop&crop=center',
-      'fruit': 'https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=400&h=200&fit=crop&crop=center'
+      'fruit': 'https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=400&h=200&fit=crop&crop=center',
+      
+      // Specific protein preparations
+      'minced beef': 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=200&fit=crop&crop=center',
+      'ribeye': 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=200&fit=crop&crop=center',
+      'chicken breast': 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=400&h=200&fit=crop&crop=center',
+      'omelette': 'https://images.unsplash.com/photo-1506084868230-bb9d95c24759?w=400&h=200&fit=crop&crop=center',
+      'kebab': 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=400&h=200&fit=crop&crop=center',
+      'curry': 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&h=200&fit=crop&crop=center'
     }
     
     // Find the most specific match first
@@ -2972,8 +2981,12 @@ function OnboardingModal({ isOpen, onClose, isDark = false, onComplete }) {
                 </label>
                 <input
                   type="number"
+                  min="0"
                   value={userData.age}
-                  onChange={(e) => setUserData({...userData, age: e.target.value})}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setUserData({...userData, age: value === '' ? '' : Math.max(0, value)});
+                  }}
                   placeholder="Enter your age"
                   style={{
                     width: '100%',
@@ -2998,8 +3011,13 @@ function OnboardingModal({ isOpen, onClose, isDark = false, onComplete }) {
                 </label>
                 <input
                   type="number"
+                  min="0"
+                  step="0.1"
                   value={userData.weight}
-                  onChange={(e) => setUserData({...userData, weight: e.target.value})}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setUserData({...userData, weight: value === '' ? '' : Math.max(0, value)});
+                  }}
                   placeholder="Weight in kg"
                   style={{
                     width: '100%',
@@ -3024,8 +3042,13 @@ function OnboardingModal({ isOpen, onClose, isDark = false, onComplete }) {
                 </label>
                 <input
                   type="number"
+                  min="0"
+                  step="0.1"
                   value={userData.height}
-                  onChange={(e) => setUserData({...userData, height: e.target.value})}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setUserData({...userData, height: value === '' ? '' : Math.max(0, value)});
+                  }}
                   placeholder="Height in cm"
                   style={{
                     width: '100%',
@@ -3184,11 +3207,16 @@ function OnboardingModal({ isOpen, onClose, isDark = false, onComplete }) {
                   }}>
                     Current Weight in kg
                   </label>
-                  <input
-                    type="number"
-                    value={userData.currentWeight}
-                    onChange={(e) => setUserData({...userData, currentWeight: e.target.value})}
-                    placeholder="Current weight in kg"
+                                  <input
+                  type="number"
+                  min="0"
+                  step="0.1"
+                  value={userData.currentWeight}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setUserData({...userData, currentWeight: value === '' ? '' : Math.max(0, value)});
+                  }}
+                  placeholder="Current weight in kg"
                     style={{
                       width: '100%',
                       padding: '12px',
@@ -3210,11 +3238,16 @@ function OnboardingModal({ isOpen, onClose, isDark = false, onComplete }) {
                   }}>
                     Target Weight in kg
                   </label>
-                  <input
-                    type="number"
-                    value={userData.targetWeight}
-                    onChange={(e) => setUserData({...userData, targetWeight: e.target.value})}
-                    placeholder="Target weight in kg"
+                                  <input
+                  type="number"
+                  min="0"
+                  step="0.1"
+                  value={userData.targetWeight}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setUserData({...userData, targetWeight: value === '' ? '' : Math.max(0, value)});
+                  }}
+                  placeholder="Target weight in kg"
                     style={{
                       width: '100%',
                       padding: '12px',
@@ -3963,8 +3996,12 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
                 </label>
                 <input
                   type="number"
+                  min="0"
                   value={formData.age}
-                  onChange={(e) => setFormData(prev => ({ ...prev, age: e.target.value }))}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setFormData(prev => ({ ...prev, age: value === '' ? '' : Math.max(0, value) }));
+                  }}
                   style={{
                     width: '100%',
                     padding: '12px',
@@ -4012,8 +4049,13 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
                 </label>
                 <input
                   type="number"
+                  min="0"
+                  step="0.1"
                   value={formData.weight}
-                  onChange={(e) => setFormData(prev => ({ ...prev, weight: e.target.value }))}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setFormData(prev => ({ ...prev, weight: value === '' ? '' : Math.max(0, value) }));
+                  }}
                   style={{
                     width: '100%',
                     padding: '12px',
@@ -4033,8 +4075,13 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
                 </label>
                 <input
                   type="number"
+                  min="0"
+                  step="0.1"
                   value={formData.height}
-                  onChange={(e) => setFormData(prev => ({ ...prev, height: e.target.value }))}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setFormData(prev => ({ ...prev, height: value === '' ? '' : Math.max(0, value) }));
+                  }}
                   style={{
                     width: '100%',
                     padding: '12px',
@@ -4511,9 +4558,9 @@ function QuickAccessOverlay({ isOpen, onClose, isDark, onActionSelect }) {
               key={action.action}
               onClick={() => handleActionClick(action.action)}
               style={{
-                padding: '20px 16px',
+                padding: '28px',
                 border: `2px solid ${isDark ? 'white' : 'black'}`,
-                borderRadius: '12px',
+                borderRadius: '16px',
                 backgroundColor: isDark ? '#000000' : 'white',
                 color: isDark ? 'white' : 'black',
                 cursor: 'pointer',
@@ -4614,7 +4661,7 @@ export default function FitnessDashboard() {
       .reduce((total, workout) => total + workout.caloriesBurned, 0))
   }
 
-  // Calculate remaining calories based on deficit goals
+  // Calculate calorie deficit based on deficit goals
   const getRemainingCalories = () => {
     if (!userProfile?.recommendedCalories) return 0
     const recommendedCalories = userProfile.recommendedCalories
@@ -4724,11 +4771,13 @@ export default function FitnessDashboard() {
     const today = new Date().toDateString()
     const todayMeals = loggedMeals.filter(meal => new Date(meal.timestamp).toDateString() === today)
     
+    const totalCalories = Math.round(todayMeals.reduce((total, meal) => total + (meal.calories || 0), 0))
     const totalProtein = Math.round(todayMeals.reduce((total, meal) => total + (meal.protein || 0), 0))
     const totalCarbs = Math.round(todayMeals.reduce((total, meal) => total + (meal.carbs || 0), 0))
     const totalFat = Math.round(todayMeals.reduce((total, meal) => total + (meal.fat || 0), 0))
+    const totalFiber = Math.round(todayMeals.reduce((total, meal) => total + (meal.fiber || 0), 0))
     
-    return { protein: totalProtein, carbs: totalCarbs, fat: totalFat }
+    return { calories: totalCalories, protein: totalProtein, carbs: totalCarbs, fat: totalFat, fiber: totalFiber }
   }
 
   // Calculate weekly progress
@@ -5050,7 +5099,34 @@ export default function FitnessDashboard() {
                 color: isDark ? '#a3a3a3' : '#4b5563',
                 textAlign: 'left'
               }}>
-                Fitness & Longevity Program
+                Fitness & Wellness Tracking
+              </p>
+              <p style={{
+                fontSize: '0.75rem',
+                marginTop: '8px',
+                fontFamily: 'system-ui, -apple-system, sans-serif',
+                color: isDark ? '#737373' : '#9ca3af',
+                textAlign: 'left'
+              }}>
+                built by{' '}
+                <a 
+                  href="https://twitter.com/harryzhangs" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style={{
+                    color: isDark ? '#a3a3a3' : '#6b7280',
+                    textDecoration: 'none',
+                    fontWeight: '500'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.textDecoration = 'underline'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.textDecoration = 'none'
+                  }}
+                >
+                  @harryzhangs
+                </a>
               </p>
               <p style={{
                 fontWeight: 'bold',
@@ -5171,7 +5247,7 @@ export default function FitnessDashboard() {
               />
               <StatsCard 
                 icon={Award} 
-                title="Remaining Calories" 
+                title="Calorie Deficit" 
                 value={userProfile ? getRemainingCalories().toString() : "—"} 
                 isDark={isDark} 
                 userData={userProfile}
@@ -5228,6 +5304,13 @@ export default function FitnessDashboard() {
                 gap: '48px'
               }}>
                 <CircularProgress 
+                  value={getMacros().calories} 
+                  max={userProfile?.recommendedCalories || 2000} 
+                  label="Calories" 
+                  unit="cal" 
+                  isDark={isDark} 
+                />
+                <CircularProgress 
                   value={getMacros().protein} 
                   max={userProfile?.calories?.protein || 120} 
                   label="Protein" 
@@ -5247,7 +5330,14 @@ export default function FitnessDashboard() {
                   label="Fat" 
                   unit="g" 
                 isDark={isDark} 
-              />
+                />
+                <CircularProgress 
+                  value={getMacros().fiber} 
+                  max={userProfile?.calories?.fiber || 25} 
+                  label="Fiber" 
+                  unit="g" 
+                  isDark={isDark} 
+                />
               </div>
             </div>
           </div>
@@ -5300,11 +5390,7 @@ export default function FitnessDashboard() {
                         fat: meal.fat,
                         fiber: meal.fiber,
                         originalTimestamp: meal.timestamp,
-                        time: new Date(meal.timestamp).toLocaleTimeString('en-US', { 
-                          hour: 'numeric', 
-                          minute: '2-digit',
-                          hour12: true 
-                        }),
+                        time: meal.mealType ? meal.mealType.charAt(0).toUpperCase() + meal.mealType.slice(1) : 'Meal',
 
                       }} 
                       isDark={isDark} 
@@ -5374,9 +5460,9 @@ export default function FitnessDashboard() {
           position: 'fixed',
           bottom: '24px',
           right: '24px',
-          width: '56px',
-          height: '56px',
-          borderRadius: '50%',
+          width: '72px',
+          height: '72px',
+          borderRadius: '16px',
           backgroundColor: isDark ? 'white' : 'black',
           color: isDark ? 'black' : 'white',
           border: 'none',
@@ -5408,7 +5494,7 @@ export default function FitnessDashboard() {
           }
         }}
       >
-        <Plus size={24} strokeWidth={2.5} />
+        <Plus size={28} strokeWidth={2.5} />
       </button>
 
       {/* Quick Access Overlay */}
@@ -5429,6 +5515,8 @@ export default function FitnessDashboard() {
         loggedWorkouts={loggedWorkouts}
         loggedWater={loggedWater}
       />
+
+
     </div>
   )
 }
