@@ -1,70 +1,192 @@
-# Getting Started with Create React App
+# Network School Fitness
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern, comprehensive fitness tracking web application built for the Network School community. Track your meals, workouts, water intake, and monitor your health goals with personalized insights and recommendations.
 
-## Available Scripts
+🚀 **Live Demo**: [https://network-school-fitness.vercel.app/](https://network-school-fitness.vercel.app/)
 
-In the project directory, you can run:
+## ✨ Features
 
-### `npm start`
+### 🍎 **Comprehensive Food Logging**
+- **Multi-step meal logging** with categorized food databases (Cafe, Lunch, Dinner)
+- **Day-specific menus** with detailed nutritional information
+- **Multi-item ordering system** for complex meals
+- **AI-generated food photography** for visual meal tracking
+- **Real-time macro tracking** (calories, protein, carbs, fat, fiber)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 🏋️ **Workout Tracking**
+- **Multiple workout types**: Strength, Cardio, Flexibility, Sports, HIIT, Yoga
+- **Intensity-based calorie calculation** using MET values
+- **Personalized calorie burn** based on user profile (weight, duration, intensity)
+- **Workout history and progress tracking**
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 💧 **Smart Water Tracking**
+- **Personalized daily water goals** based on body weight and activity level
+- **Science-based hydration recommendations** (67% body weight formula)
+- **Activity level adjustments** and workout bonuses
+- **Animated water bottle visualization** with progress tracking
+- **Hydration streak counter** and achievement system
 
-### `npm test`
+### 📊 **Intelligent Dashboard**
+- **Real-time progress monitoring** with color-coded circular progress indicators
+- **Deficit-based goal tracking** for sustainable weight management
+- **Weekly progress analysis** with last 3 days breakdown
+- **Dynamic statistics** that adapt to user activity
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### ⚙️ **Personalized Onboarding**
+- **Comprehensive user profiling** (age, gender, weight, height, activity level)
+- **BMR and TDEE calculations** using Mifflin-St Jeor equation
+- **Custom calorie deficit goals** with health recommendations
+- **Workout vs diet split customization** for personalized plans
 
-### `npm run build`
+### 🎨 **Modern User Experience**
+- **Dark/Light theme support** with consistent branding
+- **Floating quick-access button** for instant feature access
+- **Smooth animations and transitions** throughout the app
+- **Responsive design** optimized for all devices
+- **Brand-consistent iconography** using Lucide React
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🛠️ Tech Stack
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### **Frontend**
+- **React 19.1.1** - Modern React with latest features
+- **JavaScript (ES6+)** - Modern JavaScript syntax and features
+- **CSS-in-JS** - Inline styling with dynamic theming
+- **Lucide React** - Consistent, beautiful icons
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### **Animations & Interactions**
+- **Framer Motion 12.23.12** - Smooth animations and transitions
+- **Custom CSS animations** - Keyframe animations for water effects
+- **Interactive hover states** - Enhanced user feedback
 
-### `npm run eject`
+### **Development Tools**
+- **Create React App** - Zero-config React development environment
+- **React Scripts 5.0.1** - Build tools and development server
+- **ESLint** - Code quality and consistency
+- **React Testing Library** - Component testing utilities
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### **Deployment**
+- **Vercel** - Serverless deployment platform
+- **Automatic deployments** from GitHub integration
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🚀 Getting Started
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Prerequisites
+- Node.js (v14 or higher)
+- npm or yarn package manager
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Installation
 
-## Learn More
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/network-school-fitness.git
+   cd network-school-fitness
+   ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+3. **Start the development server**
+   ```bash
+   npm start
+   ```
 
-### Code Splitting
+4. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000) to view the app.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Available Scripts
 
-### Analyzing the Bundle Size
+- `npm start` - Runs the app in development mode
+- `npm test` - Launches the test runner
+- `npm run build` - Builds the app for production
+- `npm run eject` - Ejects from Create React App (one-way operation)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 📱 Key Components
 
-### Making a Progressive Web App
+### **Dashboard Architecture**
+- **FitnessDashboard** - Main application container
+- **StatsCard** - Reusable progress tracking components
+- **CircularProgress** - Visual progress indicators with color coding
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### **Feature Modals**
+- **FoodLoggingModal** - Multi-step food selection and logging
+- **WorkoutRecordingModal** - Comprehensive workout tracking
+- **WaterTrackingModal** - Hydration monitoring with personalized goals
+- **DeficitOnboarding** - Initial user setup and goal configuration
 
-### Advanced Configuration
+### **UI Components**
+- **QuickAccessOverlay** - Floating action menu
+- **MealCard** - Individual meal display with nutrition facts
+- **CircularProgress** - Progress visualization with smart color coding
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 🎯 Core Features Deep Dive
 
-### Deployment
+### **Smart Calorie Deficit Tracking**
+The app calculates personalized daily and weekly deficit goals based on:
+- **BMR calculation** using Mifflin-St Jeor equation
+- **TDEE adjustment** for activity level
+- **Custom deficit targets** (200-1000 calories/day)
+- **Workout vs diet split** customization
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### **Personalized Water Goals**
+Water recommendations are calculated using:
+- **Base formula**: Body weight × 67%
+- **Activity multipliers**: 1.0x to 1.4x based on activity level
+- **Workout bonuses**: +12oz per 30 minutes of exercise
+- **Environmental factors**: Hot weather adjustments
 
-### `npm run build` fails to minify
+### **Intelligent Progress Tracking**
+- **Red indicators**: >115% of goal (over-achievement warning)
+- **Green indicators**: 85-115% of goal (optimal range)
+- **Yellow indicators**: 40-85% of goal (moderate progress)
+- **Default indicators**: <40% of goal (needs attention)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 🎨 Design Philosophy
+
+### **Brand Consistency**
+- **Black and white theme** following Network School branding
+- **Georgia serif fonts** for headers, system fonts for body text
+- **Consistent iconography** using Lucide React icons
+- **Minimal, clean design** with purposeful whitespace
+
+### **User Experience**
+- **Progressive disclosure** - Complex features broken into simple steps
+- **Immediate feedback** - Real-time updates and visual confirmations
+- **Contextual help** - Personalized tips and recommendations
+- **Accessibility** - High contrast, proper touch targets, keyboard navigation
+
+## 📈 Future Enhancements
+
+- [ ] **Social features** - Share progress with Network School community
+- [ ] **Advanced analytics** - Detailed progress charts and trends
+- [ ] **Meal planning** - AI-powered meal suggestions
+- [ ] **Integration APIs** - Connect with fitness wearables
+- [ ] **Offline support** - Progressive Web App capabilities
+- [ ] **Export functionality** - Data export for external analysis
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- **Network School** - For the inspiration and community
+- **Lucide React** - For the beautiful icon system
+- **Framer Motion** - For smooth animations
+- **Vercel** - For seamless deployment
+- **Create React App** - For the solid foundation
+
+---
+
+**Built with ❤️ for the Network School community**
+
+For questions, suggestions, or contributions, please open an issue or reach out to the development team.
