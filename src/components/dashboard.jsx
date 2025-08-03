@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import StatsModal from "./StatsModal"
 import {
   Plus,
   Target,
@@ -744,66 +745,67 @@ function MealCard({ meal, isDark = false, onDelete }) {
   const getFoodImage = (mealName) => {
     const lowerMeal = mealName.toLowerCase()
     
-    // Use working Unsplash URLs with specific, verified photo IDs
+    // Verified Unsplash URLs with correct food images
     const foodImageMap = {
       // Exact matches first (most specific)
-      'multigrain rice': 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&h=200&fit=crop&crop=center', // Rice bowl
-      'sweet potatoes': 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&h=200&fit=crop&crop=center', // Sweet potatoes
-      'sweet potato': 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&h=200&fit=crop&crop=center', // Sweet potatoes
+      'multigrain rice': 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&h=200&fit=crop&crop=center',
+      'sweet potatoes': 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&h=200&fit=crop&crop=center',
+      'sweet potato': 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&h=200&fit=crop&crop=center',
       
       // Rice dishes
-      'rice': 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&h=200&fit=crop&crop=center', // Rice bowl
-      'fried rice': 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400&h=200&fit=crop&crop=center', // Fried rice
+      'rice': 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&h=200&fit=crop&crop=center',
+      'fried rice': 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400&h=200&fit=crop&crop=center',
       'brown rice': 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&h=200&fit=crop&crop=center',
       'white rice': 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&h=200&fit=crop&crop=center',
       
       // Vegetables
-      'broccoli': 'https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=400&h=200&fit=crop&crop=center', // Broccoli
-      'carrots': 'https://images.unsplash.com/photo-1445282768818-728615cc910a?w=400&h=200&fit=crop&crop=center', // Carrots
-      'spinach': 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&h=200&fit=crop&crop=center', // Spinach
-      'kale': 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&h=200&fit=crop&crop=center', // Leafy greens
+      'broccoli': 'https://images.unsplash.com/photo-1628773822503-930a7eaecf80?w=400&h=200&fit=crop&crop=center',
+      'carrots': 'https://images.unsplash.com/photo-1445282768818-728615cc910a?w=400&h=200&fit=crop&crop=center',
+      'spinach': 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&h=200&fit=crop&crop=center',
+      'kale': 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&h=200&fit=crop&crop=center',
       
       // Salads
-      'salad': 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=200&fit=crop&crop=center', // Mixed salad
-      'caesar salad': 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=200&fit=crop&crop=center', // Caesar salad
-      'green salad': 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=200&fit=crop&crop=center', // Green salad
-      'chicken salad': 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=200&fit=crop&crop=center', // Chicken salad
+      'caesar salad': 'https://images.unsplash.com/photo-1551248429-40975aa4de74?w=400&h=200&fit=crop&crop=center',
+      'salad': 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=200&fit=crop&crop=center',
+      'green salad': 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=200&fit=crop&crop=center',
+      'chicken salad': 'https://images.unsplash.com/photo-1546793665-c74683f339c1?w=400&h=200&fit=crop&crop=center',
       
       // Protein dishes
-      'salmon': 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400&h=200&fit=crop&crop=center', // Salmon
-      'grilled salmon': 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400&h=200&fit=crop&crop=center', // Grilled salmon
-      'chicken': 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=400&h=200&fit=crop&crop=center', // Chicken
-      'grilled chicken': 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=400&h=200&fit=crop&crop=center', // Grilled chicken
-      'beef': 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=200&fit=crop&crop=center', // Beef
-      'turkey': 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=400&h=200&fit=crop&crop=center', // Turkey
+      'grilled salmon': 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400&h=200&fit=crop&crop=center',
+      'salmon': 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400&h=200&fit=crop&crop=center',
+      'grilled chicken': 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=400&h=200&fit=crop&crop=center',
+      'chicken': 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=400&h=200&fit=crop&crop=center',
+      'beef': 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=200&fit=crop&crop=center',
+      'turkey': 'https://images.unsplash.com/photo-1549388604-817d15aa0968?w=400&h=200&fit=crop&crop=center',
       
       // Sandwiches & Wraps
-      'sandwich': 'https://images.unsplash.com/photo-1553909489-cd47e0ef937f?w=400&h=200&fit=crop&crop=center', // Sandwich
-      'turkey sandwich': 'https://images.unsplash.com/photo-1553909489-cd47e0ef937f?w=400&h=200&fit=crop&crop=center', // Turkey sandwich
-      'quesadilla': 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=200&fit=crop&crop=center', // Quesadilla
-      'wrap': 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=200&fit=crop&crop=center', // Wrap
+      'turkey sandwich': 'https://images.unsplash.com/photo-1553909489-cd47e0ef937f?w=400&h=200&fit=crop&crop=center',
+      'sandwich': 'https://images.unsplash.com/photo-1553909489-cd47e0ef937f?w=400&h=200&fit=crop&crop=center',
+      'quesadilla': 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=200&fit=crop&crop=center',
+      'wrap': 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=200&fit=crop&crop=center',
       
       // Bowls
-      'bowl': 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&h=200&fit=crop&crop=center', // Bowl
-      'quinoa': 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&h=200&fit=crop&crop=center', // Quinoa bowl
-      'power bowl': 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&h=200&fit=crop&crop=center', // Power bowl
-      'salmon bowl': 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&h=200&fit=crop&crop=center', // Salmon bowl
+      'salmon bowl': 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&h=200&fit=crop&crop=center',
+      'quinoa bowl': 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&h=200&fit=crop&crop=center',
+      'power bowl': 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&h=200&fit=crop&crop=center',
+      'bowl': 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&h=200&fit=crop&crop=center',
+      'quinoa': 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&h=200&fit=crop&crop=center',
       
       // Pasta
-      'pasta': 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&h=200&fit=crop&crop=center', // Pasta
-      'spaghetti': 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&h=200&fit=crop&crop=center', // Spaghetti
+      'pasta': 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&h=200&fit=crop&crop=center',
+      'spaghetti': 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&h=200&fit=crop&crop=center',
       
       // Breakfast
-      'oatmeal': 'https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=400&h=200&fit=crop&crop=center', // Oatmeal
-      'eggs': 'https://images.unsplash.com/photo-1506084868230-bb9d95c24759?w=400&h=200&fit=crop&crop=center', // Eggs
-      'avocado toast': 'https://images.unsplash.com/photo-1506084868230-bb9d95c24759?w=400&h=200&fit=crop&crop=center', // Avocado toast
-      'toast': 'https://images.unsplash.com/photo-1506084868230-bb9d95c24759?w=400&h=200&fit=crop&crop=center', // Toast
+      'avocado toast': 'https://images.unsplash.com/photo-1541519227354-08fa5d50c44d?w=400&h=200&fit=crop&crop=center',
+      'toast': 'https://images.unsplash.com/photo-1541519227354-08fa5d50c44d?w=400&h=200&fit=crop&crop=center',
+      'oatmeal': 'https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=400&h=200&fit=crop&crop=center',
+      'eggs': 'https://images.unsplash.com/photo-1506084868230-bb9d95c24759?w=400&h=200&fit=crop&crop=center',
       
-      // Snacks & Healthy
-      'yogurt': 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&h=200&fit=crop&crop=center', // Yogurt
-      'smoothie': 'https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=400&h=200&fit=crop&crop=center', // Smoothie
-      'protein smoothie': 'https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=400&h=200&fit=crop&crop=center', // Protein smoothie
-      'fruit': 'https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=400&h=200&fit=crop&crop=center' // Fruit
+      // Beverages & Snacks
+      'protein smoothie': 'https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=400&h=200&fit=crop&crop=center',
+      'smoothie': 'https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=400&h=200&fit=crop&crop=center',
+      'yogurt': 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&h=200&fit=crop&crop=center',
+      'fruit': 'https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=400&h=200&fit=crop&crop=center'
     }
     
     // Find the most specific match first
@@ -869,23 +871,7 @@ function MealCard({ meal, isDark = false, onDelete }) {
           {meal.time}
         </div>
 
-        <div style={{
-          position: 'absolute',
-          top: '12px',
-          right: '12px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '4px',
-          backgroundColor: isDark ? '#000000' : 'white',
-          border: `2px solid ${isDark ? 'white' : 'black'}`,
-          padding: '4px 8px',
-          borderRadius: '4px'
-        }}>
-          <Star style={{ width: '12px', height: '12px', color: isDark ? 'white' : 'black' }} />
-          <span style={{ fontSize: '12px', fontWeight: 'bold', color: isDark ? 'white' : 'black' }}>
-            {meal.rating}
-          </span>
-        </div>
+
       </div>
 
       <div style={{ padding: '16px' }}>
@@ -4586,6 +4572,7 @@ export default function FitnessDashboard() {
   const [isWorkoutModalOpen, setIsWorkoutModalOpen] = useState(false)
   const [isWaterModalOpen, setIsWaterModalOpen] = useState(false)
   const [isQuickAccessOpen, setIsQuickAccessOpen] = useState(false)
+  const [isStatsModalOpen, setIsStatsModalOpen] = useState(false)
   const [userProfile, setUserProfile] = useState(null) // Store user profile data
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(true) // New state for onboarding
 
@@ -4874,9 +4861,9 @@ export default function FitnessDashboard() {
   }
 
   const meals = [
-    { meal: "Avocado Toast", calories: 320, time: "8:30 AM", rating: 4.8 },
-    { meal: "Grilled Salmon", calories: 450, time: "12:45 PM", rating: 4.9 },
-    { meal: "Protein Smoothie", calories: 280, time: "3:15 PM", rating: 4.7 }
+    { meal: "Avocado Toast", calories: 320, time: "8:30 AM" },
+    { meal: "Grilled Salmon", calories: 450, time: "12:45 PM" },
+    { meal: "Protein Smoothie", calories: 280, time: "3:15 PM" }
   ]
 
   const quickActions = [
@@ -4910,8 +4897,7 @@ export default function FitnessDashboard() {
         setIsWaterModalOpen(true)
         break
       case "stats":
-        // TODO: Implement stats view
-        console.log("View Stats clicked")
+        setIsStatsModalOpen(true)
         break
       default:
         break
@@ -5233,7 +5219,7 @@ export default function FitnessDashboard() {
                 }}>
                   <BarChart3 style={{ width: '20px', height: '20px', color: isDark ? 'black' : 'white' }} strokeWidth={2.5} />
                 </div>
-                Today's Progress
+                Macros
               </h2>
 
               <div style={{ 
@@ -5241,13 +5227,6 @@ export default function FitnessDashboard() {
                 gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
                 gap: '48px'
               }}>
-                <CircularProgress 
-                  value={getTotalCaloriesConsumed()} 
-                  max={userProfile?.calories?.dailyCalories || 2200} 
-                  label="Calories" 
-                  unit="kcal" 
-                  isDark={isDark} 
-                />
                 <CircularProgress 
                   value={getMacros().protein} 
                   max={userProfile?.calories?.protein || 120} 
@@ -5262,28 +5241,30 @@ export default function FitnessDashboard() {
                   unit="g" 
                   isDark={isDark} 
                 />
-              </div>
-            </div>
-
-            {/* Daily Summary */}
-            <div style={{ marginTop: '48px' }}>
-              <EnhancedDailySummary 
+                <CircularProgress 
+                  value={getMacros().fat} 
+                  max={userProfile?.calories?.fat || 65} 
+                  label="Fat" 
+                  unit="g" 
                 isDark={isDark} 
-                totalIntake={getTotalCaloriesConsumed()}
-                remaining={Math.max(0, (userProfile?.calories?.dailyCalories || 2200) - getNetCalories())}
-                optimizationScore={getOptimizationScore()}
-                avgProgress={getAverageProgress()}
-                mealsLogged={getMealsLoggedToday()}
               />
+              </div>
             </div>
           </div>
 
           {/* Today's Meals */}
           <div>
+            <div style={{
+              backgroundColor: isDark ? '#000000' : 'white',
+              border: `2px solid ${isDark ? 'white' : 'black'}`,
+              borderRadius: '8px',
+              padding: '32px',
+              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+            }}>
             <h2 style={{
               fontSize: '20px',
               fontWeight: 'bold',
-              marginBottom: '24px',
+                marginBottom: '32px',
               display: 'flex',
               alignItems: 'center',
               gap: '12px',
@@ -5324,7 +5305,7 @@ export default function FitnessDashboard() {
                           minute: '2-digit',
                           hour12: true 
                         }),
-                        rating: 4.8
+
                       }} 
                       isDark={isDark} 
                       onDelete={handleMealDelete}
@@ -5340,6 +5321,7 @@ export default function FitnessDashboard() {
                   No meals logged today. Log your first meal to get started!
                 </div>
               )}
+            </div>
             </div>
           </div>
         </div>
@@ -5435,6 +5417,17 @@ export default function FitnessDashboard() {
         onClose={() => setIsQuickAccessOpen(false)}
         isDark={isDark}
         onActionSelect={handleOverlayAction}
+      />
+
+      {/* Stats Modal */}
+      <StatsModal
+        isOpen={isStatsModalOpen}
+        onClose={() => setIsStatsModalOpen(false)}
+        isDark={isDark}
+        userProfile={userProfile}
+        loggedMeals={loggedMeals}
+        loggedWorkouts={loggedWorkouts}
+        loggedWater={loggedWater}
       />
     </div>
   )
