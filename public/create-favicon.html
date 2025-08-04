@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Network School Favicon</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        canvas { border: 2px solid #ddd; margin: 10px; background: white; }
+        .preview { display: flex; gap: 20px; align-items: center; margin: 20px 0; }
+        button { padding: 12px 20px; background: #1a1a1a; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
+        button:hover { background: #333; }
+        .size-options { margin: 15px 0; }
+        .size-options label { margin-right: 15px; }
+        h1 { color: #1a1a1a; text-align: center; }
+        .step { background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 5px; border-left: 4px solid #1a1a1a; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏴 Network School Favicon Creator</h1>
+        
+        <div class="step">
+            <h3>Step 1: Generate Favicon</h3>
+            <div class="size-options">
+                <label><input type="checkbox" id="size16" checked> 16x16</label>
+                <label><input type="checkbox" id="size32" checked> 32x32</label>
+                <label><input type="checkbox" id="size48" checked> 48x48</label>
+            </div>
+            <button onclick="generateFavicons()">Generate All Favicons</button>
+        </div>
+
+        <div class="preview" id="preview">
+            <!-- Favicons will appear here -->
+        </div>
+
+        <div class="step">
+            <h3>Step 2: Download & Install</h3>
+            <p>1. Download the favicon files below</p>
+            <p>2. Replace your current favicon.ico in the /public folder</p>
+            <p>3. Clear browser cache (Ctrl+Shift+R) to see changes</p>
+        </div>
+
+        <div id="downloads">
+            <!-- Download links will appear here -->
+        </div>
+    </div>
+
+    <script>
+        function drawNSFlag(ctx, size) {
+            const scale = size / 32;
+            
+            // Clear with transparent background
+            ctx.clearRect(0, 0, size, size);
+            
+            // Black flag background
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fillRect(3 * scale, 4 * scale, 26 * scale, 18 * scale);
+            
+            // Flagpole
+            ctx.fillRect(0, 2 * scale, 2 * scale, 28 * scale);
+            
+            // White cross
+            ctx.fillStyle = 'white';
+            // Horizontal bar
+            ctx.fillRect(8 * scale, 11 * scale, 16 * scale, 3 * scale);
+            // Vertical bar  
+            ctx.fillRect(14.5 * scale, 6 * scale, 3 * scale, 14 * scale);
+        }
+
+        function generateFavicons() {
+            const preview = document.getElementById('preview');
+            const downloads = document.getElementById('downloads');
+            preview.innerHTML = '';
+            downloads.innerHTML = '';
+
+            const sizes = [];
+            if (document.getElementById('size16').checked) sizes.push(16);
+            if (document.getElementById('size32').checked) sizes.push(32);
+            if (document.getElementById('size48').checked) sizes.push(48);
+
+            sizes.forEach(size => {
+                // Create canvas
+                const canvas = document.createElement('canvas');
+                canvas.width = size;
+                canvas.height = size;
+                const ctx = canvas.getContext('2d');
+                
+                // Draw favicon
+                drawNSFlag(ctx, size);
+                
+                // Add to preview
+                const div = document.createElement('div');
+                div.innerHTML = `<h4>${size}x${size}</h4>`;
+                div.appendChild(canvas);
+                preview.appendChild(div);
+                
+                // Create download link
+                const link = document.createElement('a');
+                link.download = `favicon-${size}x${size}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.innerHTML = `📥 Download ${size}x${size} PNG`;
+                link.style.display = 'block';
+                link.style.margin = '5px 0';
+                link.style.padding = '8px 12px';
+                link.style.background = '#e9ecef';
+                link.style.textDecoration = 'none';
+                link.style.color = '#1a1a1a';
+                link.style.borderRadius = '3px';
+                downloads.appendChild(link);
+            });
+
+            // Create ICO download button
+            const icoButton = document.createElement('button');
+            icoButton.innerHTML = '🎯 Convert to ICO (use online converter)';
+            icoButton.onclick = () => {
+                alert('Download the PNG files above, then use an online converter like:\\n\\n1. convertico.com/png-to-ico\\n2. Upload the 32x32 PNG\\n3. Download as favicon.ico\\n4. Replace your existing favicon.ico');
+            };
+            downloads.appendChild(icoButton);
+        }
+
+        // Generate favicons on page load
+        window.onload = () => generateFavicons();
+    </script>
+</body>
+</html>
