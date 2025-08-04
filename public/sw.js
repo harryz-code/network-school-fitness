@@ -150,7 +150,7 @@ self.addEventListener('push', (event) => {
   };
 
   event.waitUntil(
-    self.registration.showNotification('Network School Fitness', options)
+    self.registration.showNotification('Long Live The Network School', options)
   );
 });
 
