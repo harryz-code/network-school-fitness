@@ -12,8 +12,9 @@ const GoogleIcon = () => (
 )
 
 const TwitterIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+    <path d="M4 4l11.733 16h4.267l-11.733-16z"/>
+    <path d="M6.772 20L20 4h-4.267L1.505 20z"/>
   </svg>
 )
 
@@ -24,8 +25,13 @@ const DiscordIcon = () => (
 )
 
 export default function Login({ isDark = false }) {
-  const { signInWithGoogle, signInWithTwitter, signInWithDiscord } = useAuth()
+  const { signInWithGoogle, signInWithTwitter, signInWithDiscord, signInWithEmail, signUpWithEmail, continueAsGuest } = useAuth()
   const [loading, setLoading] = useState(null)
+  const [showEmailForm, setShowEmailForm] = useState(false)
+  const [isSignUp, setIsSignUp] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
 
   const handleSocialLogin = async (provider, loginFunction) => {
     try {
@@ -34,6 +40,29 @@ export default function Login({ isDark = false }) {
     } catch (error) {
       console.error(`Error signing in with ${provider}:`, error.message)
       alert(`Failed to sign in with ${provider}. Please try again.`)
+    } finally {
+      setLoading(null)
+    }
+  }
+
+  const handleEmailAuth = async (e) => {
+    e.preventDefault()
+    if (isSignUp && password !== confirmPassword) {
+      alert('Passwords do not match')
+      return
+    }
+
+    try {
+      setLoading('email')
+      if (isSignUp) {
+        await signUpWithEmail(email, password)
+        alert('Check your email for verification link!')
+      } else {
+        await signInWithEmail(email, password)
+      }
+    } catch (error) {
+      console.error('Email auth error:', error.message)
+      alert(error.message)
     } finally {
       setLoading(null)
     }
@@ -128,38 +157,180 @@ export default function Login({ isDark = false }) {
         </div>
 
         <div>
-          <button
-            onClick={() => handleSocialLogin('google', signInWithGoogle)}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            style={buttonStyle}
-            disabled={loading !== null}
-          >
-            <GoogleIcon />
-            {loading === 'google' ? 'signing in...' : 'continue with google'}
-          </button>
+          {!showEmailForm ? (
+            <>
+              <button
+                onClick={() => handleSocialLogin('google', signInWithGoogle)}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                style={buttonStyle}
+                disabled={loading !== null}
+              >
+                <GoogleIcon />
+                {loading === 'google' ? 'signing in...' : 'continue with google'}
+              </button>
 
-          <button
-            onClick={() => handleSocialLogin('twitter', signInWithTwitter)}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            style={buttonStyle}
-            disabled={loading !== null}
-          >
-            <TwitterIcon />
-            {loading === 'twitter' ? 'signing in...' : 'continue with x'}
-          </button>
+              <button
+                onClick={() => handleSocialLogin('twitter', signInWithTwitter)}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                style={buttonStyle}
+                disabled={loading !== null}
+              >
+                <TwitterIcon />
+                {loading === 'twitter' ? 'signing in...' : 'continue with x'}
+              </button>
 
-          <button
-            onClick={() => handleSocialLogin('discord', signInWithDiscord)}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            style={buttonStyle}
-            disabled={loading !== null}
-          >
-            <DiscordIcon />
-            {loading === 'discord' ? 'signing in...' : 'continue with discord'}
-          </button>
+              <button
+                onClick={() => handleSocialLogin('discord', signInWithDiscord)}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                style={buttonStyle}
+                disabled={loading !== null}
+              >
+                <DiscordIcon />
+                {loading === 'discord' ? 'signing in...' : 'continue with discord'}
+              </button>
+
+              <div style={{ 
+                textAlign: 'center', 
+                margin: '24px 0 16px',
+                color: isDark ? '#666' : '#999',
+                fontSize: '14px'
+              }}>
+                or
+              </div>
+
+              <button
+                onClick={() => setShowEmailForm(true)}
+                style={{
+                  ...buttonStyle,
+                  backgroundColor: 'transparent',
+                  border: `1px solid ${isDark ? '#333' : '#ddd'}`,
+                  color: isDark ? '#ccc' : '#666'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = isDark ? '#111' : '#f5f5f5'
+                  e.target.style.transform = 'scale(1.02)'
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'transparent'
+                  e.target.style.transform = 'scale(1)'
+                }}
+              >
+                continue with email
+              </button>
+            </>
+          ) : (
+            <form onSubmit={handleEmailAuth}>
+              <div style={{ marginBottom: '16px' }}>
+                <input
+                  type="email"
+                  placeholder="Email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  style={{
+                    width: '100%',
+                    padding: '16px',
+                    border: `2px solid ${isDark ? 'white' : 'black'}`,
+                    borderRadius: '8px',
+                    backgroundColor: isDark ? '#000000' : 'white',
+                    color: isDark ? 'white' : 'black',
+                    fontSize: '16px',
+                    fontFamily: 'system-ui, -apple-system, sans-serif'
+                  }}
+                />
+              </div>
+
+              <div style={{ marginBottom: '16px' }}>
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  minLength={6}
+                  style={{
+                    width: '100%',
+                    padding: '16px',
+                    border: `2px solid ${isDark ? 'white' : 'black'}`,
+                    borderRadius: '8px',
+                    backgroundColor: isDark ? '#000000' : 'white',
+                    color: isDark ? 'white' : 'black',
+                    fontSize: '16px',
+                    fontFamily: 'system-ui, -apple-system, sans-serif'
+                  }}
+                />
+              </div>
+
+              {isSignUp && (
+                <div style={{ marginBottom: '16px' }}>
+                  <input
+                    type="password"
+                    placeholder="Confirm password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    minLength={6}
+                    style={{
+                      width: '100%',
+                      padding: '16px',
+                      border: `2px solid ${isDark ? 'white' : 'black'}`,
+                      borderRadius: '8px',
+                      backgroundColor: isDark ? '#000000' : 'white',
+                      color: isDark ? 'white' : 'black',
+                      fontSize: '16px',
+                      fontFamily: 'system-ui, -apple-system, sans-serif'
+                    }}
+                  />
+                </div>
+              )}
+
+              <button
+                type="submit"
+                style={buttonStyle}
+                disabled={loading === 'email'}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                {loading === 'email' ? 'please wait...' : (isSignUp ? 'create account' : 'sign in')}
+              </button>
+
+              <div style={{ textAlign: 'center', marginTop: '16px' }}>
+                <button
+                  type="button"
+                  onClick={() => setIsSignUp(!isSignUp)}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: isDark ? '#ccc' : '#666',
+                    textDecoration: 'underline',
+                    cursor: 'pointer',
+                    fontSize: '14px'
+                  }}
+                >
+                  {isSignUp ? 'already have an account? sign in' : 'need an account? sign up'}
+                </button>
+              </div>
+
+              <div style={{ textAlign: 'center', marginTop: '16px' }}>
+                <button
+                  type="button"
+                  onClick={() => setShowEmailForm(false)}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: isDark ? '#888' : '#999',
+                    cursor: 'pointer',
+                    fontSize: '14px'
+                  }}
+                >
+                  ← back to social login
+                </button>
+              </div>
+            </form>
+          )}
         </div>
 
         <div style={{
@@ -169,6 +340,29 @@ export default function Login({ isDark = false }) {
           color: isDark ? '#737373' : '#9ca3af'
         }}>
           by continuing, you agree to our terms of service
+        </div>
+
+        <div style={{ textAlign: 'center', marginTop: '24px' }}>
+          <button
+            onClick={continueAsGuest}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: isDark ? '#888' : '#999',
+              textDecoration: 'underline',
+              cursor: 'pointer',
+              fontSize: '14px',
+              fontFamily: 'system-ui, -apple-system, sans-serif'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.color = isDark ? '#ccc' : '#666'
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.color = isDark ? '#888' : '#999'
+            }}
+          >
+            continue as guest (data not saved)
+          </button>
         </div>
       </div>
     </div>
