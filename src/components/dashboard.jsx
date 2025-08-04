@@ -4941,6 +4941,9 @@ export default function FitnessDashboard({ user }) {
   const handleOnboardingComplete = async (userData) => {
     console.log('Onboarding completion started with data:', userData)
     
+    // Force close the onboarding modal immediately
+    setIsOnboardingOpen(false)
+    
     try {
       // Save user profile to database
       console.log('Saving profile to database...')
@@ -4948,8 +4951,6 @@ export default function FitnessDashboard({ user }) {
       console.log("Profile saved successfully:", savedProfile)
       
       setUserProfile(savedProfile)
-      setIsOnboardingOpen(false)
-      
       console.log('Onboarding completed successfully')
     } catch (error) {
       console.error("Error saving profile:", error)
@@ -4957,7 +4958,6 @@ export default function FitnessDashboard({ user }) {
       // Fallback to local state if database save fails
       console.log('Falling back to local state')
       setUserProfile(userData)
-      setIsOnboardingOpen(false)
       
       // Show user that there was an issue but they can continue
       alert('Profile saved locally. You can continue using the app, but data may not sync across devices.')
