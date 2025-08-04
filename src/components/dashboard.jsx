@@ -4855,41 +4855,44 @@ export default function FitnessDashboard({ user }) {
   }, [])
 
   // Load user data when component mounts
+  // Track user ID to prevent unnecessary reloads
+  const [loadedUserId, setLoadedUserId] = useState(null)
+
   useEffect(() => {
     const loadUserData = async () => {
       if (!user) {
         console.log('No user found, skipping data load')
+        setLoadedUserId(null)
+        return
+      }
+
+      // Only load data if user actually changed (prevent duplicate loads)
+      if (loadedUserId === user.id) {
+        console.log('Data already loaded for this user, skipping reload')
         return
       }
 
       console.log('Loading data for user:', user.email, 'ID:', user.id)
+      setLoadedUserId(user.id)
 
       try {
         // Load user profile with better error handling
         let profile = null
         try {
-          console.log('=== DEBUGGING PROFILE LOAD ===')
-          console.log('User object:', user)
-          console.log('User ID:', user?.id)
-          console.log('User email:', user?.email)
-          
           profile = await getUserProfile()
-          console.log('Profile loaded:', profile)
-          console.log('Profile exists?', !!profile)
+          console.log('Profile loaded successfully')
         } catch (profileError) {
           console.error('Error loading profile:', profileError)
-          console.error('Profile error details:', profileError.message)
           // If profile loading fails, treat as new user
           profile = null
         }
 
         if (profile) {
-          console.log('✅ Existing user found, skipping onboarding')
+          console.log('Existing user found, skipping onboarding')
           setUserProfile(profile)
           setIsOnboardingOpen(false)
         } else {
-          console.log('❌ No profile found, showing onboarding')
-          console.log('This is why onboarding keeps showing!')
+          console.log('No profile found, showing onboarding')
           setIsOnboardingOpen(true)
         }
 
@@ -5279,17 +5282,14 @@ export default function FitnessDashboard({ user }) {
 
   // Handle meal logging with streak tracking
   const handleMealLogged = async (mealData) => {
-    const timestamp = new Date().toISOString()
+    // Use the timestamp from mealData (from date picker) or current time
+    const timestamp = mealData.timestamp || new Date().toISOString()
     const newMeal = {
       ...mealData,
       timestamp
     }
     
-    // Update local state immediately for UI responsiveness
-    setLoggedMeals(prev => [...prev, newMeal])
-    updateStreak()
-    
-    // Save to database
+    // Save to database first
     try {
       const savedMeal = await saveMeal({
         food: mealData.food,
@@ -5302,16 +5302,28 @@ export default function FitnessDashboard({ user }) {
         timestamp
       })
       
-      // Update local state with database ID
-      setLoggedMeals(prev => prev.map(meal => 
-        meal.timestamp === timestamp && meal.food === mealData.food 
-          ? { ...meal, id: savedMeal.id }
-          : meal
-      ))
+      // Update local state with the saved meal (including database ID)
+      const mealWithId = {
+        id: savedMeal.id,
+        food: mealData.food,
+        calories: mealData.calories,
+        protein: mealData.protein || 0,
+        carbs: mealData.carbs || 0,
+        fat: mealData.fat || 0,
+        fiber: mealData.fiber || 0,
+        mealType: mealData.mealType,
+        timestamp
+      }
       
-      console.log('Meal saved to database')
+      setLoggedMeals(prev => [...prev, mealWithId])
+      updateStreak()
+      
+      console.log('Meal saved to database and local state updated')
     } catch (error) {
       console.error('Error saving meal:', error)
+      // Still update local state for offline functionality
+      setLoggedMeals(prev => [...prev, newMeal])
+      updateStreak()
     }
   }
 
