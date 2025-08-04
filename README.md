@@ -17,6 +17,7 @@ ns publishes nutrition facts in excel format per component and is hard to estima
 
 ## features
 
+- **user authentication** - sign in with google, x, or discord to save your data
 - **meal logging** - track food from cafe/lunch/dinner menus with real nutrition data
 - **workout tracking** - log different exercise types with personalized calorie burn
 - **water tracking** - smart hydration goals based on your body weight and activity
@@ -26,19 +27,40 @@ ns publishes nutrition facts in excel format per component and is hard to estima
 
 ## getting started
 
+### 1. clone and install
 ```bash
 git clone https://github.com/yourusername/network-school-fitness.git
 cd network-school-fitness
 npm install
+```
+
+### 2. set up supabase
+1. create a project at [supabase.com](https://supabase.com)
+2. go to project settings > api
+3. create a `.env.local` file in your project root:
+```bash
+REACT_APP_SUPABASE_URL=your_supabase_url_here
+REACT_APP_SUPABASE_ANON_KEY=your_supabase_anon_key_here
+```
+
+### 3. configure auth providers
+in your supabase dashboard:
+- go to authentication > providers
+- enable google, twitter, and discord oauth
+- add redirect urls: `http://localhost:3000` and your live domain
+
+### 4. run the app
+```bash
 npm start
 ```
 
-open http://localhost:3000 and you're good to go.
+open http://localhost:3000 and you're good to go!
 
 ## tech stack
 
 - react 19.1.1
 - javascript (es6+)
+- supabase for auth and database
 - css-in-js for styling
 - lucide react for icons
 - framer motion for animations

@@ -1,5 +1,17 @@
 import { useState, useEffect } from "react"
 import StatsModal from "./StatsModal"
+import { useAuth } from "../contexts/AuthContext"
+import { 
+  saveUserProfile, 
+  getUserProfile, 
+  saveMeal, 
+  getUserMeals, 
+  deleteMeal,
+  saveWorkout, 
+  getUserWorkouts,
+  saveWaterLog, 
+  getUserWaterLogs 
+} from "../services/dataService"
 import {
   Plus,
   Target,
@@ -4613,7 +4625,7 @@ function QuickAccessOverlay({ isOpen, onClose, isDark, onActionSelect }) {
   )
 }
 
-export default function FitnessDashboard() {
+export default function FitnessDashboard({ user }) {
   const [currentTime, setCurrentTime] = useState(new Date())
   const [isFoodModalOpen, setIsFoodModalOpen] = useState(false)
   const [isWorkoutModalOpen, setIsWorkoutModalOpen] = useState(false)
@@ -4632,17 +4644,86 @@ export default function FitnessDashboard() {
   const [currentStreak, setCurrentStreak] = useState(0)
   
   const { isDark, toggleDarkMode } = useDarkMode()
+  const { signOut } = useAuth()
+
+  const handleLogout = async () => {
+    try {
+      await signOut()
+    } catch (error) {
+      console.error('Error signing out:', error)
+    }
+  }
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000)
     return () => clearInterval(timer)
   }, [])
 
-  const handleOnboardingComplete = (userData) => {
-    // Here you would typically send the user data to your backend
-    console.log("Onboarding complete:", userData)
-    setUserProfile(userData)
-    setIsOnboardingOpen(false)
+  // Load user data when component mounts
+  useEffect(() => {
+    const loadUserData = async () => {
+      if (!user) return
+
+      try {
+        // Load user profile
+        const profile = await getUserProfile()
+        if (profile) {
+          setUserProfile(profile)
+          setIsOnboardingOpen(false) // Skip onboarding if profile exists
+        }
+
+        // Load meals, workouts, and water logs
+        const [meals, workouts, waterLogs] = await Promise.all([
+          getUserMeals(),
+          getUserWorkouts(),
+          getUserWaterLogs()
+        ])
+
+        setLoggedMeals(meals.map(meal => ({
+          id: meal.id, // Include database ID
+          food: meal.food,
+          calories: meal.calories,
+          protein: meal.protein || 0,
+          carbs: meal.carbs || 0,
+          fat: meal.fat || 0,
+          fiber: meal.fiber || 0,
+          timestamp: meal.timestamp
+        })))
+
+        setLoggedWorkouts(workouts.map(workout => ({
+          type: workout.exercise_type,
+          duration: workout.duration_minutes,
+          intensity: workout.intensity,
+          caloriesBurned: workout.calories_burned,
+          timestamp: workout.timestamp
+        })))
+
+        setLoggedWater(waterLogs.map(log => ({
+          amount: log.amount_ml,
+          timestamp: log.timestamp
+        })))
+
+      } catch (error) {
+        console.error('Error loading user data:', error)
+      }
+    }
+
+    loadUserData()
+  }, [user])
+
+  const handleOnboardingComplete = async (userData) => {
+    try {
+      // Save user profile to database
+      const savedProfile = await saveUserProfile(userData)
+      setUserProfile(savedProfile)
+      setIsOnboardingOpen(false)
+      console.log("Profile saved to database:", savedProfile)
+    } catch (error) {
+      console.error("Error saving profile:", error)
+      // Fallback to local state if database save fails
+      setUserProfile(userData)
+      setIsOnboardingOpen(false)
+    }
   }
 
   // Calculate total calories consumed today
@@ -4954,32 +5035,90 @@ export default function FitnessDashboard() {
   }
 
   // Handle meal logging with streak tracking
-  const handleMealLogged = (mealData) => {
+  const handleMealLogged = async (mealData) => {
+    const timestamp = new Date().toISOString()
     const newMeal = {
       ...mealData,
-      timestamp: new Date().toISOString()
+      timestamp
     }
+    
+    // Update local state immediately for UI responsiveness
     setLoggedMeals(prev => [...prev, newMeal])
     updateStreak()
+    
+    // Save to database
+    try {
+      const savedMeal = await saveMeal({
+        food: mealData.food,
+        calories: mealData.calories,
+        protein: mealData.protein || 0,
+        carbs: mealData.carbs || 0,
+        fat: mealData.fat || 0,
+        fiber: mealData.fiber || 0,
+        meal_type: mealData.mealType,
+        timestamp
+      })
+      
+      // Update local state with database ID
+      setLoggedMeals(prev => prev.map(meal => 
+        meal.timestamp === timestamp && meal.food === mealData.food 
+          ? { ...meal, id: savedMeal.id }
+          : meal
+      ))
+      
+      console.log('Meal saved to database')
+    } catch (error) {
+      console.error('Error saving meal:', error)
+    }
   }
 
   // Handle workout recording with streak tracking
-  const handleWorkoutRecorded = (workoutData) => {
+  const handleWorkoutRecorded = async (workoutData) => {
     const newWorkout = {
       ...workoutData,
       timestamp: new Date().toISOString()
     }
+    
+    // Update local state immediately for UI responsiveness
     setLoggedWorkouts(prev => [...prev, newWorkout])
     updateStreak()
+    
+    // Save to database
+    try {
+      await saveWorkout({
+        exercise_type: workoutData.type,
+        duration_minutes: workoutData.duration,
+        intensity: workoutData.intensity,
+        calories_burned: workoutData.caloriesBurned,
+        notes: workoutData.notes,
+        timestamp: newWorkout.timestamp
+      })
+      console.log('Workout saved to database')
+    } catch (error) {
+      console.error('Error saving workout:', error)
+    }
   }
 
   // Handle water logging
-  const handleWaterLogged = (waterData) => {
+  const handleWaterLogged = async (waterData) => {
     const newWaterEntry = {
       ...waterData,
       timestamp: new Date().toISOString()
     }
+    
+    // Update local state immediately for UI responsiveness
     setLoggedWater(prev => [...prev, newWaterEntry])
+    
+    // Save to database
+    try {
+      await saveWaterLog({
+        amount_ml: waterData.amount,
+        timestamp: newWaterEntry.timestamp
+      })
+      console.log('Water log saved to database')
+    } catch (error) {
+      console.error('Error saving water log:', error)
+    }
   }
 
   // Calculate total water intake today
@@ -5053,14 +5192,25 @@ export default function FitnessDashboard() {
   }
 
   // Handle meal deletion
-  const handleMealDelete = (mealToDelete) => {
-    // Find and remove the meal from loggedMeals
-    setLoggedMeals(prev => prev.filter((meal, index) => {
-      // Create a unique identifier using timestamp and food name
-      const mealId = `${meal.food}-${meal.timestamp}`
-      const deleteId = `${mealToDelete.meal}-${mealToDelete.originalTimestamp || ''}`
-      return mealId !== deleteId
-    }))
+  const handleMealDelete = async (mealToDelete) => {
+    // For meals loaded from database, use the ID
+    if (mealToDelete.id) {
+      try {
+        await deleteMeal(mealToDelete.id)
+        setLoggedMeals(prev => prev.filter(meal => meal.id !== mealToDelete.id))
+        console.log('Meal deleted from database')
+      } catch (error) {
+        console.error('Error deleting meal:', error)
+        return // Don't update local state if database deletion failed
+      }
+    } else {
+      // Fallback for meals not yet saved to database (legacy support)
+      setLoggedMeals(prev => prev.filter((meal) => {
+        const mealId = `${meal.food}-${meal.timestamp}`
+        const deleteId = `${mealToDelete.meal}-${mealToDelete.originalTimestamp || ''}`
+        return mealId !== deleteId
+      }))
+    }
     updateStreak()
   }
 
@@ -5147,6 +5297,30 @@ export default function FitnessDashboard() {
               </p>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <button
+                onClick={handleLogout}
+                style={{
+                  padding: '8px 16px',
+                  backgroundColor: 'transparent',
+                  color: isDark ? 'white' : 'black',
+                  border: `1px solid ${isDark ? 'white' : 'black'}`,
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  fontFamily: 'system-ui, -apple-system, sans-serif',
+                  fontSize: '14px'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = isDark ? 'white' : 'black'
+                  e.target.style.color = isDark ? 'black' : 'white'
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'transparent'
+                  e.target.style.color = isDark ? 'white' : 'black'
+                }}
+              >
+                logout
+              </button>
               <DarkModeToggle isDark={isDark} toggleDarkMode={toggleDarkMode} />
               <div style={{ textAlign: 'right' }}>
                 <p style={{
