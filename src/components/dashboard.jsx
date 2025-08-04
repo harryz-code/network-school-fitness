@@ -1168,6 +1168,7 @@ function WorkoutRecordingModal({ isOpen, onClose, isDark = false, userProfile, o
   const [duration, setDuration] = useState(30)
   const [intensity, setIntensity] = useState("moderate")
   const [notes, setNotes] = useState("")
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]) // YYYY-MM-DD format
 
   const workoutTypes = [
     { id: "strength", name: "Strength Training", icon: Dumbbell },
@@ -1209,13 +1210,19 @@ function WorkoutRecordingModal({ isOpen, onClose, isDark = false, userProfile, o
 
   const handleRecordWorkout = () => {
     const caloriesBurned = calculateCaloriesBurned()
+    
+    // Create timestamp from selected date (set to current time on that date)
+    const selectedDateTime = new Date(selectedDate)
+    selectedDateTime.setHours(new Date().getHours())
+    selectedDateTime.setMinutes(new Date().getMinutes())
+    
     const workoutData = {
       type: workoutType,
       duration,
       intensity,
       notes,
       caloriesBurned,
-      timestamp: new Date().toISOString()
+      timestamp: selectedDateTime.toISOString()
     }
     
     // Call the callback to update the dashboard
@@ -1228,6 +1235,7 @@ function WorkoutRecordingModal({ isOpen, onClose, isDark = false, userProfile, o
     setDuration(30)
     setIntensity("moderate")
     setNotes("")
+    setSelectedDate(new Date().toISOString().split('T')[0]) // Reset to today
   }
 
   if (!isOpen) return null
@@ -1285,6 +1293,34 @@ function WorkoutRecordingModal({ isOpen, onClose, isDark = false, userProfile, o
           >
             <X size={24} />
           </button>
+        </div>
+
+        {/* Date Selection */}
+        <div style={{ marginBottom: '24px' }}>
+          <h3 style={{
+            fontSize: '18px',
+            fontWeight: 'bold',
+            marginBottom: '16px',
+            color: isDark ? 'white' : 'black',
+            fontFamily: 'system-ui, -apple-system, sans-serif'
+          }}>
+            Workout Date
+          </h3>
+          <input
+            type="date"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '12px',
+              border: `2px solid ${isDark ? 'white' : 'black'}`,
+              borderRadius: '8px',
+              backgroundColor: isDark ? '#000000' : 'white',
+              color: isDark ? 'white' : 'black',
+              fontSize: '16px',
+              fontFamily: 'system-ui, -apple-system, sans-serif'
+            }}
+          />
         </div>
 
         {/* Workout Type */}
@@ -1536,6 +1572,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged }) {
   const [selectedFood, setSelectedFood] = useState(null)
   const [servingSize, setServingSize] = useState(1)
   const [mealType, setMealType] = useState("")
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]) // YYYY-MM-DD format
   const [selectedDay, setSelectedDay] = useState("")
   const [showMealTypeSelection, setShowMealTypeSelection] = useState(true)
   const [showDaySelection, setShowDaySelection] = useState(false)
@@ -1548,6 +1585,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged }) {
     if (isOpen) {
       // Reset to initial state when opening for new meal
       setMealType("")
+      setSelectedDate(new Date().toISOString().split('T')[0]) // Reset to today
       setShowMealTypeSelection(true)
       setShowDaySelection(false)
       setSelectedFood(null)
@@ -1798,6 +1836,11 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged }) {
 
   const handleLogMeal = () => {
     if (selectedFood) {
+      // Create timestamp from selected date (set to current time on that date)
+      const selectedDateTime = new Date(selectedDate)
+      selectedDateTime.setHours(new Date().getHours())
+      selectedDateTime.setMinutes(new Date().getMinutes())
+      
       const mealData = {
         food: selectedFood.name,
         servingSize,
@@ -1807,6 +1850,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged }) {
         carbs: Math.round(selectedFood.carbs * servingSize * 10) / 10,
         fat: Math.round(selectedFood.fat * servingSize * 10) / 10,
         fiber: Math.round((selectedFood.fiber || 0) * servingSize * 10) / 10,
+        timestamp: selectedDateTime.toISOString()
       }
       
       // Call the callback to update the dashboard
@@ -1878,7 +1922,33 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged }) {
           </button>
         </div>
 
-
+        {/* Date Selection */}
+        <div style={{ marginBottom: '24px' }}>
+          <h3 style={{
+            fontSize: '18px',
+            fontWeight: 'bold',
+            marginBottom: '16px',
+            color: isDark ? 'white' : 'black',
+            fontFamily: 'system-ui, -apple-system, sans-serif'
+          }}>
+            Meal Date
+          </h3>
+          <input
+            type="date"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '12px',
+              border: `2px solid ${isDark ? 'white' : 'black'}`,
+              borderRadius: '8px',
+              backgroundColor: isDark ? '#000000' : 'white',
+              color: isDark ? 'white' : 'black',
+              fontSize: '16px',
+              fontFamily: 'system-ui, -apple-system, sans-serif'
+            }}
+          />
+        </div>
 
         {/* Meal Type Selection */}
         {showMealTypeSelection && (
@@ -2722,6 +2792,11 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged }) {
                   const totalFat = selectedItems.reduce((sum, item) => sum + item.totalFat, 0)
                   const totalFiber = selectedItems.reduce((sum, item) => sum + (item.totalFiber || 0), 0)
                   
+                  // Create timestamp from selected date (set to current time on that date)
+                  const selectedDateTime = new Date(selectedDate)
+                  selectedDateTime.setHours(new Date().getHours())
+                  selectedDateTime.setMinutes(new Date().getMinutes())
+                  
                   const mealData = {
                     food: selectedItems.map(item => `${item.name} ${mealType === 'lunch' ? `(${item.quantity})` : `(${item.quantity}x)`}`).join(', '),
                     servingSize: 1,
@@ -2731,6 +2806,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged }) {
                     carbs: Math.round(totalCarbs * 10) / 10,
                     fat: Math.round(totalFat * 10) / 10,
                     fiber: Math.round(totalFiber * 10) / 10,
+                    timestamp: selectedDateTime.toISOString(),
                     items: selectedItems // Store individual items for reference
                   }
                   
@@ -3376,6 +3452,7 @@ function OnboardingModal({ isOpen, onClose, isDark = false, onComplete }) {
 // Water Tracking Modal Component
 function WaterTrackingModal({ isOpen, onClose, onWaterLogged, isDark, totalWaterToday, waterStreak, dailyGoal, userProfile }) {
   const [selectedAmount, setSelectedAmount] = useState(null)
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]) // YYYY-MM-DD format
   const [isAnimating, setIsAnimating] = useState(false)
   const [ripples, setRipples] = useState([])
   const [showSuggestions, setShowSuggestions] = useState(false)
@@ -3434,10 +3511,16 @@ function WaterTrackingModal({ isOpen, onClose, onWaterLogged, isDark, totalWater
     }
     setRipples(prev => [...prev, newRipple])
     
+    // Create timestamp from selected date (set to current time on that date)
+    const selectedDateTime = new Date(selectedDate)
+    selectedDateTime.setHours(new Date().getHours())
+    selectedDateTime.setMinutes(new Date().getMinutes())
+    
     // Log the water
     onWaterLogged({
       amount,
-      type: waterSizes.find(size => size.amount === amount)?.label || 'Custom'
+      type: waterSizes.find(size => size.amount === amount)?.label || 'Custom',
+      timestamp: selectedDateTime.toISOString()
     })
     
     // Reset animation after delay
@@ -3540,6 +3623,36 @@ function WaterTrackingModal({ isOpen, onClose, onWaterLogged, isDark, totalWater
           }}>
             Stay hydrated and reach your daily goal
           </p>
+        </div>
+
+        {/* Date Selection */}
+        <div style={{ marginBottom: '24px', maxWidth: '300px', margin: '0 auto 32px' }}>
+          <h3 style={{
+            fontSize: '18px',
+            fontWeight: 'bold',
+            marginBottom: '16px',
+            color: isDark ? 'white' : 'black',
+            fontFamily: 'system-ui, -apple-system, sans-serif',
+            textAlign: 'center'
+          }}>
+            Water Date
+          </h3>
+          <input
+            type="date"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '12px',
+              border: `2px solid ${isDark ? 'white' : 'black'}`,
+              borderRadius: '8px',
+              backgroundColor: isDark ? '#000000' : 'white',
+              color: isDark ? 'white' : 'black',
+              fontSize: '16px',
+              fontFamily: 'system-ui, -apple-system, sans-serif',
+              textAlign: 'center'
+            }}
+          />
         </div>
 
         {/* Water Bottle Animation */}
