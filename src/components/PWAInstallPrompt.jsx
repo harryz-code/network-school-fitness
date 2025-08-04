@@ -17,6 +17,14 @@ const PWAInstallPrompt = ({ isDark = false }) => {
     // Check if iOS
     const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     setIsIOS(isIOSDevice);
+    
+    // Show prompt for iOS after delay (since beforeinstallprompt doesn't fire on iOS)
+    if (isIOSDevice) {
+      console.log('📱 PWA: iOS device detected, will show install prompt');
+      setTimeout(() => {
+        setShowPrompt(true);
+      }, 5000);
+    }
 
     // Listen for beforeinstallprompt event
     const handleBeforeInstallPrompt = (e) => {
@@ -66,6 +74,7 @@ const PWAInstallPrompt = ({ isDark = false }) => {
   };
 
   const handleDismiss = () => {
+    console.log('🚫 PWA: User dismissed install prompt');
     setShowPrompt(false);
     // Don't show again for this session
     sessionStorage.setItem('pwa-prompt-dismissed', 'true');
@@ -77,7 +86,7 @@ const PWAInstallPrompt = ({ isDark = false }) => {
   }
 
   // iOS install instructions
-  if (isIOS && !isInstalled) {
+  if (isIOS && !isInstalled && showPrompt) {
     return (
       <div className="pwa-install-banner" style={{
         backgroundColor: isDark ? '#1a1a1a' : '#000000',
@@ -98,8 +107,13 @@ const PWAInstallPrompt = ({ isDark = false }) => {
             background: 'transparent',
             border: 'none',
             color: 'white',
-            padding: '4px',
-            cursor: 'pointer'
+            padding: '8px',
+            minWidth: '32px',
+            minHeight: '32px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
           }}
         >
           <X size={20} />
@@ -135,6 +149,7 @@ const PWAInstallPrompt = ({ isDark = false }) => {
               borderRadius: '6px',
               fontWeight: '600',
               fontSize: '14px',
+              minHeight: '36px',
               cursor: 'pointer'
             }}
           >
@@ -149,6 +164,7 @@ const PWAInstallPrompt = ({ isDark = false }) => {
               padding: '8px 12px',
               borderRadius: '6px',
               fontSize: '14px',
+              minHeight: '36px',
               cursor: 'pointer'
             }}
           >
