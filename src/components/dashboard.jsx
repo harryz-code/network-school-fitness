@@ -2058,6 +2058,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged }) {
                 >
                   <div style={{
                     fontSize: '16px',
+                    fontFamily: 'system-ui, -apple-system, sans-serif',
                     fontWeight: 'bold',
                     textTransform: 'uppercase',
                     letterSpacing: '0.05em'
@@ -2455,6 +2456,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged }) {
                     border: `2px solid ${isDark ? 'white' : 'black'}`,
                     borderRadius: '8px',
                     fontSize: '16px',
+                    fontFamily: 'system-ui, -apple-system, sans-serif',
                     fontWeight: 'bold',
                     cursor: 'pointer',
                     transition: 'all 0.2s'
@@ -2538,6 +2540,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged }) {
                 }}>
                   <div style={{
                     fontSize: '16px',
+                    fontFamily: 'system-ui, -apple-system, sans-serif',
                     fontWeight: 'bold',
                     color: isDark ? 'white' : 'black',
                     marginBottom: '16px',
@@ -3007,7 +3010,8 @@ function OnboardingModal({ isOpen, onClose, isDark = false, onComplete }) {
                     borderRadius: '8px',
                     backgroundColor: isDark ? '#000000' : 'white',
                     color: isDark ? 'white' : 'black',
-                    fontSize: '16px'
+                    fontSize: '16px',
+                    fontFamily: 'system-ui, -apple-system, sans-serif'
                   }}
                 />
               </div>
@@ -3038,7 +3042,8 @@ function OnboardingModal({ isOpen, onClose, isDark = false, onComplete }) {
                     borderRadius: '8px',
                     backgroundColor: isDark ? '#000000' : 'white',
                     color: isDark ? 'white' : 'black',
-                    fontSize: '16px'
+                    fontSize: '16px',
+                    fontFamily: 'system-ui, -apple-system, sans-serif'
                   }}
                 />
               </div>
@@ -3069,7 +3074,8 @@ function OnboardingModal({ isOpen, onClose, isDark = false, onComplete }) {
                     borderRadius: '8px',
                     backgroundColor: isDark ? '#000000' : 'white',
                     color: isDark ? 'white' : 'black',
-                    fontSize: '16px'
+                    fontSize: '16px',
+                    fontFamily: 'system-ui, -apple-system, sans-serif'
                   }}
                 />
               </div>
@@ -3236,7 +3242,8 @@ function OnboardingModal({ isOpen, onClose, isDark = false, onComplete }) {
                       borderRadius: '8px',
                       backgroundColor: isDark ? '#000000' : 'white',
                       color: isDark ? 'white' : 'black',
-                      fontSize: '16px'
+                      fontSize: '16px',
+                    fontFamily: 'system-ui, -apple-system, sans-serif'
                     }}
                   />
                 </div>
@@ -3267,7 +3274,8 @@ function OnboardingModal({ isOpen, onClose, isDark = false, onComplete }) {
                       borderRadius: '8px',
                       backgroundColor: isDark ? '#000000' : 'white',
                       color: isDark ? 'white' : 'black',
-                      fontSize: '16px'
+                      fontSize: '16px',
+                    fontFamily: 'system-ui, -apple-system, sans-serif'
                     }}
                   />
                 </div>
@@ -3283,6 +3291,7 @@ function OnboardingModal({ isOpen, onClose, isDark = false, onComplete }) {
                 }}>
                   <h4 style={{
                     fontSize: '16px',
+                    fontFamily: 'system-ui, -apple-system, sans-serif',
                     fontWeight: 'bold',
                     marginBottom: '12px',
                     color: isDark ? 'white' : 'black'
@@ -3994,16 +4003,34 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
         return (
           <div style={{ textAlign: 'center' }}>
             <User style={{ width: '64px', height: '64px', color: isDark ? 'white' : 'black', margin: '0 auto 24px' }} />
-            <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '16px', color: isDark ? 'white' : 'black' }}>
+            <h2 style={{ 
+              fontSize: '32px', 
+              fontWeight: 'bold', 
+              marginBottom: '16px', 
+              color: isDark ? 'white' : 'black',
+              fontFamily: 'Georgia, "Times New Roman", Times, serif',
+              letterSpacing: '-0.025em'
+            }}>
               Tell us about yourself
             </h2>
-            <p style={{ color: isDark ? '#cccccc' : '#666666', marginBottom: '32px' }}>
+            <p style={{ 
+              color: isDark ? '#cccccc' : '#666666', 
+              marginBottom: '32px',
+              fontSize: '16px',
+              fontFamily: 'system-ui, -apple-system, sans-serif'
+            }}>
               We need some basic information to calculate your personalized goals
             </p>
             
             <div style={{ display: 'grid', gap: '16px', maxWidth: '400px', margin: '0 auto' }}>
               <div>
-                <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: isDark ? 'white' : 'black' }}>
+                <label style={{ 
+                  display: 'block', 
+                  marginBottom: '8px', 
+                  fontWeight: 'bold', 
+                  color: isDark ? 'white' : 'black',
+                  fontFamily: 'system-ui, -apple-system, sans-serif'
+                }}>
                   Age
                 </label>
                 <input
@@ -4021,14 +4048,21 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
                     borderRadius: '8px',
                     backgroundColor: isDark ? '#000000' : 'white',
                     color: isDark ? 'white' : 'black',
-                    fontSize: '16px'
+                    fontSize: '16px',
+                    fontFamily: 'system-ui, -apple-system, sans-serif'
                   }}
                   placeholder="Enter your age"
                 />
               </div>
               
               <div>
-                <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: isDark ? 'white' : 'black' }}>
+                <label style={{ 
+                  display: 'block', 
+                  marginBottom: '8px', 
+                  fontWeight: 'bold', 
+                  color: isDark ? 'white' : 'black',
+                  fontFamily: 'system-ui, -apple-system, sans-serif'
+                }}>
                   Gender
                 </label>
                 <div style={{ display: 'flex', gap: '12px' }}>
@@ -4044,6 +4078,7 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
                         backgroundColor: formData.gender === gender ? (isDark ? 'white' : 'black') : (isDark ? '#000000' : 'white'),
                         color: formData.gender === gender ? (isDark ? 'black' : 'white') : (isDark ? 'white' : 'black'),
                         fontSize: '16px',
+                    fontFamily: 'system-ui, -apple-system, sans-serif',
                         fontWeight: 'bold',
                         cursor: 'pointer',
                         textTransform: 'capitalize'
@@ -4056,7 +4091,13 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
               </div>
               
               <div>
-                <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: isDark ? 'white' : 'black' }}>
+                <label style={{ 
+                  display: 'block', 
+                  marginBottom: '8px', 
+                  fontWeight: 'bold', 
+                  color: isDark ? 'white' : 'black',
+                  fontFamily: 'system-ui, -apple-system, sans-serif'
+                }}>
                   Weight (kg)
                 </label>
                 <input
@@ -4075,14 +4116,21 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
                     borderRadius: '8px',
                     backgroundColor: isDark ? '#000000' : 'white',
                     color: isDark ? 'white' : 'black',
-                    fontSize: '16px'
+                    fontSize: '16px',
+                    fontFamily: 'system-ui, -apple-system, sans-serif'
                   }}
                   placeholder="Enter your weight"
                 />
               </div>
               
               <div>
-                <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: isDark ? 'white' : 'black' }}>
+                <label style={{ 
+                  display: 'block', 
+                  marginBottom: '8px', 
+                  fontWeight: 'bold', 
+                  color: isDark ? 'white' : 'black',
+                  fontFamily: 'system-ui, -apple-system, sans-serif'
+                }}>
                   Height (cm)
                 </label>
                 <input
@@ -4101,7 +4149,8 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
                     borderRadius: '8px',
                     backgroundColor: isDark ? '#000000' : 'white',
                     color: isDark ? 'white' : 'black',
-                    fontSize: '16px'
+                    fontSize: '16px',
+                    fontFamily: 'system-ui, -apple-system, sans-serif'
                   }}
                   placeholder="Enter your height"
                 />
@@ -4114,10 +4163,22 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
         return (
           <div style={{ textAlign: 'center' }}>
             <Activity style={{ width: '64px', height: '64px', color: isDark ? 'white' : 'black', margin: '0 auto 24px' }} />
-            <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '16px', color: isDark ? 'white' : 'black' }}>
+            <h2 style={{ 
+              fontSize: '32px', 
+              fontWeight: 'bold', 
+              marginBottom: '16px', 
+              color: isDark ? 'white' : 'black',
+              fontFamily: 'Georgia, "Times New Roman", Times, serif',
+              letterSpacing: '-0.025em'
+            }}>
               Activity Level
             </h2>
-            <p style={{ color: isDark ? '#cccccc' : '#666666', marginBottom: '32px' }}>
+            <p style={{ 
+              color: isDark ? '#cccccc' : '#666666', 
+              marginBottom: '32px',
+              fontSize: '16px',
+              fontFamily: 'system-ui, -apple-system, sans-serif'
+            }}>
               How active are you on a typical day?
             </p>
             
@@ -4154,10 +4215,22 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
         return (
           <div style={{ textAlign: 'center' }}>
             <Target style={{ width: '64px', height: '64px', color: isDark ? 'white' : 'black', margin: '0 auto 24px' }} />
-            <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '16px', color: isDark ? 'white' : 'black' }}>
+            <h2 style={{ 
+              fontSize: '32px', 
+              fontWeight: 'bold', 
+              marginBottom: '16px', 
+              color: isDark ? 'white' : 'black',
+              fontFamily: 'Georgia, "Times New Roman", Times, serif',
+              letterSpacing: '-0.025em'
+            }}>
               Daily Calorie Deficit Goal
             </h2>
-            <p style={{ color: isDark ? '#cccccc' : '#666666', marginBottom: '32px' }}>
+            <p style={{ 
+              color: isDark ? '#cccccc' : '#666666', 
+              marginBottom: '32px',
+              fontSize: '16px',
+              fontFamily: 'system-ui, -apple-system, sans-serif'
+            }}>
               How many calories do you want to be in deficit each day?
             </p>
             
@@ -4231,10 +4304,22 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
         return (
           <div style={{ textAlign: 'center' }}>
             <Calculator style={{ width: '64px', height: '64px', color: isDark ? 'white' : 'black', margin: '0 auto 24px' }} />
-            <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '16px', color: isDark ? 'white' : 'black' }}>
+            <h2 style={{ 
+              fontSize: '32px', 
+              fontWeight: 'bold', 
+              marginBottom: '16px', 
+              color: isDark ? 'white' : 'black',
+              fontFamily: 'Georgia, "Times New Roman", Times, serif',
+              letterSpacing: '-0.025em'
+            }}>
               Workout vs Diet Split
             </h2>
-            <p style={{ color: isDark ? '#cccccc' : '#666666', marginBottom: '32px' }}>
+            <p style={{ 
+              color: isDark ? '#cccccc' : '#666666', 
+              marginBottom: '32px',
+              fontSize: '16px',
+              fontFamily: 'system-ui, -apple-system, sans-serif'
+            }}>
               How do you want to achieve your {formData.dailyDeficit} calorie deficit?
             </p>
             
@@ -4246,16 +4331,16 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
                   marginBottom: '16px'
                 }}>
                   <div style={{ textAlign: 'left' }}>
-                    <div style={{ color: isDark ? 'white' : 'black', fontWeight: 'bold' }}>
-                      🔥 Workout: {Math.round((formData.dailyDeficit * formData.workoutSplit) / 100)} cal
+                    <div style={{ color: isDark ? 'white' : 'black', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Zap size={16} /> Workout: {Math.round((formData.dailyDeficit * formData.workoutSplit) / 100)} cal
                     </div>
                     <div style={{ fontSize: '14px', color: isDark ? '#cccccc' : '#666666' }}>
                       Burn through exercise
                     </div>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ color: isDark ? 'white' : 'black', fontWeight: 'bold' }}>
-                      🍽️ Diet: {formData.dailyDeficit - Math.round((formData.dailyDeficit * formData.workoutSplit) / 100)} cal
+                    <div style={{ color: isDark ? 'white' : 'black', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'flex-end' }}>
+                      <Utensils size={16} /> Diet: {formData.dailyDeficit - Math.round((formData.dailyDeficit * formData.workoutSplit) / 100)} cal
                     </div>
                     <div style={{ fontSize: '14px', color: isDark ? '#cccccc' : '#666666' }}>
                       Reduce through eating less
