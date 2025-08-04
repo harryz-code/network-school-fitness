@@ -4633,7 +4633,7 @@ export default function FitnessDashboard({ user }) {
   const [isQuickAccessOpen, setIsQuickAccessOpen] = useState(false)
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false)
   const [userProfile, setUserProfile] = useState(null) // Store user profile data
-  const [isOnboardingOpen, setIsOnboardingOpen] = useState(true) // New state for onboarding
+  const [isOnboardingOpen, setIsOnboardingOpen] = useState(false) // New state for onboarding
 
   
   // User activity data
@@ -4670,6 +4670,8 @@ export default function FitnessDashboard({ user }) {
         if (profile) {
           setUserProfile(profile)
           setIsOnboardingOpen(false) // Skip onboarding if profile exists
+        } else {
+          setIsOnboardingOpen(true) // Show onboarding for new users without profile
         }
 
         // Load meals, workouts, and water logs
