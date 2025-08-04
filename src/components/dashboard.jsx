@@ -5496,17 +5496,29 @@ export default function FitnessDashboard({ user }) {
 
   // Handle meal deletion
   const handleMealDelete = async (mealToDelete) => {
+    console.log('🗑️ handleMealDelete called with:', mealToDelete)
+    console.log('🔍 Meal to delete details:', {
+      id: mealToDelete.id,
+      food: mealToDelete.food || mealToDelete.meal,
+      timestamp: mealToDelete.timestamp,
+      originalTimestamp: mealToDelete.originalTimestamp
+    })
+    
     // For meals loaded from database, use the ID
     if (mealToDelete.id) {
+      console.log('💾 Deleting meal with database ID:', mealToDelete.id)
       try {
         await deleteMeal(mealToDelete.id)
+        const beforeCount = loggedMeals.length
         setLoggedMeals(prev => prev.filter(meal => meal.id !== mealToDelete.id))
-        console.log('Meal deleted from database')
+        console.log(`✅ Local state updated: ${beforeCount} meals → ${beforeCount - 1} meals`)
+        console.log('Meal deleted from database and local state')
       } catch (error) {
-        console.error('Error deleting meal:', error)
+        console.error('❌ Error deleting meal:', error)
         return // Don't update local state if database deletion failed
       }
     } else {
+      console.log('⚠️ No database ID found, using fallback deletion method')
       // Fallback for meals not yet saved to database (legacy support)
       setLoggedMeals(prev => prev.filter((meal) => {
         const mealId = `${meal.food}-${meal.timestamp}`
