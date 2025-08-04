@@ -2,16 +2,36 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.svg?v=2" type="image/svg+xml" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico?v=2" />
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico?v=2" />
+    <!-- Mobile-specific favicon links -->
+    <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/favicon-32x32.png?v=3">
+    <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/favicon-16x16.png?v=3">
+    <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/apple-touch-icon.png?v=3">
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico?v=3" />
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico?v=3" />
+    <!-- Android Chrome -->
+    <link rel="icon" type="image/png" sizes="192x192" href="%PUBLIC_URL%/icon-192x192.png?v=3">  
+    <link rel="icon" type="image/png" sizes="512x512" href="%PUBLIC_URL%/icon-512x512.png?v=3">
+    <!-- Fallback SVG for modern browsers -->
+    <link rel="icon" href="%PUBLIC_URL%/favicon.svg?v=3" type="image/svg+xml" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
+    <!-- Mobile app meta tags -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="NS Fitness">
+    <meta name="msapplication-TileColor" content="#000000">
+    <meta name="msapplication-TileImage" content="%PUBLIC_URL%/icon-192x192.png">
+    <meta name="application-name" content="NS Fitness">
+    <!-- Prevent caching of icons -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <meta
       name="description"
       content="Fitness & wellness tracking for Network School residents. Log meals, workouts, and water intake to achieve your health goals."
     />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     
     <title>Long Live Network School</title>
