@@ -4444,16 +4444,16 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
                   marginBottom: '16px'
                 }}>
                   <div style={{ textAlign: 'left' }}>
-                    <div style={{ color: isDark ? 'white' : 'black', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <Zap size={16} /> Workout: {Math.round((formData.dailyDeficit * formData.workoutSplit) / 100)} cal
+                    <div style={{ color: isDark ? 'white' : 'black', fontWeight: 'bold' }}>
+                      Workout: {Math.round((formData.dailyDeficit * formData.workoutSplit) / 100)} cal
                     </div>
                     <div style={{ fontSize: '14px', color: isDark ? '#cccccc' : '#666666' }}>
                       Burn through exercise
                     </div>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ color: isDark ? 'white' : 'black', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'flex-end' }}>
-                      <Utensils size={16} /> Diet: {formData.dailyDeficit - Math.round((formData.dailyDeficit * formData.workoutSplit) / 100)} cal
+                    <div style={{ color: isDark ? 'white' : 'black', fontWeight: 'bold', textAlign: 'right' }}>
+                      Diet: {formData.dailyDeficit - Math.round((formData.dailyDeficit * formData.workoutSplit) / 100)} cal
                     </div>
                     <div style={{ fontSize: '14px', color: isDark ? '#cccccc' : '#666666' }}>
                       Reduce through eating less
