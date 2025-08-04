@@ -2,107 +2,24 @@
   <!-- Background -->
   <rect width="400" height="80" fill="transparent"/>
   
-  <!-- Flagpole and flag -->
-  <g transform="translate(50, 20)">
+  <!-- Flagpole and flag matching the uploaded image -->
+  <g transform="translate(30, 15)">
     <!-- Flagpole -->
-    <rect x="0" y="5" width="2" height="40" fill="currentColor"/>
+    <rect x="0" y="0" width="3" height="50" fill="currentColor"/>
     
-    <!-- Flag background -->
-    <rect x="2" y="5" width="45" height="30" fill="currentColor"/>
+    <!-- Flag background (black rectangle) -->
+    <rect x="3" y="0" width="50" height="35" fill="currentColor"/>
     
-    <!-- Grid pattern of small white crosses across the flag -->
+    <!-- Single large white cross/plus in center of flag -->
     <g fill="white">
-      <!-- Row 1 -->
-      <rect x="6" y="8" width="3" height="0.8"/>
-      <rect x="7.1" y="7" width="0.8" height="3"/>
-      
-      <rect x="12" y="8" width="3" height="0.8"/>
-      <rect x="13.1" y="7" width="0.8" height="3"/>
-      
-      <rect x="18" y="8" width="3" height="0.8"/>
-      <rect x="19.1" y="7" width="0.8" height="3"/>
-      
-      <rect x="24" y="8" width="3" height="0.8"/>
-      <rect x="25.1" y="7" width="0.8" height="3"/>
-      
-      <rect x="30" y="8" width="3" height="0.8"/>
-      <rect x="31.1" y="7" width="0.8" height="3"/>
-      
-      <rect x="36" y="8" width="3" height="0.8"/>
-      <rect x="37.1" y="7" width="0.8" height="3"/>
-      
-      <rect x="42" y="8" width="3" height="0.8"/>
-      <rect x="43.1" y="7" width="0.8" height="3"/>
-      
-      <!-- Row 2 -->
-      <rect x="6" y="15" width="3" height="0.8"/>
-      <rect x="7.1" y="14" width="0.8" height="3"/>
-      
-      <rect x="12" y="15" width="3" height="0.8"/>
-      <rect x="13.1" y="14" width="0.8" height="3"/>
-      
-      <rect x="18" y="15" width="3" height="0.8"/>
-      <rect x="19.1" y="14" width="0.8" height="3"/>
-      
-      <rect x="24" y="15" width="3" height="0.8"/>
-      <rect x="25.1" y="14" width="0.8" height="3"/>
-      
-      <rect x="30" y="15" width="3" height="0.8"/>
-      <rect x="31.1" y="14" width="0.8" height="3"/>
-      
-      <rect x="36" y="15" width="3" height="0.8"/>
-      <rect x="37.1" y="14" width="0.8" height="3"/>
-      
-      <rect x="42" y="15" width="3" height="0.8"/>
-      <rect x="43.1" y="14" width="0.8" height="3"/>
-      
-      <!-- Row 3 -->
-      <rect x="6" y="22" width="3" height="0.8"/>
-      <rect x="7.1" y="21" width="0.8" height="3"/>
-      
-      <rect x="12" y="22" width="3" height="0.8"/>
-      <rect x="13.1" y="21" width="0.8" height="3"/>
-      
-      <rect x="18" y="22" width="3" height="0.8"/>
-      <rect x="19.1" y="21" width="0.8" height="3"/>
-      
-      <rect x="24" y="22" width="3" height="0.8"/>
-      <rect x="25.1" y="21" width="0.8" height="3"/>
-      
-      <rect x="30" y="22" width="3" height="0.8"/>
-      <rect x="31.1" y="21" width="0.8" height="3"/>
-      
-      <rect x="36" y="22" width="3" height="0.8"/>
-      <rect x="37.1" y="21" width="0.8" height="3"/>
-      
-      <rect x="42" y="22" width="3" height="0.8"/>
-      <rect x="43.1" y="21" width="0.8" height="3"/>
-      
-      <!-- Row 4 -->
-      <rect x="6" y="29" width="3" height="0.8"/>
-      <rect x="7.1" y="28" width="0.8" height="3"/>
-      
-      <rect x="12" y="29" width="3" height="0.8"/>
-      <rect x="13.1" y="28" width="0.8" height="3"/>
-      
-      <rect x="18" y="29" width="3" height="0.8"/>
-      <rect x="19.1" y="28" width="0.8" height="3"/>
-      
-      <rect x="24" y="29" width="3" height="0.8"/>
-      <rect x="25.1" y="28" width="0.8" height="3"/>
-      
-      <rect x="30" y="29" width="3" height="0.8"/>
-      <rect x="31.1" y="28" width="0.8" height="3"/>
-      
-      <rect x="36" y="29" width="3" height="0.8"/>
-      <rect x="37.1" y="28" width="0.8" height="3"/>
-      
-      <rect x="42" y="29" width="3" height="0.8"/>
-      <rect x="43.1" y="28" width="0.8" height="3"/>
+      <rect x="20" y="14" width="16" height="7"/>
+      <rect x="23.5" y="8" width="7" height="19"/>
     </g>
   </g>
   
-  <!-- Text -->
-  <text x="110" y="35" font-family="Georgia, serif" font-size="16" font-weight="normal" fill="currentColor">The Network</text>
-  <text x="110" y="58" font-family="Georgia, serif" font-size="30" font-weight="bold" fill="currentColor">SCHOOL</text>
+  <!-- Text layout exactly matching the image -->
+  <g transform="translate(95, 25)">
+    <text x="0" y="15" font-family="Georgia, serif" font-size="24" font-weight="normal" fill="currentColor">The Network</text>
+    <text x="0" y="45" font-family="Georgia, serif" font-size="36" font-weight="bold" fill="currentColor">SCHOOL</text>
+  </g>
 </svg>
