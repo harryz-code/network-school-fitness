@@ -47,35 +47,41 @@ export const saveUserProfile = async (profileData) => {
     updated_at: new Date().toISOString()
   }
 
+  console.log('🗃️ DataService: Saving profile data to database:', dbData)
+
   const { data, error } = await supabase
     .from('profiles')
     .upsert(dbData)
     .select()
+
+  console.log('🗃️ DataService: Database response:', { data, error })
 
   if (error) throw error
   return data[0]
 }
 
 export const getUserProfile = async () => {
-  console.log('getUserProfile called')
+  console.log('🔍 getUserProfile called')
   
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) {
-    console.log('No authenticated user found')
+    console.log('❌ No authenticated user found')
     throw new Error('No authenticated user')
   }
 
-  console.log('User found:', user.email, 'ID:', user.id, 'isGuest check:', isGuestUser(user))
+  console.log('👤 User found:', user.email, 'ID:', user.id)
 
   // Handle guest mode
   if (isGuestUser(user)) {
-    console.log('Guest user detected, loading from localStorage')
+    console.log('👤 Guest user detected, loading from localStorage')
     const guestData = getGuestData()
-    console.log('Guest profile:', guestData.profile)
+    console.log('📋 Guest profile:', guestData.profile)
     return guestData.profile
   }
 
-  console.log('Regular user, querying database for profile...')
+  console.log('🗃️ Regular user, querying database for profile...')
+  console.log('🔍 Querying profiles table with user ID:', user.id)
+  
   const { data, error } = await supabase
     .from('profiles')
     .select('*')
@@ -83,11 +89,29 @@ export const getUserProfile = async () => {
     .single()
 
   if (error) {
-    console.log('Database query error:', error.code, error.message)
+    console.log('❌ Database query error:', error.code, error.message)
+    console.log('❌ Full error object:', error)
     if (error.code !== 'PGRST116') throw error // PGRST116 = not found
   }
 
-  console.log('Profile query result:', data)
+  console.log('📊 Profile query result:', data)
+  console.log('✅ Profile found?', !!data)
+  
+  if (data) {
+    console.log('📋 Profile details:', {
+      id: data.id,
+      email: data.email,
+      age: data.age,
+      sex: data.sex,
+      weight: data.weight,
+      height: data.height,
+      activity_level: data.activity_level,
+      bmr: data.bmr,
+      tdee: data.tdee,
+      daily_calories: data.daily_calories
+    })
+  }
+  
   return data
 }
 

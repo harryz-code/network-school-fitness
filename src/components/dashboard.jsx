@@ -4888,11 +4888,19 @@ export default function FitnessDashboard({ user }) {
         }
 
         if (profile) {
-          console.log('Existing user found, skipping onboarding')
+          console.log('✅ Profile found:', profile)
+          console.log('Profile has required fields?', {
+            age: profile.age,
+            weight: profile.weight,
+            height: profile.height,
+            bmr: profile.bmr,
+            tdee: profile.tdee,
+            daily_calories: profile.daily_calories
+          })
           setUserProfile(profile)
           setIsOnboardingOpen(false)
         } else {
-          console.log('No profile found, showing onboarding')
+          console.log('❌ No profile found in database, showing onboarding')
           setIsOnboardingOpen(true)
         }
 
@@ -4947,24 +4955,48 @@ export default function FitnessDashboard({ user }) {
   }, [user])
 
   const handleOnboardingComplete = async (userData) => {
-    console.log('Onboarding completion started with data:', userData)
+    console.log('🚀 Onboarding completion started')
+    console.log('📊 Form data received:', userData)
+    console.log('📋 Key fields:', {
+      age: userData.age,
+      gender: userData.gender,
+      weight: userData.weight,
+      height: userData.height,
+      activityLevel: userData.activityLevel,
+      bmr: userData.bmr,
+      tdee: userData.tdee,
+      recommendedCalories: userData.recommendedCalories
+    })
     
     // Force close the onboarding modal immediately
     setIsOnboardingOpen(false)
     
     try {
       // Save user profile to database
-      console.log('Saving profile to database...')
+      console.log('💾 Saving profile to database...')
       const savedProfile = await saveUserProfile(userData)
-      console.log("Profile saved successfully:", savedProfile)
+      console.log("✅ Profile saved to database:", savedProfile)
+      console.log('🔍 Saved profile fields:', {
+        id: savedProfile.id,
+        email: savedProfile.email,
+        age: savedProfile.age,
+        sex: savedProfile.sex,
+        weight: savedProfile.weight,
+        height: savedProfile.height,
+        activity_level: savedProfile.activity_level,
+        bmr: savedProfile.bmr,
+        tdee: savedProfile.tdee,
+        daily_calories: savedProfile.daily_calories
+      })
       
       setUserProfile(savedProfile)
-      console.log('Onboarding completed successfully')
+      console.log('🎉 Onboarding completed successfully - profile set in state')
     } catch (error) {
-      console.error("Error saving profile:", error)
+      console.error("❌ Error saving profile:", error)
+      console.error('Error details:', error.message)
       
       // Fallback to local state if database save fails
-      console.log('Falling back to local state')
+      console.log('⚠️ Falling back to local state')
       setUserProfile(userData)
       
       // Show user that there was an issue but they can continue
