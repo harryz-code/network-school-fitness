@@ -2366,10 +2366,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged }) {
                     color: isDark ? '#cccccc' : '#6b7280',
                     fontStyle: 'italic'
                   }}>
-                    {(mealType === 'lunch' || mealType === 'dinner') && filteredFoods.length === 0 && searchQuery === '' ? 
-                      `${mealType.charAt(0).toUpperCase() + mealType.slice(1)} menu for ${selectedDay} is now available!` : 
-                      'No items found matching your search.'
-                    }
+                    No items found matching your search.
                   </div>
                 )}
           </div>
