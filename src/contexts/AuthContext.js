@@ -58,21 +58,7 @@ export const AuthProvider = ({ children }) => {
     if (error) throw error
   }
 
-  // Sign in with Twitter
-  const signInWithTwitter = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'twitter',
-    })
-    if (error) throw error
-  }
 
-  // Sign in with Discord
-  const signInWithDiscord = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'discord',
-    })
-    if (error) throw error
-  }
 
   // Sign up with email
   const signUpWithEmail = async (email, password) => {
@@ -124,8 +110,6 @@ export const AuthProvider = ({ children }) => {
     loading,
     isGuest,
     signInWithGoogle,
-    signInWithTwitter,
-    signInWithDiscord,
     signUpWithEmail,
     signInWithEmail,
     continueAsGuest,
