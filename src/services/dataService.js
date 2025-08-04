@@ -31,14 +31,25 @@ export const saveUserProfile = async (profileData) => {
     return guestData.profile
   }
 
+  // Map form fields to database columns
+  const dbData = {
+    id: user.id,
+    email: user.email || user.user_metadata?.email,
+    age: profileData.age,
+    weight: profileData.weight,
+    height: profileData.height,
+    sex: profileData.gender, // form uses 'gender', db uses 'sex'
+    activity_level: profileData.activityLevel, // form uses 'activityLevel', db uses 'activity_level'
+    goal: profileData.goal || 'weight_loss', // provide default
+    bmr: profileData.bmr,
+    tdee: profileData.tdee,
+    daily_calories: profileData.recommendedCalories,
+    updated_at: new Date().toISOString()
+  }
+
   const { data, error } = await supabase
     .from('profiles')
-    .upsert({ 
-      id: user.id,
-      email: user.email,
-      ...profileData,
-      updated_at: new Date().toISOString()
-    })
+    .upsert(dbData)
     .select()
 
   if (error) throw error
