@@ -17,9 +17,14 @@ export const AuthProvider = ({ children }) => {
   const [isGuest, setIsGuest] = useState(false)
 
   useEffect(() => {
+    console.log('AuthContext initializing...')
+    
     // Check for guest mode first
     const guestMode = localStorage.getItem('fitness-guest-mode')
+    console.log('Guest mode flag:', guestMode)
+    
     if (guestMode === 'true') {
+      console.log('Setting up guest user')
       setIsGuest(true)
       setUser({
         id: 'guest',
@@ -32,7 +37,9 @@ export const AuthProvider = ({ children }) => {
 
     // Get initial session
     const getSession = async () => {
+      console.log('Getting initial session...')
       const { data: { session } } = await supabase.auth.getSession()
+      console.log('Initial session:', session?.user?.email || 'no user')
       setUser(session?.user || null)
       setLoading(false)
     }
@@ -42,6 +49,7 @@ export const AuthProvider = ({ children }) => {
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log('Auth state change:', event, session?.user?.email || 'no user')
         setUser(session?.user || null)
         setLoading(false)
       }
@@ -93,16 +101,26 @@ export const AuthProvider = ({ children }) => {
 
   // Sign out
   const signOut = async () => {
+    console.log('Signing out user, isGuest:', isGuest)
+    
+    // Always clear guest mode data to prevent conflicts
+    localStorage.removeItem('fitness-guest-mode')
+    localStorage.removeItem('fitness-guest-data')
+    
     if (isGuest) {
-      localStorage.removeItem('fitness-guest-mode')
-      localStorage.removeItem('fitness-guest-data') // Clear guest data
+      console.log('Guest user signing out')
       setIsGuest(false)
       setUser(null)
       return
     }
     
+    console.log('Regular user signing out via Supabase')
     const { error } = await supabase.auth.signOut()
-    if (error) throw error
+    if (error) {
+      console.error('Supabase signOut error:', error)
+      throw error
+    }
+    console.log('Successfully signed out')
   }
 
   const value = {

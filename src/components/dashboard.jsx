@@ -4747,51 +4747,78 @@ export default function FitnessDashboard({ user }) {
   // Load user data when component mounts
   useEffect(() => {
     const loadUserData = async () => {
-      if (!user) return
+      if (!user) {
+        console.log('No user found, skipping data load')
+        return
+      }
+
+      console.log('Loading data for user:', user.email, 'ID:', user.id)
 
       try {
-        // Load user profile
-        const profile = await getUserProfile()
-        if (profile) {
-          setUserProfile(profile)
-          setIsOnboardingOpen(false) // Skip onboarding if profile exists
-        } else {
-          setIsOnboardingOpen(true) // Show onboarding for new users without profile
+        // Load user profile with better error handling
+        let profile = null
+        try {
+          profile = await getUserProfile()
+          console.log('Profile loaded:', profile)
+        } catch (profileError) {
+          console.error('Error loading profile:', profileError)
+          // If profile loading fails, treat as new user
+          profile = null
         }
 
-        // Load meals, workouts, and water logs
-        const [meals, workouts, waterLogs] = await Promise.all([
-          getUserMeals(),
-          getUserWorkouts(),
-          getUserWaterLogs()
-        ])
+        if (profile) {
+          console.log('Existing user found, skipping onboarding')
+          setUserProfile(profile)
+          setIsOnboardingOpen(false)
+        } else {
+          console.log('No profile found, showing onboarding')
+          setIsOnboardingOpen(true)
+        }
 
-        setLoggedMeals(meals.map(meal => ({
-          id: meal.id, // Include database ID
-          food: meal.food,
-          calories: meal.calories,
-          protein: meal.protein || 0,
-          carbs: meal.carbs || 0,
-          fat: meal.fat || 0,
-          fiber: meal.fiber || 0,
-          timestamp: meal.timestamp
-        })))
+        // Load additional data (meals, workouts, water) separately
+        // This way if profile fails, we can still load other data
+        try {
+          const [meals, workouts, waterLogs] = await Promise.all([
+            getUserMeals().catch(err => { console.error('Error loading meals:', err); return [] }),
+            getUserWorkouts().catch(err => { console.error('Error loading workouts:', err); return [] }),
+            getUserWaterLogs().catch(err => { console.error('Error loading water logs:', err); return [] })
+          ])
 
-        setLoggedWorkouts(workouts.map(workout => ({
-          type: workout.exercise_type,
-          duration: workout.duration_minutes,
-          intensity: workout.intensity,
-          caloriesBurned: workout.calories_burned,
-          timestamp: workout.timestamp
-        })))
+          console.log('Loaded data - Meals:', meals.length, 'Workouts:', workouts.length, 'Water logs:', waterLogs.length)
 
-        setLoggedWater(waterLogs.map(log => ({
-          amount: log.amount_ml,
-          timestamp: log.timestamp
-        })))
+          setLoggedMeals(meals.map(meal => ({
+            id: meal.id, // Include database ID
+            food: meal.food,
+            calories: meal.calories,
+            protein: meal.protein || 0,
+            carbs: meal.carbs || 0,
+            fat: meal.fat || 0,
+            fiber: meal.fiber || 0,
+            timestamp: meal.timestamp
+          })))
+
+          setLoggedWorkouts(workouts.map(workout => ({
+            type: workout.exercise_type,
+            duration: workout.duration_minutes,
+            intensity: workout.intensity,
+            caloriesBurned: workout.calories_burned,
+            timestamp: workout.timestamp
+          })))
+
+          setLoggedWater(waterLogs.map(log => ({
+            amount: log.amount_ml,
+            timestamp: log.timestamp
+          })))
+
+        } catch (dataError) {
+          console.error('Error loading additional data:', dataError)
+          // Don't prevent the app from working if additional data fails to load
+        }
 
       } catch (error) {
-        console.error('Error loading user data:', error)
+        console.error('Critical error in loadUserData:', error)
+        // Fallback: show onboarding if everything fails
+        setIsOnboardingOpen(true)
       }
     }
 
@@ -4799,17 +4826,28 @@ export default function FitnessDashboard({ user }) {
   }, [user])
 
   const handleOnboardingComplete = async (userData) => {
+    console.log('Onboarding completion started with data:', userData)
+    
     try {
       // Save user profile to database
+      console.log('Saving profile to database...')
       const savedProfile = await saveUserProfile(userData)
+      console.log("Profile saved successfully:", savedProfile)
+      
       setUserProfile(savedProfile)
       setIsOnboardingOpen(false)
-      console.log("Profile saved to database:", savedProfile)
+      
+      console.log('Onboarding completed successfully')
     } catch (error) {
       console.error("Error saving profile:", error)
+      
       // Fallback to local state if database save fails
+      console.log('Falling back to local state')
       setUserProfile(userData)
       setIsOnboardingOpen(false)
+      
+      // Show user that there was an issue but they can continue
+      alert('Profile saved locally. You can continue using the app, but data may not sync across devices.')
     }
   }
 

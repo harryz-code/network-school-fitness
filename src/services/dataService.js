@@ -46,22 +46,37 @@ export const saveUserProfile = async (profileData) => {
 }
 
 export const getUserProfile = async () => {
+  console.log('getUserProfile called')
+  
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('No authenticated user')
+  if (!user) {
+    console.log('No authenticated user found')
+    throw new Error('No authenticated user')
+  }
+
+  console.log('User found:', user.email, 'ID:', user.id, 'isGuest check:', isGuestUser(user))
 
   // Handle guest mode
   if (isGuestUser(user)) {
+    console.log('Guest user detected, loading from localStorage')
     const guestData = getGuestData()
+    console.log('Guest profile:', guestData.profile)
     return guestData.profile
   }
 
+  console.log('Regular user, querying database for profile...')
   const { data, error } = await supabase
     .from('profiles')
     .select('*')
     .eq('id', user.id)
     .single()
 
-  if (error && error.code !== 'PGRST116') throw error // PGRST116 = not found
+  if (error) {
+    console.log('Database query error:', error.code, error.message)
+    if (error.code !== 'PGRST116') throw error // PGRST116 = not found
+  }
+
+  console.log('Profile query result:', data)
   return data
 }
 
