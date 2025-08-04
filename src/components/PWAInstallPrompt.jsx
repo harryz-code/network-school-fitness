@@ -86,7 +86,7 @@ const PWAInstallPrompt = ({ isDark = false }) => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1 }}>
           <Smartphone size={24} />
           <div>
-            <div style={{ fontWeight: '600', fontSize: '14px' }}>Install Long Live The Network School</div>
+            <div style={{ fontWeight: '600', fontSize: '14px' }}>Install Long Live NS</div>
             <div style={{ fontSize: '12px', opacity: 0.8 }}>
               Tap the share button, then "Add to Home Screen"
             </div>
@@ -118,7 +118,7 @@ const PWAInstallPrompt = ({ isDark = false }) => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1 }}>
           <Download size={24} />
           <div>
-            <div style={{ fontWeight: '600', fontSize: '14px' }}>Install Long Live The Network School</div>
+            <div style={{ fontWeight: '600', fontSize: '14px' }}>Install Long Live NS</div>
             <div style={{ fontSize: '12px', opacity: 0.8 }}>
               Get the full app experience - works offline!
             </div>
