@@ -918,7 +918,16 @@ function MealCard({ meal, isDark = false, onDelete }) {
                     <button 
             onClick={(e) => {
               e.stopPropagation()
-              if (onDelete) onDelete(meal)
+              console.log('🗑️ DELETE button clicked!')
+              console.log('📊 Meal object being passed to onDelete:', meal)
+              console.log('🆔 Meal ID:', meal.id)
+              console.log('🍽️ Meal food:', meal.food || meal.meal)
+              if (onDelete) {
+                console.log('✅ Calling onDelete function...')
+                onDelete(meal)
+              } else {
+                console.log('❌ No onDelete function provided!')
+              }
             }}
             style={{
               color: '#ef4444',
@@ -4939,7 +4948,15 @@ export default function FitnessDashboard({ user }) {
             carbs: meal.carbs || 0,
             fat: meal.fat || 0,
             fiber: meal.fiber || 0,
-            timestamp: meal.timestamp
+            timestamp: meal.timestamp,
+            mealType: meal.meal_type
+          })))
+          
+          // Debug: Log meal IDs to see if they exist
+          console.log('🔍 Loaded meals with IDs:', meals.map(m => ({ 
+            id: m.id, 
+            food: m.food, 
+            calories: m.calories 
           })))
 
           setLoggedWorkouts(workouts.map(workout => ({
