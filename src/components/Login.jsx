@@ -106,6 +106,25 @@ export default function Login({ isDark = false }) {
         borderRadius: '16px',
         backgroundColor: isDark ? '#000000' : 'white'
       }}>
+        {/* Network School Banner */}
+        <div style={{ 
+          textAlign: 'center', 
+          marginBottom: '24px',
+          display: 'flex',
+          justifyContent: 'center'
+        }}>
+          <img 
+            src="/ns-banner.svg" 
+            alt="Network School" 
+            style={{
+              height: '40px',
+              width: 'auto',
+              color: isDark ? 'white' : 'black',
+              filter: isDark ? 'invert(1)' : 'none'
+            }}
+          />
+        </div>
+
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <div style={{ marginBottom: '8px' }}>
             <div style={{
