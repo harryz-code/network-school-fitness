@@ -4871,20 +4871,28 @@ export default function FitnessDashboard({ user }) {
         // Load user profile with better error handling
         let profile = null
         try {
+          console.log('=== DEBUGGING PROFILE LOAD ===')
+          console.log('User object:', user)
+          console.log('User ID:', user?.id)
+          console.log('User email:', user?.email)
+          
           profile = await getUserProfile()
           console.log('Profile loaded:', profile)
+          console.log('Profile exists?', !!profile)
         } catch (profileError) {
           console.error('Error loading profile:', profileError)
+          console.error('Profile error details:', profileError.message)
           // If profile loading fails, treat as new user
           profile = null
         }
 
         if (profile) {
-          console.log('Existing user found, skipping onboarding')
+          console.log('✅ Existing user found, skipping onboarding')
           setUserProfile(profile)
           setIsOnboardingOpen(false)
         } else {
-          console.log('No profile found, showing onboarding')
+          console.log('❌ No profile found, showing onboarding')
+          console.log('This is why onboarding keeps showing!')
           setIsOnboardingOpen(true)
         }
 
