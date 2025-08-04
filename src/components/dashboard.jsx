@@ -5894,6 +5894,7 @@ export default function FitnessDashboard({ user }) {
                     <MealCard 
                       key={`${meal.food}-${index}`} 
                       meal={{
+                        id: meal.id, // ✅ Include database ID for deletion
                         meal: meal.food,
                         calories: meal.calories,
                         protein: meal.protein,
