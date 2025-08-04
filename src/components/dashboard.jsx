@@ -4940,7 +4940,16 @@ export default function FitnessDashboard({ user }) {
 
           console.log('Loaded data - Meals:', meals.length, 'Workouts:', workouts.length, 'Water logs:', waterLogs.length)
 
-          setLoggedMeals(meals.map(meal => ({
+          // Debug: Log meal IDs to see if they exist
+          console.log('🔍 Raw meals from database:', meals)
+          console.log('🔍 Loaded meals with IDs:', meals.map(m => ({ 
+            id: m.id, 
+            food: m.food, 
+            calories: m.calories 
+          })))
+          
+          // Debug: Log the mapped meals that will be stored in state
+          const mappedMeals = meals.map(meal => ({
             id: meal.id, // Include database ID
             food: meal.food,
             calories: meal.calories,
@@ -4950,14 +4959,10 @@ export default function FitnessDashboard({ user }) {
             fiber: meal.fiber || 0,
             timestamp: meal.timestamp,
             mealType: meal.meal_type
-          })))
+          }))
+          console.log('🔍 Mapped meals for state:', mappedMeals)
           
-          // Debug: Log meal IDs to see if they exist
-          console.log('🔍 Loaded meals with IDs:', meals.map(m => ({ 
-            id: m.id, 
-            food: m.food, 
-            calories: m.calories 
-          })))
+          setLoggedMeals(mappedMeals)
 
           setLoggedWorkouts(workouts.map(workout => ({
             type: workout.exercise_type,
