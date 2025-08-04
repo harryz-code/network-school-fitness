@@ -4897,7 +4897,23 @@ export default function FitnessDashboard({ user }) {
             tdee: profile.tdee,
             daily_calories: profile.daily_calories
           })
-          setUserProfile(profile)
+          
+          // Map database fields to UI field names
+          const mappedProfile = {
+            ...profile,
+            gender: profile.sex, // map sex -> gender for UI
+            activityLevel: profile.activity_level, // map activity_level -> activityLevel for UI
+            recommendedCalories: profile.daily_calories, // map daily_calories -> recommendedCalories for UI
+            dailyDeficit: profile.daily_deficit || 500, // default deficit
+            weeklyDeficit: (profile.daily_deficit || 500) * 7, // calculate from daily deficit
+            workoutSplit: profile.workout_split || 50, // default split
+            targetWeightLoss: ((profile.daily_deficit || 500) * 7) / 7700, // kg per week (7700 cal = 1kg fat)
+            workoutCalories: Math.round(((profile.workout_split || 50) / 100) * (profile.daily_deficit || 500)),
+            dietCalories: Math.round(((100 - (profile.workout_split || 50)) / 100) * (profile.daily_deficit || 500))
+          }
+          
+          console.log('🔄 Mapped profile for UI:', mappedProfile)
+          setUserProfile(mappedProfile)
           setIsOnboardingOpen(false)
         } else {
           console.log('❌ No profile found in database, showing onboarding')
