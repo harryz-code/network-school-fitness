@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Convert NS Icons</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        canvas { border: 1px solid #ccc; margin: 10px; }
+        .icon-group { margin: 20px 0; }
+        button { padding: 10px 15px; margin: 5px; background: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>Network School Icon Converter</h1>
+    <p>This page converts the SVG logos to the required PNG and ICO formats.</p>
+    
+    <div class="icon-group">
+        <h3>Favicon (32x32)</h3>
+        <canvas id="favicon" width="32" height="32"></canvas>
+        <button onclick="downloadCanvas('favicon', 'favicon.png')">Download PNG</button>
+    </div>
+    
+    <div class="icon-group">
+        <h3>Logo 192x192</h3>
+        <canvas id="logo192" width="192" height="192"></canvas>
+        <button onclick="downloadCanvas('logo192', 'logo192.png')">Download PNG</button>
+    </div>
+    
+    <div class="icon-group">
+        <h3>Logo 512x512</h3>
+        <canvas id="logo512" width="512" height="512"></canvas>
+        <button onclick="downloadCanvas('logo512', 'logo512.png')">Download PNG</button>
+    </div>
+
+    <script>
+        // Network School logo drawing function
+        function drawNSLogo(ctx, size) {
+            const scale = size / 32;
+            
+            // Clear canvas
+            ctx.fillStyle = 'transparent';
+            ctx.fillRect(0, 0, size, size);
+            
+            // Black flag background
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fillRect(3 * scale, 4 * scale, 26 * scale, 18 * scale);
+            
+            // Flagpole
+            ctx.fillRect(0, 2 * scale, 2 * scale, 28 * scale);
+            
+            // White cross on flag
+            ctx.fillStyle = 'white';
+            // Horizontal bar
+            ctx.fillRect(8 * scale, 11 * scale, 16 * scale, 3 * scale);
+            // Vertical bar
+            ctx.fillRect(14.5 * scale, 6 * scale, 3 * scale, 14 * scale);
+        }
+
+        // Generate all icons
+        function generateIcons() {
+            // Favicon 32x32
+            const faviconCtx = document.getElementById('favicon').getContext('2d');
+            drawNSLogo(faviconCtx, 32);
+            
+            // Logo 192x192
+            const logo192Ctx = document.getElementById('logo192').getContext('2d');
+            drawNSLogo(logo192Ctx, 192);
+            
+            // Logo 512x512
+            const logo512Ctx = document.getElementById('logo512').getContext('2d');
+            drawNSLogo(logo512Ctx, 512);
+        }
+
+        // Download canvas as PNG
+        function downloadCanvas(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // Generate icons on page load
+        window.onload = generateIcons;
+    </script>
+</body>
+</html>

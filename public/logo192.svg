@@ -1,0 +1,15 @@
+<svg width="192" height="192" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Black flag background -->
+  <rect x="18" y="24" width="156" height="108" fill="#1a1a1a" rx="6"/>
+  
+  <!-- Flagpole -->
+  <rect x="0" y="12" width="12" height="168" fill="#1a1a1a"/>
+  
+  <!-- White cross on flag -->
+  <g fill="white">
+    <!-- Horizontal bar -->
+    <rect x="48" y="66" width="96" height="18"/>
+    <!-- Vertical bar -->
+    <rect x="87" y="36" width="18" height="84"/>
+  </g>
+</svg>
