@@ -918,15 +918,8 @@ function MealCard({ meal, isDark = false, onDelete }) {
                     <button 
             onClick={(e) => {
               e.stopPropagation()
-              console.log('🗑️ DELETE button clicked!')
-              console.log('📊 Meal object being passed to onDelete:', meal)
-              console.log('🆔 Meal ID:', meal.id)
-              console.log('🍽️ Meal food:', meal.food || meal.meal)
               if (onDelete) {
-                console.log('✅ Calling onDelete function...')
                 onDelete(meal)
-              } else {
-                console.log('❌ No onDelete function provided!')
               }
             }}
             style={{
@@ -4940,16 +4933,7 @@ export default function FitnessDashboard({ user }) {
 
           console.log('Loaded data - Meals:', meals.length, 'Workouts:', workouts.length, 'Water logs:', waterLogs.length)
 
-          // Debug: Log meal IDs to see if they exist
-          console.log('🔍 Raw meals from database:', meals)
-          console.log('🔍 Loaded meals with IDs:', meals.map(m => ({ 
-            id: m.id, 
-            food: m.food, 
-            calories: m.calories 
-          })))
-          
-          // Debug: Log the mapped meals that will be stored in state
-          const mappedMeals = meals.map(meal => ({
+          setLoggedMeals(meals.map(meal => ({
             id: meal.id, // Include database ID
             food: meal.food,
             calories: meal.calories,
@@ -4959,10 +4943,7 @@ export default function FitnessDashboard({ user }) {
             fiber: meal.fiber || 0,
             timestamp: meal.timestamp,
             mealType: meal.meal_type
-          }))
-          console.log('🔍 Mapped meals for state:', mappedMeals)
-          
-          setLoggedMeals(mappedMeals)
+          })))
 
           setLoggedWorkouts(workouts.map(workout => ({
             type: workout.exercise_type,
@@ -5388,7 +5369,7 @@ export default function FitnessDashboard({ user }) {
       setLoggedMeals(prev => [...prev, mealWithId])
       updateStreak()
       
-      console.log('Meal saved to database and local state updated')
+      
     } catch (error) {
       console.error('Error saving meal:', error)
       // Still update local state for offline functionality
@@ -5518,29 +5499,16 @@ export default function FitnessDashboard({ user }) {
 
   // Handle meal deletion
   const handleMealDelete = async (mealToDelete) => {
-    console.log('🗑️ handleMealDelete called with:', mealToDelete)
-    console.log('🔍 Meal to delete details:', {
-      id: mealToDelete.id,
-      food: mealToDelete.food || mealToDelete.meal,
-      timestamp: mealToDelete.timestamp,
-      originalTimestamp: mealToDelete.originalTimestamp
-    })
-    
     // For meals loaded from database, use the ID
     if (mealToDelete.id) {
-      console.log('💾 Deleting meal with database ID:', mealToDelete.id)
       try {
         await deleteMeal(mealToDelete.id)
-        const beforeCount = loggedMeals.length
         setLoggedMeals(prev => prev.filter(meal => meal.id !== mealToDelete.id))
-        console.log(`✅ Local state updated: ${beforeCount} meals → ${beforeCount - 1} meals`)
-        console.log('Meal deleted from database and local state')
       } catch (error) {
-        console.error('❌ Error deleting meal:', error)
+        console.error('Error deleting meal:', error)
         return // Don't update local state if database deletion failed
       }
     } else {
-      console.log('⚠️ No database ID found, using fallback deletion method')
       // Fallback for meals not yet saved to database (legacy support)
       setLoggedMeals(prev => prev.filter((meal) => {
         const mealId = `${meal.food}-${meal.timestamp}`

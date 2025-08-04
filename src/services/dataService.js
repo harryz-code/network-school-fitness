@@ -148,23 +148,15 @@ export const saveMeal = async (mealData) => {
 }
 
 export const getUserMeals = async () => {
-  console.log('🍽️ getUserMeals called')
-  
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('No authenticated user')
 
   // Handle guest mode
   if (isGuestUser(user)) {
-    console.log('👤 Guest mode: loading meals from localStorage')
     const guestData = getGuestData()
-    const meals = guestData.meals.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-    console.log(`📊 Guest meals loaded: ${meals.length}`)
-    return meals
+    return guestData.meals.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
   }
 
-  console.log('🗃️ Database mode: loading meals from Supabase')
-  console.log('👤 Loading meals for user:', user.id)
-  
   const { data, error } = await supabase
     .from('meals')
     .select('*')
@@ -172,12 +164,10 @@ export const getUserMeals = async () => {
     .order('timestamp', { ascending: false })
 
   if (error) {
-    console.error('❌ Error loading meals:', error)
     throw error
   }
   
   const meals = data || []
-  console.log(`📊 Database meals loaded: ${meals.length}`)
   
   // Check for potential duplicates
   const mealGroups = {}
@@ -201,41 +191,27 @@ export const getUserMeals = async () => {
 }
 
 export const deleteMeal = async (mealId) => {
-  console.log('🗑️ deleteMeal called with ID:', mealId)
-  
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('No authenticated user')
 
   // Handle guest mode
   if (isGuestUser(user)) {
-    console.log('👤 Guest mode: deleting from localStorage')
     const guestData = getGuestData()
-    const beforeCount = guestData.meals.length
     guestData.meals = guestData.meals.filter(meal => meal.id !== mealId)
-    const afterCount = guestData.meals.length
-    console.log(`📊 Guest meals: ${beforeCount} → ${afterCount}`)
     saveGuestData(guestData)
     return
   }
 
-  console.log('🗃️ Database mode: deleting from Supabase meals table')
-  console.log('🔍 Deleting meal with ID:', mealId, 'for user:', user.id)
-  
   const { data, error } = await supabase
     .from('meals')
     .delete()
     .eq('id', mealId)
     .eq('user_id', user.id) // Extra safety: only delete user's own meals
     .select() // Return deleted rows for confirmation
-
-  console.log('🗃️ Delete result:', { data, error })
   
   if (error) {
-    console.error('❌ Delete failed:', error)
     throw error
   }
-  
-  console.log('✅ Meal deleted successfully:', data)
 }
 
 // Workout operations
