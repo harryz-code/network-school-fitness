@@ -1,7 +1,9 @@
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 import Dashboard from './components/dashboard'
 import Login from './components/Login'
+import PWAInstallPrompt from './components/PWAInstallPrompt'
 import './App.css'
+import { useEffect } from 'react'
 
 function AppContent() {
   const { user, loading } = useAuth()
@@ -46,10 +48,26 @@ function AppContent() {
 }
 
 function App() {
+  useEffect(() => {
+    // Register service worker for PWA functionality
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then((registration) => {
+            console.log('✅ SW: Service Worker registered successfully', registration.scope);
+          })
+          .catch((error) => {
+            console.error('❌ SW: Service Worker registration failed', error);
+          });
+      });
+    }
+  }, []);
+
   return (
     <AuthProvider>
       <div className="App">
         <AppContent />
+        <PWAInstallPrompt />
       </div>
     </AuthProvider>
   )

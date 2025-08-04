@@ -1,0 +1,184 @@
+/* Mobile-First Responsive Styles for Network School Fitness */
+
+/* Base mobile styles (320px+) */
+.responsive-container {
+  padding: 16px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.responsive-header-title {
+  font-size: 2rem; /* Much smaller on mobile */
+  font-weight: bold;
+  margin-bottom: 8px;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+.responsive-header-subtitle {
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.875rem;
+  font-family: system-ui, -apple-system, sans-serif;
+  margin-bottom: 4px;
+}
+
+.responsive-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr; /* Single column on mobile */
+}
+
+.responsive-grid-2 {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr 1fr; /* 2 columns on mobile */
+}
+
+.responsive-button {
+  padding: 16px 12px; /* Larger touch targets */
+  min-height: 48px; /* iOS/Android recommended minimum */
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 2px solid;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.responsive-card {
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 2px solid;
+}
+
+.responsive-quick-actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.responsive-quick-action-btn {
+  padding: 20px 12px;
+  min-height: 80px; /* Large touch target */
+  border-radius: 16px;
+  border: 2px solid;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+/* Tablet styles (768px+) */
+@media (min-width: 768px) {
+  .responsive-container {
+    padding: 24px;
+  }
+  
+  .responsive-header-title {
+    font-size: 3rem;
+  }
+  
+  .responsive-header-subtitle {
+    font-size: 1rem;
+  }
+  
+  .responsive-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .responsive-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .responsive-quick-actions {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  
+  .responsive-card {
+    padding: 20px;
+  }
+}
+
+/* Desktop styles (1024px+) */
+@media (min-width: 1024px) {
+  .responsive-container {
+    padding: 32px;
+    max-width: 1280px;
+  }
+  
+  .responsive-header-title {
+    font-size: 3.75rem;
+  }
+  
+  .responsive-header-subtitle {
+    font-size: 1.125rem;
+  }
+  
+  .responsive-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  
+  .responsive-grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .responsive-quick-actions {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  
+  .responsive-card {
+    padding: 24px;
+  }
+  
+  .responsive-quick-action-btn {
+    padding: 28px;
+    min-height: 100px;
+  }
+}
+
+/* Extra large screens (1440px+) */
+@media (min-width: 1440px) {
+  .responsive-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .responsive-button:hover {
+    transform: none; /* Disable hover effects on touch */
+  }
+  
+  .responsive-button:active {
+    transform: scale(0.98); /* Touch feedback */
+  }
+  
+  .responsive-quick-action-btn:active {
+    transform: scale(0.95);
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .responsive-card {
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+  }
+}

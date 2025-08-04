@@ -49,6 +49,7 @@ import {
   Info,
   ChevronDown
 } from "lucide-react"
+import useResponsive from '../hooks/useResponsive'
 
 // Dark mode context
 function useDarkMode() {
@@ -4674,7 +4675,7 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
 }
 
 // Quick Access Overlay Component
-function QuickAccessOverlay({ isOpen, onClose, isDark, onActionSelect }) {
+function QuickAccessOverlay({ isOpen, onClose, isDark, onActionSelect, isMobile, isTouchDevice }) {
   const quickActions = [
     { label: "Log Meal", icon: Apple, action: "meal" },
     { label: "Record Workout", icon: Dumbbell, action: "workout" },
@@ -4767,7 +4768,8 @@ function QuickAccessOverlay({ isOpen, onClose, isDark, onActionSelect }) {
               key={action.action}
               onClick={() => handleActionClick(action.action)}
               style={{
-                padding: '28px',
+                padding: isMobile ? '20px 12px' : '28px',
+                minHeight: isMobile ? '80px' : '100px',
                 border: `2px solid ${isDark ? 'white' : 'black'}`,
                 borderRadius: '16px',
                 backgroundColor: isDark ? '#000000' : 'white',
@@ -4777,19 +4779,30 @@ function QuickAccessOverlay({ isOpen, onClose, isDark, onActionSelect }) {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
+                justifyContent: 'center',
                 gap: '8px',
                 fontFamily: 'system-ui, -apple-system, sans-serif'
               }}
-              onMouseEnter={(e) => {
-                e.target.style.backgroundColor = isDark ? 'white' : 'black'
-                e.target.style.color = isDark ? 'black' : 'white'
-                e.target.style.transform = 'scale(1.05)'
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.backgroundColor = isDark ? '#000000' : 'white'
-                e.target.style.color = isDark ? 'white' : 'black'
-                e.target.style.transform = 'scale(1)'
-              }}
+              {...(!isTouchDevice && {
+                onMouseEnter: (e) => {
+                  e.target.style.backgroundColor = isDark ? 'white' : 'black'
+                  e.target.style.color = isDark ? 'black' : 'white'
+                  e.target.style.transform = 'scale(1.05)'
+                },
+                onMouseLeave: (e) => {
+                  e.target.style.backgroundColor = isDark ? '#000000' : 'white'
+                  e.target.style.color = isDark ? 'white' : 'black'
+                  e.target.style.transform = 'scale(1)'
+                }
+              })}
+              {...(isTouchDevice && {
+                onTouchStart: (e) => {
+                  e.target.style.transform = 'scale(0.95)'
+                },
+                onTouchEnd: (e) => {
+                  e.target.style.transform = 'scale(1)'
+                }
+              })}
             >
               <action.icon size={24} strokeWidth={2} />
               <span style={{
@@ -4842,6 +4855,7 @@ export default function FitnessDashboard({ user }) {
   
   const { isDark, toggleDarkMode } = useDarkMode()
   const { signOut } = useAuth()
+  const { isMobile, isTablet, isDesktop, getResponsiveValue, isTouchDevice } = useResponsive()
 
   const handleLogout = async () => {
     try {
@@ -5524,22 +5538,28 @@ export default function FitnessDashboard({ user }) {
   return (
     <div style={{
       minHeight: '100vh',
-      padding: '24px',
+      padding: getResponsiveValue('16px', '24px', '32px'),
       transition: 'all 0.5s',
       backgroundColor: isDark ? 'black' : 'white',
       color: isDark ? 'white' : 'black'
     }}>
-      <div style={{ position: 'relative', zIndex: 10, maxWidth: '80rem', margin: '0 auto' }}>
+      <div style={{ 
+        position: 'relative', 
+        zIndex: 10, 
+        maxWidth: getResponsiveValue('100%', '768px', '1280px'), 
+        margin: '0 auto',
+        width: '100%'
+      }}>
         {/* Header */}
         <div style={{ marginBottom: '48px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
             <div>
               <h1 style={{
-                fontSize: '3.75rem',
+                fontSize: getResponsiveValue('2rem', '3rem', '3.75rem'),
                 fontWeight: 'bold',
-                marginBottom: '12px',
+                marginBottom: getResponsiveValue('8px', '10px', '12px'),
                 letterSpacing: '-0.025em',
-                lineHeight: '1',
+                lineHeight: isMobile ? '1.1' : '1',
                 fontFamily: 'Georgia, "Times New Roman", Times, serif',
                 color: isDark ? 'white' : 'black'
               }}>
@@ -5549,7 +5569,7 @@ export default function FitnessDashboard({ user }) {
                 fontWeight: 'bold',
                 textTransform: 'uppercase',
                 letterSpacing: '0.05em',
-                fontSize: '1.125rem',
+                fontSize: getResponsiveValue('0.875rem', '1rem', '1.125rem'),
                 fontFamily: 'system-ui, -apple-system, sans-serif',
                 color: isDark ? '#a3a3a3' : '#4b5563',
                 textAlign: 'left'
@@ -5983,6 +6003,8 @@ export default function FitnessDashboard({ user }) {
         onClose={() => setIsQuickAccessOpen(false)}
         isDark={isDark}
         onActionSelect={handleOverlayAction}
+        isMobile={isMobile}
+        isTouchDevice={isTouchDevice}
       />
 
       {/* Stats Modal */}
