@@ -4612,10 +4612,10 @@ function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selected
               onClick={() => onDateSelect(day)}
               style={{
                 padding: '12px',
-                border: `2px solid ${isSelectedDay ? '#3b82f6' : isDark ? '#333333' : '#e5e7eb'}`,
+                border: `2px solid ${isSelectedDay ? (isDark ? 'white' : 'black') : isDark ? '#333333' : '#e5e7eb'}`,
                 borderRadius: '8px',
-                backgroundColor: isSelectedDay ? '#3b82f6' : isDark ? '#1a1a1a' : 'white',
-                color: isSelectedDay ? 'white' : isDark ? 'white' : 'black',
+                backgroundColor: isSelectedDay ? (isDark ? 'white' : 'black') : isDark ? '#1a1a1a' : 'white',
+                color: isSelectedDay ? (isDark ? 'black' : 'white') : isDark ? 'white' : 'black',
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
                 minHeight: '80px',
@@ -4810,37 +4810,12 @@ function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selected
       padding: '32px',
       boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
     }}>
-      {/* Header */}
+      {/* View mode toggle */}
       <div style={{
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
         marginBottom: '24px'
       }}>
-        <h2 style={{
-          fontSize: '20px',
-          fontWeight: 'bold',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-          color: isDark ? 'white' : 'black',
-          fontFamily: 'Georgia, "Times New Roman", Times, serif'
-        }}>
-          <div style={{
-            width: '32px',
-            height: '32px',
-            backgroundColor: isDark ? 'white' : 'black',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: '4px'
-          }}>
-                            <CalendarIcon style={{ width: '20px', height: '20px', color: isDark ? 'black' : 'white' }} strokeWidth={2.5} />
-          </div>
-          Meal Calendar
-        </h2>
-        
-        {/* View mode toggle */}
         <div style={{
           display: 'flex',
           gap: '8px',
@@ -4850,10 +4825,10 @@ function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selected
             onClick={() => setViewMode('week')}
             style={{
               padding: '6px 12px',
-              border: `2px solid ${viewMode === 'week' ? '#3b82f6' : isDark ? 'white' : 'black'}`,
+              border: `2px solid ${viewMode === 'week' ? (isDark ? 'white' : 'black') : isDark ? 'white' : 'black'}`,
               borderRadius: '6px',
-              backgroundColor: viewMode === 'week' ? '#3b82f6' : 'transparent',
-              color: viewMode === 'week' ? 'white' : isDark ? 'white' : 'black',
+              backgroundColor: viewMode === 'week' ? (isDark ? 'white' : 'black') : 'transparent',
+              color: viewMode === 'week' ? (isDark ? 'black' : 'white') : isDark ? 'white' : 'black',
               fontSize: '12px',
               fontWeight: 'bold',
               cursor: 'pointer'
@@ -4865,10 +4840,10 @@ function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selected
             onClick={() => setViewMode('month')}
             style={{
               padding: '6px 12px',
-              border: `2px solid ${viewMode === 'month' ? '#3b82f6' : isDark ? 'white' : 'black'}`,
+              border: `2px solid ${viewMode === 'month' ? (isDark ? 'white' : 'black') : isDark ? 'white' : 'black'}`,
               borderRadius: '6px',
-              backgroundColor: viewMode === 'month' ? '#3b82f6' : 'transparent',
-              color: viewMode === 'month' ? 'white' : isDark ? 'white' : 'black',
+              backgroundColor: viewMode === 'month' ? (isDark ? 'white' : 'black') : 'transparent',
+              color: viewMode === 'month' ? (isDark ? 'black' : 'white') : isDark ? 'white' : 'black',
               fontSize: '12px',
               fontWeight: 'bold',
               cursor: 'pointer'
@@ -6057,7 +6032,7 @@ export default function FitnessDashboard({ user }) {
             </div>
           </div>
 
-          {/* Today's Meals */}
+          {/* Meal Calendar Section */}
           <div>
             <div style={{
               backgroundColor: isDark ? '#000000' : 'white',
@@ -6066,86 +6041,97 @@ export default function FitnessDashboard({ user }) {
               padding: '32px',
               boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
             }}>
-            <h2 style={{
-              fontSize: '20px',
-              fontWeight: 'bold',
+              <h2 style={{
+                fontSize: '20px',
+                fontWeight: 'bold',
                 marginBottom: '32px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              color: isDark ? 'white' : 'black',
-              fontFamily: 'Georgia, "Times New Roman", Times, serif'
-            }}>
-              <div style={{
-                width: '32px',
-                height: '32px',
-                backgroundColor: isDark ? 'white' : 'black',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: '4px'
+                gap: '12px',
+                color: isDark ? 'white' : 'black',
+                fontFamily: 'Georgia, "Times New Roman", Times, serif'
               }}>
-                <Camera style={{ width: '20px', height: '20px', color: isDark ? 'black' : 'white' }} strokeWidth={2.5} />
-              </div>
-              Meals
-            </h2>
+                <div style={{
+                  width: '32px',
+                  height: '32px',
+                  backgroundColor: isDark ? 'white' : 'black',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: '4px'
+                }}>
+                  <CalendarIcon style={{ width: '20px', height: '20px', color: isDark ? 'black' : 'white' }} strokeWidth={2.5} />
+                </div>
+                Meal Calendar
+              </h2>
 
-            {/* Calendar View */}
-            <div style={{ marginBottom: '24px' }}>
               <MealCalendar 
                 isDark={isDark}
                 loggedMeals={loggedMeals}
                 onDateSelect={handleCalendarDateSelect}
                 selectedDate={selectedCalendarDate}
               />
-            </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-              {loggedMeals.length > 0 ? (
-                loggedMeals
-                  .filter(meal => {
-                    // Show meals from the selected calendar date
-                    const mealDate = new Date(meal.timestamp)
-                    const selectedDate = selectedCalendarDate
-                    return mealDate.toDateString() === selectedDate.toDateString()
-                  })
-                  .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)) // Sort by most recent first
-                  .map((meal, index) => (
-                    <MealCard 
-                      key={`${meal.food}-${index}`} 
-                      meal={{
-                        id: meal.id, // ✅ Include database ID for deletion
-                        meal: meal.food,
-                        calories: meal.calories,
-                        protein: meal.protein,
-                        carbs: meal.carbs,
-                        fat: meal.fat,
-                        fiber: meal.fiber,
-                        originalTimestamp: meal.timestamp,
-                        time: meal.mealType ? meal.mealType.charAt(0).toUpperCase() + meal.mealType.slice(1) : 'Meal',
-                        date: new Date(meal.timestamp).toLocaleDateString('en-US', { 
-                          month: 'short', 
-                          day: 'numeric',
-                          hour: 'numeric',
-                          minute: '2-digit',
-                          hour12: true
-                        })
-                      }} 
-                      isDark={isDark} 
-                      onDelete={handleMealDelete}
-                    />
-                  ))
-              ) : (
-                <div style={{
-                  textAlign: 'center',
-                  padding: '48px',
-                  color: isDark ? '#a3a3a3' : '#6b7280',
-                  fontStyle: 'italic'
+              {/* Selected Date Meals */}
+              <div style={{ marginTop: '24px' }}>
+                <h3 style={{
+                  fontSize: '16px',
+                  fontWeight: 'bold',
+                  marginBottom: '16px',
+                  color: isDark ? 'white' : 'black',
+                  fontFamily: 'Georgia, "Times New Roman", Times, serif'
                 }}>
-                  No meals logged for {selectedCalendarDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}. Select a different date or log your first meal!
+                  {selectedCalendarDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                </h3>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  {loggedMeals.length > 0 ? (
+                    loggedMeals
+                      .filter(meal => {
+                        // Show meals from the selected calendar date
+                        const mealDate = new Date(meal.timestamp)
+                        const selectedDate = selectedCalendarDate
+                        return mealDate.toDateString() === selectedDate.toDateString()
+                      })
+                      .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)) // Sort by most recent first
+                      .map((meal, index) => (
+                        <MealCard 
+                          key={`${meal.food}-${index}`} 
+                          meal={{
+                            id: meal.id,
+                            meal: meal.food,
+                            calories: meal.calories,
+                            protein: meal.protein,
+                            carbs: meal.carbs,
+                            fat: meal.fat,
+                            fiber: meal.fiber,
+                            originalTimestamp: meal.timestamp,
+                            time: meal.mealType ? meal.mealType.charAt(0).toUpperCase() + meal.mealType.slice(1) : 'Meal',
+                            date: new Date(meal.timestamp).toLocaleDateString('en-US', { 
+                              month: 'short', 
+                              day: 'numeric',
+                              hour: 'numeric',
+                              minute: '2-digit',
+                              hour12: true
+                            })
+                          }} 
+                          isDark={isDark} 
+                          onDelete={handleMealDelete}
+                        />
+                      ))
+                  ) : (
+                    <div style={{
+                      textAlign: 'center',
+                      padding: '32px',
+                      color: isDark ? '#a3a3a3' : '#6b7280',
+                      fontStyle: 'italic',
+                      fontSize: '14px'
+                    }}>
+                      No meals logged for this date. Click on any date to view meals retroactively.
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
+              </div>
             </div>
           </div>
         </div>
