@@ -1414,6 +1414,14 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
       { id: 106, name: "Roasted Broccoli and Red Onion", calories: 69.9, protein: 2.5, carbs: 11.1, fat: 1.4, fiber: 3.1, serving: "100g" },
       { id: 107, name: "Pumpkin Seeds", calories: 57.0, protein: 1.5, carbs: 3.0, fat: 4.6, fiber: 0.3, serving: "1 tbsp" },
       { id: 108, name: "Greek Yogurt", calories: 73.2, protein: 2.5, carbs: 2.9, fat: 5.6, fiber: 0.0, serving: "60ml" },
+      // Additional items (available daily)
+      { id: 801, name: "Raw Cucumber", calories: 8.0, protein: 0.3, carbs: 1.9, fat: 0.1, fiber: 0.3, serving: "1/2 cup" },
+      { id: 802, name: "Hard Boiled Egg", calories: 78.0, protein: 6.3, carbs: 0.6, fat: 5.3, fiber: 0.0, serving: "1 egg" },
+      { id: 803, name: "Raw Cherry Tomatoes", calories: 18.0, protein: 0.9, carbs: 3.9, fat: 0.2, fiber: 1.2, serving: "1/2 cup" },
+      { id: 804, name: "Raw Lettuce", calories: 5.0, protein: 0.5, carbs: 1.0, fat: 0.1, fiber: 0.5, serving: "1 cup" },
+      { id: 805, name: "Boiled Tofu", calories: 76.0, protein: 8.0, carbs: 1.9, fat: 4.8, fiber: 0.3, serving: "100g" },
+      { id: 806, name: "Boiled Chicken Breast", calories: 165.0, protein: 31.0, carbs: 0.0, fat: 3.6, fiber: 0.0, serving: "100g" },
+      { id: 807, name: "Thai Chili Sauce (no oil/sugar)", calories: 5.0, protein: 0.1, carbs: 1.0, fat: 0.0, fiber: 0.1, serving: "1 tbsp" },
       // Desserts (available daily)
       { id: 901, name: "Banana Yogurt Crunch", calories: 179.0, protein: 7.6, carbs: 11.9, fat: 12.2, fiber: 2.0, serving: "1 serving" },
       { id: 902, name: "Nutty Pudding", calories: 157.2, protein: 3.7, carbs: 11.6, fat: 13.1, fiber: 4.5, serving: "1 serving" }
@@ -1427,6 +1435,14 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
       { id: 206, name: "Tomato Avocado Salsa & Roasted Bell Pepper", calories: 70.2, protein: 1.6, carbs: 5.1, fat: 4.7, fiber: 3.5, serving: "100g" },
       { id: 207, name: "Pumpkin Seeds", calories: 57.0, protein: 1.5, carbs: 3.0, fat: 4.6, fiber: 0.3, serving: "1 tbsp" },
       { id: 208, name: "Greek Yogurt", calories: 73.2, protein: 2.5, carbs: 2.9, fat: 5.6, fiber: 0.0, serving: "60ml" },
+      // Additional items (available daily)
+      { id: 801, name: "Raw Cucumber", calories: 8.0, protein: 0.3, carbs: 1.9, fat: 0.1, fiber: 0.3, serving: "1/2 cup" },
+      { id: 802, name: "Hard Boiled Egg", calories: 78.0, protein: 6.3, carbs: 0.6, fat: 5.3, fiber: 0.0, serving: "1 egg" },
+      { id: 803, name: "Raw Cherry Tomatoes", calories: 18.0, protein: 0.9, carbs: 3.9, fat: 0.2, fiber: 1.2, serving: "1/2 cup" },
+      { id: 804, name: "Raw Lettuce", calories: 5.0, protein: 0.5, carbs: 1.0, fat: 0.1, fiber: 0.5, serving: "1 cup" },
+      { id: 805, name: "Boiled Tofu", calories: 76.0, protein: 8.0, carbs: 1.9, fat: 4.8, fiber: 0.3, serving: "100g" },
+      { id: 806, name: "Boiled Chicken Breast", calories: 165.0, protein: 31.0, carbs: 0.0, fat: 3.6, fiber: 0.0, serving: "100g" },
+      { id: 807, name: "Thai Chili Sauce (no oil/sugar)", calories: 5.0, protein: 0.1, carbs: 1.0, fat: 0.0, fiber: 0.1, serving: "1 tbsp" },
       // Desserts (available daily)
       { id: 901, name: "Banana Yogurt Crunch", calories: 179.0, protein: 7.6, carbs: 11.9, fat: 12.2, fiber: 2.0, serving: "1 serving" },
       { id: 902, name: "Nutty Pudding", calories: 157.2, protein: 3.7, carbs: 11.6, fat: 13.1, fiber: 4.5, serving: "1 serving" }
@@ -1441,6 +1457,14 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
       { id: 307, name: "Roasted Broccoli and Shiitake Mushroom", calories: 69.0, protein: 3.5, carbs: 11.5, fat: 2.2, fiber: 3.8, serving: "100g" },
       { id: 308, name: "Sunflower Seeds", calories: 68.8, protein: 2.7, carbs: 0.3, fat: 6.1, fiber: 1.3, serving: "1 tbsp" },
       { id: 309, name: "Pesto Sauce", calories: 135.1, protein: 4.0, carbs: 10.0, fat: 9.1, fiber: 3.6, serving: "60ml" },
+      // Additional items (available daily)
+      { id: 801, name: "Raw Cucumber", calories: 8.0, protein: 0.3, carbs: 1.9, fat: 0.1, fiber: 0.3, serving: "1/2 cup" },
+      { id: 802, name: "Hard Boiled Egg", calories: 78.0, protein: 6.3, carbs: 0.6, fat: 5.3, fiber: 0.0, serving: "1 egg" },
+      { id: 803, name: "Raw Cherry Tomatoes", calories: 18.0, protein: 0.9, carbs: 3.9, fat: 0.2, fiber: 1.2, serving: "1/2 cup" },
+      { id: 804, name: "Raw Lettuce", calories: 5.0, protein: 0.5, carbs: 1.0, fat: 0.1, fiber: 0.5, serving: "1 cup" },
+      { id: 805, name: "Boiled Tofu", calories: 76.0, protein: 8.0, carbs: 1.9, fat: 4.8, fiber: 0.3, serving: "100g" },
+      { id: 806, name: "Boiled Chicken Breast", calories: 165.0, protein: 31.0, carbs: 0.0, fat: 3.6, fiber: 0.0, serving: "100g" },
+      { id: 807, name: "Thai Chili Sauce (no oil/sugar)", calories: 5.0, protein: 0.1, carbs: 1.0, fat: 0.0, fiber: 0.1, serving: "1 tbsp" },
       // Desserts (available daily)
       { id: 901, name: "Banana Yogurt Crunch", calories: 179.0, protein: 7.6, carbs: 11.9, fat: 12.2, fiber: 2.0, serving: "1 serving" },
       { id: 902, name: "Nutty Pudding", calories: 157.2, protein: 3.7, carbs: 11.6, fat: 13.1, fiber: 4.5, serving: "1 serving" }
@@ -1454,6 +1478,14 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
       { id: 406, name: "Indian Curry Eggplant", calories: 46.5, protein: 1.8, carbs: 6.0, fat: 1.6, fiber: 1.2, serving: "100g" },
       { id: 407, name: "Pumpkin Seeds", calories: 57.0, protein: 1.5, carbs: 3.0, fat: 4.6, fiber: 0.3, serving: "1 tbsp" },
       { id: 408, name: "Lemon Wedge", calories: 4.2, protein: 0.2, carbs: 1.3, fat: 0.1, fiber: 0.4, serving: "1 wedge" },
+      // Additional items (available daily)
+      { id: 801, name: "Raw Cucumber", calories: 8.0, protein: 0.3, carbs: 1.9, fat: 0.1, fiber: 0.3, serving: "1/2 cup" },
+      { id: 802, name: "Hard Boiled Egg", calories: 78.0, protein: 6.3, carbs: 0.6, fat: 5.3, fiber: 0.0, serving: "1 egg" },
+      { id: 803, name: "Raw Cherry Tomatoes", calories: 18.0, protein: 0.9, carbs: 3.9, fat: 0.2, fiber: 1.2, serving: "1/2 cup" },
+      { id: 804, name: "Raw Lettuce", calories: 5.0, protein: 0.5, carbs: 1.0, fat: 0.1, fiber: 0.5, serving: "1 cup" },
+      { id: 805, name: "Boiled Tofu", calories: 76.0, protein: 8.0, carbs: 1.9, fat: 4.8, fiber: 0.3, serving: "100g" },
+      { id: 806, name: "Boiled Chicken Breast", calories: 165.0, protein: 31.0, carbs: 0.0, fat: 3.6, fiber: 0.0, serving: "100g" },
+      { id: 807, name: "Thai Chili Sauce (no oil/sugar)", calories: 5.0, protein: 0.1, carbs: 1.0, fat: 0.0, fiber: 0.1, serving: "1 tbsp" },
       // Desserts (available daily)
       { id: 901, name: "Banana Yogurt Crunch", calories: 179.0, protein: 7.6, carbs: 11.9, fat: 12.2, fiber: 2.0, serving: "1 serving" },
       { id: 902, name: "Nutty Pudding", calories: 157.2, protein: 3.7, carbs: 11.6, fat: 13.1, fiber: 4.5, serving: "1 serving" }
@@ -1468,6 +1500,14 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
       { id: 507, name: "Shredded Cabbage with Capsicum", calories: 91.4, protein: 1.6, carbs: 3.5, fat: 7.7, fiber: 1.8, serving: "80g" },
       { id: 508, name: "Flaxseeds", calories: 18.2, protein: 0.6, carbs: 1.0, fat: 1.4, fiber: 0.9, serving: "1 tsp" },
       { id: 509, name: "Green Chili", calories: 40.0, protein: 0.9, carbs: 2.8, fat: 2.7, fiber: 0.9, serving: "60ml" },
+      // Additional items (available daily)
+      { id: 801, name: "Raw Cucumber", calories: 8.0, protein: 0.3, carbs: 1.9, fat: 0.1, fiber: 0.3, serving: "1/2 cup" },
+      { id: 802, name: "Hard Boiled Egg", calories: 78.0, protein: 6.3, carbs: 0.6, fat: 5.3, fiber: 0.0, serving: "1 egg" },
+      { id: 803, name: "Raw Cherry Tomatoes", calories: 18.0, protein: 0.9, carbs: 3.9, fat: 0.2, fiber: 1.2, serving: "1/2 cup" },
+      { id: 804, name: "Raw Lettuce", calories: 5.0, protein: 0.5, carbs: 1.0, fat: 0.1, fiber: 0.5, serving: "1 cup" },
+      { id: 805, name: "Boiled Tofu", calories: 76.0, protein: 8.0, carbs: 1.9, fat: 4.8, fiber: 0.3, serving: "100g" },
+      { id: 806, name: "Boiled Chicken Breast", calories: 165.0, protein: 31.0, carbs: 0.0, fat: 3.6, fiber: 0.0, serving: "100g" },
+      { id: 807, name: "Thai Chili Sauce (no oil/sugar)", calories: 5.0, protein: 0.1, carbs: 1.0, fat: 0.0, fiber: 0.1, serving: "1 tbsp" },
       // Desserts (available daily)
       { id: 901, name: "Banana Yogurt Crunch", calories: 179.0, protein: 7.6, carbs: 11.9, fat: 12.2, fiber: 2.0, serving: "1 serving" },
       { id: 902, name: "Nutty Pudding", calories: 157.2, protein: 3.7, carbs: 11.6, fat: 13.1, fiber: 4.5, serving: "1 serving" }
@@ -1481,6 +1521,14 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
       { id: 606, name: "Tahini Salad", calories: 52.9, protein: 2.2, carbs: 4.4, fat: 2.7, fiber: 2.0, serving: "100g" },
       { id: 607, name: "Sunflower Seeds", calories: 68.8, protein: 2.7, carbs: 0.3, fat: 6.1, fiber: 1.3, serving: "1 tbsp" },
       { id: 608, name: "Sweet Basil Vinaigrette", calories: 120.0, protein: 0.3, carbs: 4.4, fat: 11.4, fiber: 0.3, serving: "60ml" },
+      // Additional items (available daily)
+      { id: 801, name: "Raw Cucumber", calories: 8.0, protein: 0.3, carbs: 1.9, fat: 0.1, fiber: 0.3, serving: "1/2 cup" },
+      { id: 802, name: "Hard Boiled Egg", calories: 78.0, protein: 6.3, carbs: 0.6, fat: 5.3, fiber: 0.0, serving: "1 egg" },
+      { id: 803, name: "Raw Cherry Tomatoes", calories: 18.0, protein: 0.9, carbs: 3.9, fat: 0.2, fiber: 1.2, serving: "1/2 cup" },
+      { id: 804, name: "Raw Lettuce", calories: 5.0, protein: 0.5, carbs: 1.0, fat: 0.1, fiber: 0.5, serving: "1 cup" },
+      { id: 805, name: "Boiled Tofu", calories: 76.0, protein: 8.0, carbs: 1.9, fat: 4.8, fiber: 0.3, serving: "100g" },
+      { id: 806, name: "Boiled Chicken Breast", calories: 165.0, protein: 31.0, carbs: 0.0, fat: 3.6, fiber: 0.0, serving: "100g" },
+      { id: 807, name: "Thai Chili Sauce (no oil/sugar)", calories: 5.0, protein: 0.1, carbs: 1.0, fat: 0.0, fiber: 0.1, serving: "1 tbsp" },
       // Desserts (available daily)
       { id: 901, name: "Banana Yogurt Crunch", calories: 179.0, protein: 7.6, carbs: 11.9, fat: 12.2, fiber: 2.0, serving: "1 serving" },
       { id: 902, name: "Nutty Pudding", calories: 157.2, protein: 3.7, carbs: 11.6, fat: 13.1, fiber: 4.5, serving: "1 serving" }
@@ -1494,6 +1542,14 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
       { id: 706, name: "Roasted Cauliflower & Purple Cabbage", calories: 64.8, protein: 3.3, carbs: 5.2, fat: 3.2, fiber: 3.5, serving: "100g" },
       { id: 707, name: "Jalapenos", calories: 0, protein: 0, carbs: 0, fat: 0, fiber: 0, serving: "topping" },
       { id: 708, name: "Lime Wedge", calories: 0, protein: 0, carbs: 0, fat: 0, fiber: 0, serving: "topping" },
+      // Additional items (available daily)
+      { id: 801, name: "Raw Cucumber", calories: 8.0, protein: 0.3, carbs: 1.9, fat: 0.1, fiber: 0.3, serving: "1/2 cup" },
+      { id: 802, name: "Hard Boiled Egg", calories: 78.0, protein: 6.3, carbs: 0.6, fat: 5.3, fiber: 0.0, serving: "1 egg" },
+      { id: 803, name: "Raw Cherry Tomatoes", calories: 18.0, protein: 0.9, carbs: 3.9, fat: 0.2, fiber: 1.2, serving: "1/2 cup" },
+      { id: 804, name: "Raw Lettuce", calories: 5.0, protein: 0.5, carbs: 1.0, fat: 0.1, fiber: 0.5, serving: "1 cup" },
+      { id: 805, name: "Boiled Tofu", calories: 76.0, protein: 8.0, carbs: 1.9, fat: 4.8, fiber: 0.3, serving: "100g" },
+      { id: 806, name: "Boiled Chicken Breast", calories: 165.0, protein: 31.0, carbs: 0.0, fat: 3.6, fiber: 0.0, serving: "100g" },
+      { id: 807, name: "Thai Chili Sauce (no oil/sugar)", calories: 5.0, protein: 0.1, carbs: 1.0, fat: 0.0, fiber: 0.1, serving: "1 tbsp" },
       // Desserts (available daily)
       { id: 901, name: "Banana Yogurt Crunch", calories: 179.0, protein: 7.6, carbs: 11.9, fat: 12.2, fiber: 2.0, serving: "1 serving" },
       { id: 902, name: "Nutty Pudding", calories: 157.2, protein: 3.7, carbs: 11.6, fat: 13.1, fiber: 4.5, serving: "1 serving" }
