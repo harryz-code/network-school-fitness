@@ -667,24 +667,7 @@ function MealCard({ meal, isDark = false, onDelete }) {
         </div>
          <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.3)' }} />
 
-        <div style={{
-          position: 'absolute',
-          top: '12px',
-          left: '12px',
-          backgroundColor: isDark ? '#000000' : 'white',
-          color: isDark ? 'white' : 'black',
-          border: `2px solid ${isDark ? 'white' : 'black'}`,
-          padding: '4px 8px',
-          borderRadius: '4px',
-          fontSize: '12px',
-          fontWeight: 'bold',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '4px'
-        }}>
-          <Clock style={{ width: '12px', height: '12px' }} />
-          {meal.time}
-        </div>
+
         
         {/* Date badge for retroactive meals */}
         {meal.date && (
@@ -4651,11 +4634,22 @@ function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selected
                 fontSize: '16px',
                 fontWeight: 'bold',
                 marginBottom: '4px',
-                color: isCurrentDay ? (isDark ? '#9ca3af' : '#6b7280') : 'inherit',
+                color: 'inherit',
                 fontFamily: 'Georgia, "Times New Roman", Times, serif'
               }}>
                 {day.getDate()}
               </div>
+              
+              {/* Current day indicator */}
+              {isCurrentDay && (
+                <div style={{
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  backgroundColor: isDark ? '#9ca3af' : '#6b7280',
+                  marginTop: '2px'
+                }} />
+              )}
               
               {/* Meal indicators */}
               {meals.length > 0 && (
@@ -4868,7 +4862,10 @@ function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selected
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
-            gap: '4px'
+            gap: '4px',
+            fontSize: '12px',
+            fontWeight: 'bold',
+            fontFamily: 'Georgia, "Times New Roman", Times, serif'
           }}
         >
           <ChevronLeft size={16} />
@@ -4920,7 +4917,10 @@ function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selected
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
-            gap: '4px'
+            gap: '4px',
+            fontSize: '12px',
+            fontWeight: 'bold',
+            fontFamily: 'Georgia, "Times New Roman", Times, serif'
           }}
         >
           Next
