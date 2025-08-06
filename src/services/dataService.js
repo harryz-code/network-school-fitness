@@ -37,7 +37,7 @@ export const saveUserProfile = async (profileData) => {
     email: user.email || user.user_metadata?.email,
     full_name: user.user_metadata?.full_name || user.email,
     age: profileData.age,
-    current_weight: profileData.weight, // map to current_weight
+    weight: profileData.weight, // use weight column from your schema
     height: profileData.height,
     sex: profileData.gender, // form uses 'gender', db uses 'sex'
     activity_level: profileData.activityLevel, // form uses 'activityLevel', db uses 'activity_level'
@@ -48,7 +48,7 @@ export const saveUserProfile = async (profileData) => {
     daily_calories: profileData.recommendedCalories,
     daily_deficit: profileData.dailyDeficit || 500,
     workout_split: profileData.workoutSplit || 50,
-    protein: 0, // default values for new columns
+    protein: 0, // these columns already exist in your schema
     carbs: 0,
     fat: 0,
     updated_at: new Date().toISOString()
@@ -118,7 +118,7 @@ export const getUserProfile = async () => {
       email: data.email,
       age: data.age,
       sex: data.sex,
-      current_weight: data.current_weight,
+      weight: data.weight,
       height: data.height,
       activity_level: data.activity_level,
       bmr: data.bmr,
