@@ -5939,13 +5939,40 @@ export default function FitnessDashboard({ user }) {
             }}>
               If you can see this, the calendar component is loading. If not, there's an error.
             </p>
+            <p style={{
+              color: isDark ? '#10b981' : '#059669',
+              fontSize: '12px',
+              fontWeight: 'bold'
+            }}>
+              Debug Info: isDark={String(isDark)}, loggedMeals={loggedMeals.length}, selectedDate={selectedCalendarDate.toDateString()}
+            </p>
           </div>
-          <MealCalendar 
-            isDark={isDark}
-            loggedMeals={loggedMeals}
-            onDateSelect={handleCalendarDateSelect}
-            selectedDate={selectedCalendarDate}
-          />
+          {(() => {
+            console.log('🔍 About to render MealCalendar component')
+            try {
+              return (
+                <MealCalendar 
+                  isDark={isDark}
+                  loggedMeals={loggedMeals}
+                  onDateSelect={handleCalendarDateSelect}
+                  selectedDate={selectedCalendarDate}
+                />
+              )
+            } catch (error) {
+              console.error('❌ Error rendering MealCalendar:', error)
+              return (
+                <div style={{
+                  padding: '16px',
+                  backgroundColor: '#fee2e2',
+                  border: '2px solid #ef4444',
+                  borderRadius: '8px',
+                  color: '#991b1b'
+                }}>
+                  Error rendering calendar: {error.message}
+                </div>
+              )
+            }
+          })()}
         </div>
 
         {/* Main Content Grid */}
