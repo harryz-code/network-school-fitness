@@ -5972,64 +5972,7 @@ export default function FitnessDashboard({ user }) {
               />
         </div>
 
-        {/* Calendar Section */}
-        <div style={{ marginBottom: '64px' }}>
-          <div style={{
-            backgroundColor: isDark ? '#000000' : 'white',
-            border: `2px solid ${isDark ? 'white' : 'black'}`,
-            borderRadius: '8px',
-            padding: '32px',
-            marginBottom: '32px'
-          }}>
-            <h2 style={{
-              fontSize: '20px',
-              fontWeight: 'bold',
-              color: isDark ? 'white' : 'black',
-              fontFamily: 'Georgia, "Times New Roman", Times, serif'
-            }}>
-              Calendar Debug - Should be visible (UPDATED)
-            </h2>
-            <p style={{
-              color: isDark ? '#cccccc' : '#666666',
-              fontSize: '14px'
-            }}>
-              If you can see this, the calendar component is loading. If not, there's an error.
-            </p>
-            <p style={{
-              color: isDark ? '#10b981' : '#059669',
-              fontSize: '12px',
-              fontWeight: 'bold'
-            }}>
-              Debug Info: isDark={String(isDark)}, loggedMeals={loggedMeals.length}, selectedDate={selectedCalendarDate.toDateString()}
-            </p>
-          </div>
-          {(() => {
-            console.log('🔍 About to render MealCalendar component')
-            try {
-              return (
-                <MealCalendar 
-                  isDark={isDark}
-                  loggedMeals={loggedMeals}
-                  onDateSelect={handleCalendarDateSelect}
-                  selectedDate={selectedCalendarDate}
-                />
-              )
-            } catch (error) {
-              console.error('❌ Error rendering MealCalendar:', error)
-              return (
-                <div style={{
-                  padding: '16px',
-                  backgroundColor: '#fee2e2',
-                  border: '2px solid #ef4444',
-                  borderRadius: '8px',
-                  color: '#991b1b'
-                }}>
-                  Error rendering calendar: {error.message}
-                </div>
-              )
-            }
-          })()}
-        </div>
+
 
         {/* Main Content Grid */}
         <div style={{ 
@@ -6144,18 +6087,27 @@ export default function FitnessDashboard({ user }) {
               }}>
                 <Camera style={{ width: '20px', height: '20px', color: isDark ? 'black' : 'white' }} strokeWidth={2.5} />
               </div>
-              Recent Meals (Past 7 Days)
+              Meals
             </h2>
+
+            {/* Calendar View */}
+            <div style={{ marginBottom: '24px' }}>
+              <MealCalendar 
+                isDark={isDark}
+                loggedMeals={loggedMeals}
+                onDateSelect={handleCalendarDateSelect}
+                selectedDate={selectedCalendarDate}
+              />
+            </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
               {loggedMeals.length > 0 ? (
                 loggedMeals
                   .filter(meal => {
-                    // Show meals from the last 7 days instead of just today
+                    // Show meals from the selected calendar date
                     const mealDate = new Date(meal.timestamp)
-                    const today = new Date()
-                    const sevenDaysAgo = new Date(today.getTime() - (7 * 24 * 60 * 60 * 1000))
-                    return mealDate >= sevenDaysAgo && mealDate <= today
+                    const selectedDate = selectedCalendarDate
+                    return mealDate.toDateString() === selectedDate.toDateString()
                   })
                   .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)) // Sort by most recent first
                   .map((meal, index) => (
@@ -6190,7 +6142,7 @@ export default function FitnessDashboard({ user }) {
                   color: isDark ? '#a3a3a3' : '#6b7280',
                   fontStyle: 'italic'
                 }}>
-                  No meals logged in the past 7 days. Log your first meal to get started!
+                  No meals logged for {selectedCalendarDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}. Select a different date or log your first meal!
                 </div>
               )}
             </div>
