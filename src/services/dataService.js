@@ -46,6 +46,8 @@ export const saveUserProfile = async (profileData) => {
     bmr: profileData.bmr,
     tdee: profileData.tdee,
     daily_calories: profileData.recommendedCalories,
+    daily_deficit: profileData.dailyDeficit || 500,
+    workout_split: profileData.workoutSplit || 50,
     protein: 0, // default values for new columns
     carbs: 0,
     fat: 0,
