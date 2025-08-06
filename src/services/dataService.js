@@ -35,17 +35,20 @@ export const saveUserProfile = async (profileData) => {
   const dbData = {
     id: user.id,
     email: user.email || user.user_metadata?.email,
+    full_name: user.user_metadata?.full_name || user.email,
     age: profileData.age,
     current_weight: profileData.weight, // map to current_weight
     height: profileData.height,
     sex: profileData.gender, // form uses 'gender', db uses 'sex'
     activity_level: profileData.activityLevel, // form uses 'activityLevel', db uses 'activity_level'
     goal: profileData.goal || 'weight_loss', // provide default
+    target_weight: profileData.weight, // set target same as current for now
     bmr: profileData.bmr,
     tdee: profileData.tdee,
     daily_calories: profileData.recommendedCalories,
-    daily_deficit: profileData.dailyDeficit || 500,
-    workout_split: profileData.workoutSplit || 50,
+    protein: 0, // default values for new columns
+    carbs: 0,
+    fat: 0,
     updated_at: new Date().toISOString()
   }
 
@@ -58,7 +61,15 @@ export const saveUserProfile = async (profileData) => {
 
   console.log('🗃️ DataService: Database response:', { data, error })
 
-  if (error) throw error
+  if (error) {
+    console.error('❌ Database save error:', error)
+    console.error('❌ Error code:', error.code)
+    console.error('❌ Error message:', error.message)
+    console.error('❌ Error details:', error.details)
+    throw error
+  }
+  
+  console.log('✅ Profile saved successfully:', data[0])
   return data[0]
 }
 
