@@ -5098,8 +5098,6 @@ function QuickAccessOverlay({ isOpen, onClose, isDark, onActionSelect, isMobile,
 }
 
 export default function FitnessDashboard({ user }) {
-  // Supabase connection test - remove this comment after testing
-  console.log('🔗 Supabase connection test - environment variables should be configured')
   const [currentTime, setCurrentTime] = useState(new Date())
   const [isFoodModalOpen, setIsFoodModalOpen] = useState(false)
   const [isWorkoutModalOpen, setIsWorkoutModalOpen] = useState(false)
