@@ -4639,8 +4639,8 @@ function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selected
                 {day.getDate()}
               </div>
               
-              {/* Current day indicator */}
-              {isCurrentDay && (
+              {/* Day indicators - show either current day dot OR meal dots, not both */}
+              {isCurrentDay && meals.length === 0 && (
                 <div style={{
                   width: '6px',
                   height: '6px',
@@ -4650,7 +4650,7 @@ function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selected
                 }} />
               )}
               
-              {/* Meal indicators */}
+              {/* Meal indicators - show green dots for days with meals */}
               {meals.length > 0 && (
                 <div style={{
                   display: 'flex',
