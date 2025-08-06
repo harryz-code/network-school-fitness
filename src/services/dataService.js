@@ -36,7 +36,7 @@ export const saveUserProfile = async (profileData) => {
     id: user.id,
     email: user.email || user.user_metadata?.email,
     age: profileData.age,
-    weight: profileData.weight,
+    current_weight: profileData.weight, // map to current_weight
     height: profileData.height,
     sex: profileData.gender, // form uses 'gender', db uses 'sex'
     activity_level: profileData.activityLevel, // form uses 'activityLevel', db uses 'activity_level'
@@ -105,7 +105,7 @@ export const getUserProfile = async () => {
       email: data.email,
       age: data.age,
       sex: data.sex,
-      weight: data.weight,
+      current_weight: data.current_weight,
       height: data.height,
       activity_level: data.activity_level,
       bmr: data.bmr,
