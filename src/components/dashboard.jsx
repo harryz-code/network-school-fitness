@@ -40,7 +40,9 @@ import {
   Milk,
   FlaskConical,
   Info,
-  ChevronDown
+  ChevronDown,
+  ChevronLeft,
+  Calendar
 } from "lucide-react"
 import useResponsive from '../hooks/useResponsive'
 
@@ -1344,7 +1346,7 @@ function WorkoutRecordingModal({ isOpen, onClose, isDark = false, userProfile, o
 }
 
 // Food Logging Modal Component
-function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged }) {
+function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSelectedDate = null }) {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedFood, setSelectedFood] = useState(null)
   const [servingSize, setServingSize] = useState(1)
@@ -1362,7 +1364,9 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged }) {
     if (isOpen) {
       // Reset to initial state when opening for new meal
       setMealType("")
-      setSelectedDate(new Date().toISOString().split('T')[0]) // Reset to today
+      // Use preSelectedDate if provided, otherwise use today
+      const dateToUse = preSelectedDate ? new Date(preSelectedDate).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
+      setSelectedDate(dateToUse)
       setShowMealTypeSelection(true)
       setShowDaySelection(false)
       setSelectedFood(null)
@@ -1372,7 +1376,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged }) {
       setMultiSelectMode(false)
       setSelectedForBatch([])
     }
-  }, [isOpen])
+  }, [isOpen, preSelectedDate])
 
   // Cafe food database (from your provided data)
   const cafeFoodDatabase = [
@@ -4449,6 +4453,520 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
   )
 }
 
+// Meal Calendar Component
+function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selectedDate = new Date() }) {
+  const [currentMonth, setCurrentMonth] = useState(new Date())
+  const [viewMode, setViewMode] = useState('week') // 'week' or 'month'
+
+  // Get meals for a specific date
+  const getMealsForDate = (date) => {
+    const dateString = date.toDateString()
+    return loggedMeals.filter(meal => 
+      new Date(meal.timestamp).toDateString() === dateString
+    )
+  }
+
+  // Get week days
+  const getWeekDays = () => {
+    const days = []
+    const startOfWeek = new Date(currentMonth)
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay())
+    
+    for (let i = 0; i < 7; i++) {
+      const day = new Date(startOfWeek)
+      day.setDate(startOfWeek.getDate() + i)
+      days.push(day)
+    }
+    return days
+  }
+
+  // Get month days
+  const getMonthDays = () => {
+    const days = []
+    const firstDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1)
+    // eslint-disable-next-line no-unused-vars
+    const lastDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0)
+    const startDate = new Date(firstDay)
+    startDate.setDate(startDate.getDate() - firstDay.getDay())
+    
+    for (let i = 0; i < 42; i++) {
+      const day = new Date(startDate)
+      day.setDate(startDate.getDate() + i)
+      days.push(day)
+    }
+    return days
+  }
+
+  // Navigate to previous period
+  const goToPrevious = () => {
+    const newDate = new Date(currentMonth)
+    if (viewMode === 'week') {
+      newDate.setDate(newDate.getDate() - 7)
+    } else {
+      newDate.setMonth(newDate.getMonth() - 1)
+    }
+    setCurrentMonth(newDate)
+  }
+
+  // Navigate to next period
+  const goToNext = () => {
+    const newDate = new Date(currentMonth)
+    if (viewMode === 'week') {
+      newDate.setDate(newDate.getDate() + 7)
+    } else {
+      newDate.setMonth(newDate.getMonth() + 1)
+    }
+    setCurrentMonth(newDate)
+  }
+
+  // Go to today
+  const goToToday = () => {
+    setCurrentMonth(new Date())
+  }
+
+  // Check if date is today
+  const isToday = (date) => {
+    return date.toDateString() === new Date().toDateString()
+  }
+
+  // Check if date is selected
+  const isSelected = (date) => {
+    return date.toDateString() === selectedDate.toDateString()
+  }
+
+  // Check if date is in current month (for month view)
+  const isCurrentMonth = (date) => {
+    return date.getMonth() === currentMonth.getMonth()
+  }
+
+  const renderWeekView = () => {
+    const weekDays = getWeekDays()
+    
+    return (
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px' }}>
+        {weekDays.map((day, index) => {
+          const meals = getMealsForDate(day)
+          const isCurrentDay = isToday(day)
+          const isSelectedDay = isSelected(day)
+          
+          return (
+            <div
+              key={index}
+              onClick={() => onDateSelect(day)}
+              style={{
+                padding: '12px',
+                border: `2px solid ${isSelectedDay ? '#3b82f6' : isDark ? '#333333' : '#e5e7eb'}`,
+                borderRadius: '8px',
+                backgroundColor: isSelectedDay ? '#3b82f6' : isDark ? '#1a1a1a' : 'white',
+                color: isSelectedDay ? 'white' : isDark ? 'white' : 'black',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                minHeight: '80px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                position: 'relative'
+              }}
+              onMouseEnter={(e) => {
+                if (!isSelectedDay) {
+                  e.target.style.backgroundColor = isDark ? '#333333' : '#f3f4f6'
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isSelectedDay) {
+                  e.target.style.backgroundColor = isDark ? '#1a1a1a' : 'white'
+                }
+              }}
+            >
+              {/* Day header */}
+              <div style={{
+                fontSize: '12px',
+                fontWeight: 'bold',
+                marginBottom: '4px',
+                textAlign: 'center'
+              }}>
+                {day.toLocaleDateString('en-US', { weekday: 'short' })}
+              </div>
+              
+              {/* Date */}
+              <div style={{
+                fontSize: '16px',
+                fontWeight: 'bold',
+                marginBottom: '4px',
+                color: isCurrentDay ? '#ef4444' : 'inherit'
+              }}>
+                {day.getDate()}
+              </div>
+              
+              {/* Meal indicators */}
+              {meals.length > 0 && (
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '2px',
+                  alignItems: 'center'
+                }}>
+                  {meals.slice(0, 3).map((meal, mealIndex) => (
+                    <div
+                      key={mealIndex}
+                      style={{
+                        width: '6px',
+                        height: '6px',
+                        borderRadius: '50%',
+                        backgroundColor: isSelectedDay ? 'white' : '#10b981'
+                      }}
+                    />
+                  ))}
+                  {meals.length > 3 && (
+                    <div style={{
+                      fontSize: '10px',
+                      fontWeight: 'bold',
+                      color: isSelectedDay ? 'white' : '#6b7280'
+                    }}>
+                      +{meals.length - 3}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )
+        })}
+      </div>
+    )
+  }
+
+  const renderMonthView = () => {
+    const monthDays = getMonthDays()
+    
+    return (
+      <div>
+        {/* Day headers */}
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(7, 1fr)', 
+          gap: '8px',
+          marginBottom: '8px'
+        }}>
+          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
+            <div key={day} style={{
+              textAlign: 'center',
+              fontSize: '12px',
+              fontWeight: 'bold',
+              color: isDark ? '#9ca3af' : '#6b7280',
+              padding: '4px'
+            }}>
+              {day}
+            </div>
+          ))}
+        </div>
+        
+        {/* Calendar grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px' }}>
+          {monthDays.map((day, index) => {
+            const meals = getMealsForDate(day)
+            const isCurrentDay = isToday(day)
+            const isSelectedDay = isSelected(day)
+            const isCurrentMonthDay = isCurrentMonth(day)
+            
+            return (
+              <div
+                key={index}
+                onClick={() => onDateSelect(day)}
+                style={{
+                  padding: '8px',
+                  border: `2px solid ${isSelectedDay ? '#3b82f6' : isDark ? '#333333' : '#e5e7eb'}`,
+                  borderRadius: '6px',
+                  backgroundColor: isSelectedDay ? '#3b82f6' : isDark ? '#1a1a1a' : 'white',
+                  color: isSelectedDay ? 'white' : isDark ? 'white' : 'black',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  minHeight: '60px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  opacity: isCurrentMonthDay ? 1 : 0.4
+                }}
+                onMouseEnter={(e) => {
+                  if (!isSelectedDay) {
+                    e.target.style.backgroundColor = isDark ? '#333333' : '#f3f4f6'
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isSelectedDay) {
+                    e.target.style.backgroundColor = isDark ? '#1a1a1a' : 'white'
+                  }
+                }}
+              >
+                {/* Date */}
+                <div style={{
+                  fontSize: '14px',
+                  fontWeight: 'bold',
+                  marginBottom: '2px',
+                  color: isCurrentDay ? '#ef4444' : 'inherit'
+                }}>
+                  {day.getDate()}
+                </div>
+                
+                {/* Meal indicators */}
+                {meals.length > 0 && (
+                  <div style={{
+                    display: 'flex',
+                    gap: '2px',
+                    flexWrap: 'wrap',
+                    justifyContent: 'center'
+                  }}>
+                    {meals.slice(0, 4).map((meal, mealIndex) => (
+                      <div
+                        key={mealIndex}
+                        style={{
+                          width: '4px',
+                          height: '4px',
+                          borderRadius: '50%',
+                          backgroundColor: isSelectedDay ? 'white' : '#10b981'
+                          }}
+                        />
+                    ))}
+                    {meals.length > 4 && (
+                      <div style={{
+                        fontSize: '8px',
+                        fontWeight: 'bold',
+                        color: isSelectedDay ? 'white' : '#6b7280'
+                      }}>
+                        +{meals.length - 4}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div style={{
+      backgroundColor: isDark ? '#000000' : 'white',
+      border: `2px solid ${isDark ? 'white' : 'black'}`,
+      borderRadius: '8px',
+      padding: '32px',
+      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+    }}>
+      {/* Header */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '24px'
+      }}>
+        <h2 style={{
+          fontSize: '20px',
+          fontWeight: 'bold',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          color: isDark ? 'white' : 'black',
+          fontFamily: 'Georgia, "Times New Roman", Times, serif'
+        }}>
+          <div style={{
+            width: '32px',
+            height: '32px',
+            backgroundColor: isDark ? 'white' : 'black',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: '4px'
+          }}>
+            <Calendar style={{ width: '20px', height: '20px', color: isDark ? 'black' : 'white' }} strokeWidth={2.5} />
+          </div>
+          Meal Calendar
+        </h2>
+        
+        {/* View mode toggle */}
+        <div style={{
+          display: 'flex',
+          gap: '8px',
+          alignItems: 'center'
+        }}>
+          <button
+            onClick={() => setViewMode('week')}
+            style={{
+              padding: '6px 12px',
+              border: `2px solid ${viewMode === 'week' ? '#3b82f6' : isDark ? 'white' : 'black'}`,
+              borderRadius: '6px',
+              backgroundColor: viewMode === 'week' ? '#3b82f6' : 'transparent',
+              color: viewMode === 'week' ? 'white' : isDark ? 'white' : 'black',
+              fontSize: '12px',
+              fontWeight: 'bold',
+              cursor: 'pointer'
+            }}
+          >
+            Week
+          </button>
+          <button
+            onClick={() => setViewMode('month')}
+            style={{
+              padding: '6px 12px',
+              border: `2px solid ${viewMode === 'month' ? '#3b82f6' : isDark ? 'white' : 'black'}`,
+              borderRadius: '6px',
+              backgroundColor: viewMode === 'month' ? '#3b82f6' : 'transparent',
+              color: viewMode === 'month' ? 'white' : isDark ? 'white' : 'black',
+              fontSize: '12px',
+              fontWeight: 'bold',
+              cursor: 'pointer'
+            }}
+          >
+            Month
+          </button>
+        </div>
+      </div>
+
+      {/* Navigation */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '24px'
+      }}>
+        <button
+          onClick={goToPrevious}
+          style={{
+            padding: '8px 12px',
+            border: `2px solid ${isDark ? 'white' : 'black'}`,
+            borderRadius: '6px',
+            backgroundColor: 'transparent',
+            color: isDark ? 'white' : 'black',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px'
+          }}
+        >
+          <ChevronLeft size={16} />
+          Previous
+        </button>
+        
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '16px'
+        }}>
+          <h3 style={{
+            fontSize: '18px',
+            fontWeight: 'bold',
+            color: isDark ? 'white' : 'black',
+            fontFamily: 'Georgia, "Times New Roman", Times, serif'
+          }}>
+            {viewMode === 'week' 
+              ? `${currentMonth.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${new Date(currentMonth.getTime() + 6 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
+              : currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+            }
+          </h3>
+          
+          <button
+            onClick={goToToday}
+            style={{
+              padding: '6px 12px',
+              border: `2px solid ${isDark ? 'white' : 'black'}`,
+              borderRadius: '6px',
+              backgroundColor: 'transparent',
+              color: isDark ? 'white' : 'black',
+              fontSize: '12px',
+              fontWeight: 'bold',
+              cursor: 'pointer'
+            }}
+          >
+            Today
+          </button>
+        </div>
+        
+        <button
+          onClick={goToNext}
+          style={{
+            padding: '8px 12px',
+            border: `2px solid ${isDark ? 'white' : 'black'}`,
+            borderRadius: '6px',
+            backgroundColor: 'transparent',
+            color: isDark ? 'white' : 'black',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px'
+          }}
+        >
+          Next
+          <ChevronRight size={16} />
+        </button>
+      </div>
+
+      {/* Calendar view */}
+      {viewMode === 'week' ? renderWeekView() : renderMonthView()}
+      
+      {/* Selected date info */}
+      <div style={{
+        marginTop: '24px',
+        padding: '16px',
+        backgroundColor: isDark ? '#1a1a1a' : '#f9f9f9',
+        borderRadius: '8px',
+        border: `1px solid ${isDark ? '#333333' : '#e5e7eb'}`
+      }}>
+        <h4 style={{
+          fontSize: '16px',
+          fontWeight: 'bold',
+          marginBottom: '12px',
+          color: isDark ? 'white' : 'black'
+        }}>
+          {selectedDate.toLocaleDateString('en-US', { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          })}
+        </h4>
+        
+        {getMealsForDate(selectedDate).length > 0 ? (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {getMealsForDate(selectedDate).map((meal, index) => (
+              <div key={index} style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '8px',
+                backgroundColor: isDark ? '#000000' : 'white',
+                borderRadius: '4px',
+                border: `1px solid ${isDark ? '#333333' : '#e5e7eb'}`
+              }}>
+                <span style={{
+                  fontSize: '14px',
+                  color: isDark ? 'white' : 'black'
+                }}>
+                  {meal.food}
+                </span>
+                <span style={{
+                  fontSize: '14px',
+                  fontWeight: 'bold',
+                  color: isDark ? '#10b981' : '#059669'
+                }}>
+                  {meal.calories} cal
+                </span>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p style={{
+            fontSize: '14px',
+            color: isDark ? '#9ca3af' : '#6b7280',
+            fontStyle: 'italic'
+          }}>
+            No meals logged for this date. Click on any date to log meals retroactively.
+          </p>
+        )}
+      </div>
+    </div>
+  )
+}
+
 // Quick Access Overlay Component
 function QuickAccessOverlay({ isOpen, onClose, isDark, onActionSelect, isMobile, isTouchDevice }) {
   const quickActions = [
@@ -4619,6 +5137,7 @@ export default function FitnessDashboard({ user }) {
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false)
   const [userProfile, setUserProfile] = useState(null) // Store user profile data
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false) // New state for onboarding
+  const [selectedCalendarDate, setSelectedCalendarDate] = useState(new Date()) // Calendar selected date
 
   
   // User activity data
@@ -5136,6 +5655,19 @@ export default function FitnessDashboard({ user }) {
     return streak
   }
 
+  // Handle calendar date selection
+  const handleCalendarDateSelect = (date) => {
+    setSelectedCalendarDate(date)
+    // Open food modal with the selected date
+    setIsFoodModalOpen(true)
+  }
+
+  // Handle food modal close - reset selected calendar date
+  const handleFoodModalClose = () => {
+    setIsFoodModalOpen(false)
+    setSelectedCalendarDate(new Date()) // Reset to today
+  }
+
   // Handle meal deletion
   const handleMealDelete = async (mealToDelete) => {
     // For meals loaded from database, use the ID
@@ -5550,6 +6082,16 @@ export default function FitnessDashboard({ user }) {
           </div>
         </div>
 
+        {/* Calendar Section */}
+        <div style={{ marginTop: '64px' }}>
+          <MealCalendar 
+            isDark={isDark}
+            loggedMeals={loggedMeals}
+            onDateSelect={handleCalendarDateSelect}
+            selectedDate={selectedCalendarDate}
+          />
+        </div>
+
 
       </div>
 
@@ -5558,9 +6100,10 @@ export default function FitnessDashboard({ user }) {
       {/* Food Logging Modal */}
       <FoodLoggingModal 
         isOpen={isFoodModalOpen} 
-        onClose={() => setIsFoodModalOpen(false)} 
+        onClose={handleFoodModalClose} 
         isDark={isDark} 
         onMealLogged={handleMealLogged}
+        preSelectedDate={selectedCalendarDate}
       />
       
       {/* Workout Recording Modal */}
