@@ -202,12 +202,11 @@ export const deleteMeal = async (mealId) => {
     return
   }
 
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from('meals')
     .delete()
     .eq('id', mealId)
     .eq('user_id', user.id) // Extra safety: only delete user's own meals
-    .select() // Return deleted rows for confirmation
   
   if (error) {
     throw error

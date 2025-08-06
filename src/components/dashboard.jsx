@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import StatsModal from "./StatsModal"
 import { useAuth } from "../contexts/AuthContext"
 import { 
@@ -17,7 +17,6 @@ import {
   Target,
   Camera,
   Clock,
-  Star,
   Moon,
   Sun,
   Activity,
@@ -27,17 +26,11 @@ import {
   Droplets,
   Award,
   BarChart3,
-  Timer,
   X,
   Search,
   Utensils,
-  Edit,
   Trash2,
   User,
-  Scale,
-  Ruler,
-  TrendingUp,
-  TrendingDown,
   Zap,
   Calculator,
   ChevronRight,
@@ -171,176 +164,7 @@ function CircularProgress({ value, max, size = 120, strokeWidth = 8, label, unit
   )
 }
 
-// Enhanced Daily Summary
-function EnhancedDailySummary({ isDark = false, totalIntake = 0, remaining = 0, optimizationScore = 0, avgProgress = 0, mealsLogged = 0 }) {
-  return (
-    <div style={{ marginTop: '32px' }}>
-      <div style={{
-        backgroundColor: isDark ? '#000000' : 'white',
-        border: `2px solid ${isDark ? 'white' : 'black'}`,
-        borderRadius: '8px',
-        padding: '32px',
-        boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
-      }}>
-        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <div style={{
-            width: '48px',
-            height: '48px',
-            backgroundColor: isDark ? 'white' : 'black',
-            margin: '0 auto 24px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: '4px'
-          }}>
-            <Award style={{ width: '32px', height: '32px', color: isDark ? 'black' : 'white' }} />
-          </div>
 
-          <h3 style={{
-            fontSize: '24px',
-            fontWeight: 'bold',
-            marginBottom: '32px',
-            color: isDark ? 'white' : 'black',
-            fontFamily: 'Georgia, "Times New Roman", Times, serif'
-          }}>
-            Daily Summary
-          </h3>
-        </div>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{
-              fontSize: '18px',
-              fontWeight: 'bold',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em',
-              color: isDark ? '#ffffff' : '#374151',
-              fontFamily: 'system-ui, -apple-system, sans-serif'
-            }}>
-              Total Intake
-            </span>
-            <span style={{
-              fontSize: '18px',
-              fontWeight: 'bold',
-              color: isDark ? 'white' : 'black',
-              fontFamily: 'Georgia, "Times New Roman", Times, serif'
-            }}>
-              {totalIntake} cal
-            </span>
-          </div>
-
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{
-              fontSize: '18px',
-              fontWeight: 'bold',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em',
-              color: isDark ? '#ffffff' : '#374151',
-              fontFamily: 'system-ui, -apple-system, sans-serif'
-            }}>
-              Remaining
-            </span>
-            <span style={{
-              fontSize: '18px',
-              fontWeight: 'bold',
-              color: isDark ? 'white' : 'black',
-              fontFamily: 'Georgia, "Times New Roman", Times, serif'
-            }}>
-              {remaining} cal
-            </span>
-          </div>
-
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{
-              fontSize: '18px',
-              fontWeight: 'bold',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em',
-              color: isDark ? '#d1d5db' : '#374151',
-              fontFamily: 'system-ui, -apple-system, sans-serif'
-            }}>
-              Optimization Score
-            </span>
-            <span style={{
-              fontSize: '18px',
-              fontWeight: 'bold',
-              color: isDark ? 'white' : 'black',
-              fontFamily: 'Georgia, "Times New Roman", Times, serif'
-            }}>
-              {optimizationScore}/100
-            </span>
-          </div>
-
-          <div style={{ 
-            borderTop: `2px solid ${isDark ? '#4b5563' : '#d1d5db'}`,
-            paddingTop: '24px',
-            marginTop: '32px'
-          }}>
-            <p style={{
-              fontSize: '14px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em',
-              fontWeight: 'bold',
-              textAlign: 'center',
-              marginBottom: '32px',
-              color: isDark ? '#9ca3af' : '#6b7280'
-            }}>
-              "Learn, Burn, Earn, and Fun"
-            </p>
-
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '48px' }}>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{
-                  fontSize: '30px',
-                  fontWeight: 'bold',
-                  marginBottom: '8px',
-                  color: isDark ? 'white' : 'black',
-                  fontFamily: 'Georgia, "Times New Roman", Times, serif'
-                }}>
-                  {avgProgress}%
-                </div>
-                <div style={{
-                  fontSize: '14px',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.05em',
-                  fontWeight: 'bold',
-                  color: isDark ? '#9ca3af' : '#6b7280',
-                  fontFamily: 'system-ui, -apple-system, sans-serif'
-                }}>
-                  Avg Progress
-                </div>
-              </div>
-              <div style={{ 
-                borderLeft: `2px solid ${isDark ? '#4b5563' : '#d1d5db'}`
-              }}></div>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{
-                  fontSize: '30px',
-                  fontWeight: 'bold',
-                  marginBottom: '8px',
-                  color: isDark ? 'white' : 'black',
-                  fontFamily: 'Georgia, "Times New Roman", Times, serif'
-                }}>
-                  {mealsLogged}
-                </div>
-                <div style={{
-                  fontSize: '14px',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.05em',
-                  fontWeight: 'bold',
-                  color: isDark ? '#9ca3af' : '#6b7280',
-                  fontFamily: 'system-ui, -apple-system, sans-serif'
-                }}>
-                  Meals Logged
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
 
 // Stats Card Component
 function StatsCard({ icon: Icon, title, value, change, isDark = false, userData = null, loggedMeals = [], loggedWorkouts = [], currentStreak = 0, netCalories = 0, weeklyProgress = 0 }) {
@@ -380,7 +204,6 @@ function StatsCard({ icon: Icon, title, value, change, isDark = false, userData 
         const caloriesBurned = todayWorkouts.reduce((total, workout) => total + workout.caloriesBurned, 0)
         const currentDeficit = (recommendedCalories + caloriesBurned) - caloriesConsumed
         const targetDeficit = userData.dailyDeficit
-        const deficitProgress = Math.max(0, Math.round((currentDeficit / targetDeficit) * 100))
         const remainingDeficit = Math.max(0, targetDeficit - currentDeficit)
         
         return {
@@ -422,7 +245,6 @@ function StatsCard({ icon: Icon, title, value, change, isDark = false, userData 
           }
         }
         
-        const weeklyRemaining = Math.max(0, 100 - weeklyProgress)
         const targetWeeklyDeficit = userData.weeklyDeficit
         const achievedWeeklyDeficit = Math.round((weeklyProgress / 100) * targetWeeklyDeficit)
         const remainingWeeklyDeficit = Math.max(0, targetWeeklyDeficit - achievedWeeklyDeficit)
@@ -494,7 +316,6 @@ function StatsCard({ icon: Icon, title, value, change, isDark = false, userData 
         const totalBurned = todayWorkouts.reduce((total, workout) => total + workout.caloriesBurned, 0)
         const targetWorkoutCalories = userData.workoutCalories
         const remainingWorkoutCalories = Math.max(0, targetWorkoutCalories - totalBurned)
-        const workoutProgress = Math.round((totalBurned / targetWorkoutCalories) * 100)
         
         // Calculate breakdown by workout type
         const cardioWorkouts = todayWorkouts.filter(w => w.type === 'cardio')
@@ -526,7 +347,6 @@ function StatsCard({ icon: Icon, title, value, change, isDark = false, userData 
         const burnedCals = todayWorkouts.reduce((total, workout) => total + workout.caloriesBurned, 0)
         const remainingCals = Math.round(recommendedCals + burnedCals - consumedCals)
         
-        const status = remainingCals > 0 ? "Can eat" : "Over limit"
         const absRemaining = Math.abs(remainingCals)
         
         return {
@@ -675,36 +495,7 @@ function DarkModeToggle({ isDark, toggleDarkMode }) {
   )
 }
 
-// Floating Action Button
-function FloatingActionButton({ isDark = false }) {
-  const [isHovered, setIsHovered] = useState(false)
 
-  return (
-    <div style={{ position: 'fixed', bottom: '24px', right: '24px', zIndex: 50 }}>
-      <button 
-        style={{
-          width: '64px',
-          height: '64px',
-          backgroundColor: isDark ? 'white' : 'black',
-          border: `2px solid ${isDark ? 'white' : 'black'}`,
-          color: isDark ? 'black' : 'white',
-          borderRadius: '8px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          cursor: 'pointer',
-          boxShadow: isHovered ? '0 20px 25px -5px rgba(0, 0, 0, 0.2)' : '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
-          transition: 'all 0.3s ease',
-          transform: isHovered ? 'scale(1.1) rotate(90deg)' : 'scale(1) rotate(0deg)'
-        }}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <Plus style={{ width: '32px', height: '32px' }} strokeWidth={3} />
-      </button>
-    </div>
-  )
-}
 
 // Meal Card Component
 function MealCard({ meal, isDark = false, onDelete }) {
@@ -892,6 +683,25 @@ function MealCard({ meal, isDark = false, onDelete }) {
           <Clock style={{ width: '12px', height: '12px' }} />
           {meal.time}
         </div>
+        
+        {/* Date badge for retroactive meals */}
+        {meal.date && (
+          <div style={{
+            position: 'absolute',
+            top: '12px',
+            right: '12px',
+            backgroundColor: isDark ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.9)',
+            color: isDark ? 'white' : 'black',
+            border: `1px solid ${isDark ? 'white' : 'black'}`,
+            padding: '2px 6px',
+            borderRadius: '4px',
+            fontSize: '10px',
+            fontWeight: '500',
+            fontFamily: 'system-ui, -apple-system, sans-serif'
+          }}>
+            {meal.date}
+          </div>
+        )}
 
 
       </div>
@@ -1127,43 +937,7 @@ function MealCard({ meal, isDark = false, onDelete }) {
   )
 }
 
-// Quick Action Button Component
-function QuickActionButton({ action, isDark = false, onClick }) {
-  const [isHovered, setIsHovered] = useState(false)
 
-  return (
-    <button
-      style={{
-        padding: '24px',
-        backgroundColor: isHovered ? (isDark ? 'white' : 'black') : (isDark ? '#000000' : 'white'),
-        border: `2px solid ${isDark ? 'white' : 'black'}`,
-        color: isHovered ? (isDark ? 'black' : 'white') : (isDark ? 'white' : 'black'),
-        textAlign: 'center',
-        cursor: 'pointer',
-        transition: 'all 0.3s ease',
-        borderRadius: '4px',
-        transform: isHovered ? 'scale(1.02) translateY(-2px)' : 'scale(1) translateY(0)'
-      }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={onClick}
-    >
-      <action.icon
-        style={{ width: '32px', height: '32px', margin: '0 auto 12px', display: 'block' }}
-        strokeWidth={2.5}
-      />
-      <p style={{
-        fontSize: '14px',
-        fontWeight: 'bold',
-        textTransform: 'uppercase',
-        letterSpacing: '0.05em',
-        fontFamily: 'system-ui, -apple-system, sans-serif'
-      }}>
-        {action.label}
-      </p>
-    </button>
-  )
-}
 
 // Workout Recording Modal Component
 function WorkoutRecordingModal({ isOpen, onClose, isDark = false, userProfile, onWorkoutRecorded }) {
@@ -2850,6 +2624,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged }) {
 }
 
 // Onboarding Modal Component
+// eslint-disable-next-line no-unused-vars
 function OnboardingModal({ isOpen, onClose, isDark = false, onComplete }) {
   const [step, setStep] = useState(1)
   const [userData, setUserData] = useState({
@@ -4044,7 +3819,7 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
   })
 
   // Calculate BMR using Mifflin-St Jeor Equation
-  const calculateBMR = () => {
+  const calculateBMR = useCallback(() => {
     if (!formData.weight || !formData.height || !formData.age || !formData.gender) return 0
     
     const weight = parseFloat(formData.weight)
@@ -4056,10 +3831,10 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
     } else {
       return (10 * weight) + (6.25 * height) - (5 * age) - 161
     }
-  }
+  }, [formData.weight, formData.height, formData.age, formData.gender])
 
   // Calculate TDEE (Total Daily Energy Expenditure)
-  const calculateTDEE = () => {
+  const calculateTDEE = useCallback(() => {
     const bmr = calculateBMR()
     const multipliers = {
       sedentary: 1.2,
@@ -4069,7 +3844,7 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
       veryActive: 1.9
     }
     return bmr * (multipliers[formData.activityLevel] || 1.2)
-  }
+  }, [calculateBMR, formData.activityLevel])
 
   // Update calculations when relevant data changes
   useEffect(() => {
@@ -4083,7 +3858,7 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
       tdee: Math.round(tdee),
       recommendedCalories: Math.round(recommendedCalories)
     }))
-  }, [formData.weight, formData.height, formData.age, formData.gender, formData.activityLevel, formData.dailyDeficit])
+  }, [formData.weight, formData.height, formData.age, formData.gender, formData.activityLevel, formData.dailyDeficit, calculateBMR, calculateTDEE])
 
   const handleNext = () => {
     if (step < 4) setStep(step + 1)
@@ -4855,7 +4630,7 @@ export default function FitnessDashboard({ user }) {
   
   const { isDark, toggleDarkMode } = useDarkMode()
   const { signOut } = useAuth()
-  const { isMobile, isTablet, isDesktop, getResponsiveValue, isTouchDevice } = useResponsive()
+  const { isMobile, getResponsiveValue, isTouchDevice } = useResponsive()
 
   const handleLogout = async () => {
     try {
@@ -4985,7 +4760,7 @@ export default function FitnessDashboard({ user }) {
     }
 
     loadUserData()
-  }, [user])
+  }, [user, loadedUserId])
 
   const handleOnboardingComplete = async (userData) => {
     console.log('🚀 Onboarding completion started')
@@ -5093,10 +4868,7 @@ export default function FitnessDashboard({ user }) {
     return Math.max(0, Math.round((currentDeficit / targetDeficit) * 100))
   }
 
-  // Calculate daily goal progress (legacy function for compatibility)
-  const getDailyGoalProgress = () => {
-    return getDailyDeficitProgress()
-  }
+
 
   // Calculate workout goal progress
   const getWorkoutProgress = () => {
@@ -5172,158 +4944,11 @@ export default function FitnessDashboard({ user }) {
     return { calories: totalCalories, protein: totalProtein, carbs: totalCarbs, fat: totalFat, fiber: totalFiber }
   }
 
-  // Calculate weekly progress
-  const getWeeklyProgress = () => {
-    const today = new Date()
-    const weekStart = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay())
-    const weekEnd = new Date(weekStart.getTime() + 6 * 24 * 60 * 60 * 1000)
-    
-    const weekMeals = loggedMeals.filter(meal => {
-      const mealDate = new Date(meal.timestamp)
-      return mealDate >= weekStart && mealDate <= weekEnd
-    })
-    
-    const weekWorkouts = loggedWorkouts.filter(workout => {
-      const workoutDate = new Date(workout.timestamp)
-      return workoutDate >= weekStart && workoutDate <= weekEnd
-    })
-    
-    const totalWeekCalories = Math.round(weekMeals.reduce((total, meal) => total + meal.calories, 0))
-    const totalWeekBurned = Math.round(weekWorkouts.reduce((total, workout) => total + workout.caloriesBurned, 0))
-    const netWeekCalories = totalWeekCalories - totalWeekBurned
-    
-    if (!userProfile?.calories?.dailyCalories) return 0
-    
-    const weeklyTarget = userProfile.calories.dailyCalories * 7
-    return Math.max(0, Math.round((netWeekCalories / weeklyTarget) * 100))
-  }
 
-  // Calculate weekly change percentage
-  const getWeeklyChange = () => {
-    const currentWeek = getWeeklyProgress()
-    // For now, we'll use a simple calculation - in a real app, you'd compare to previous weeks
-    const previousWeek = 85 // This would come from stored historical data
-    const change = currentWeek - previousWeek
-    return change > 0 ? `+${Math.round(change)}%` : `${Math.round(change)}%`
-  }
 
-  // Calculate calories burned change
-  const getCaloriesBurnedChange = () => {
-    const today = new Date().toDateString()
-    const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toDateString()
-    
-    const todayBurned = loggedWorkouts
-      .filter(workout => new Date(workout.timestamp).toDateString() === today)
-      .reduce((total, workout) => total + workout.caloriesBurned, 0)
-    
-    const yesterdayBurned = loggedWorkouts
-      .filter(workout => new Date(workout.timestamp).toDateString() === yesterday)
-      .reduce((total, workout) => total + workout.caloriesBurned, 0)
-    
-    if (yesterdayBurned === 0) return todayBurned > 0 ? "+100%" : "0%"
-    
-    const change = ((todayBurned - yesterdayBurned) / yesterdayBurned) * 100
-    return change > 0 ? `+${Math.round(change)}%` : `${Math.round(change)}%`
-  }
 
-  // Calculate meals logged today
-  const getMealsLoggedToday = () => {
-    const today = new Date().toDateString()
-    return loggedMeals.filter(meal => new Date(meal.timestamp).toDateString() === today).length
-  }
 
-  // Calculate average progress (based on goal achievement)
-  const getAverageProgress = () => {
-    const dailyGoalProgress = getDailyGoalProgress()
-    const weeklyProgress = getWeeklyProgress()
-    const streakBonus = Math.min(currentStreak * 5, 20) // Bonus for maintaining streak
-    
-    return Math.min(100, Math.round((dailyGoalProgress + weeklyProgress + streakBonus) / 3))
-  }
 
-  // AI-based optimization score (0-100)
-  const getOptimizationScore = () => {
-    if (!userProfile) return 0
-    
-    let score = 0
-    const today = new Date().toDateString()
-    
-    // Diet Quality (30 points)
-    const todayMeals = loggedMeals.filter(meal => new Date(meal.timestamp).toDateString() === today)
-    const totalProtein = todayMeals.reduce((total, meal) => total + (meal.protein || 0), 0)
-    const totalCarbs = todayMeals.reduce((total, meal) => total + (meal.carbs || 0), 0)
-    const totalFat = todayMeals.reduce((total, meal) => total + (meal.fat || 0), 0)
-    
-    // Protein adequacy (10 points)
-    const targetProtein = userProfile.calories?.protein || 120
-    const proteinScore = Math.min(10, Math.round((totalProtein / targetProtein) * 10))
-    score += proteinScore
-    
-    // Macro balance (10 points)
-    const totalCalories = todayMeals.reduce((total, meal) => total + meal.calories, 0)
-    if (totalCalories > 0) {
-      const proteinRatio = (totalProtein * 4) / totalCalories
-      const carbsRatio = (totalCarbs * 4) / totalCalories
-      const fatRatio = (totalFat * 9) / totalCalories
-      
-      // Ideal ratios: 30% protein, 45% carbs, 25% fat
-      const macroBalance = 10 - Math.abs(proteinRatio - 0.3) * 20 - Math.abs(carbsRatio - 0.45) * 10 - Math.abs(fatRatio - 0.25) * 10
-      score += Math.max(0, Math.round(macroBalance))
-    }
-    
-    // Meal frequency (10 points)
-    const mealFrequency = Math.min(10, Math.round(todayMeals.length * 2.5)) // 4 meals = 10 points
-    score += mealFrequency
-    
-    // Exercise Quality (30 points)
-    const todayWorkouts = loggedWorkouts.filter(workout => new Date(workout.timestamp).toDateString() === today)
-    const totalWorkoutTime = todayWorkouts.reduce((total, workout) => total + workout.duration, 0)
-    const totalCaloriesBurned = todayWorkouts.reduce((total, workout) => total + workout.caloriesBurned, 0)
-    
-    // Workout duration (15 points)
-    const durationScore = Math.min(15, Math.round((totalWorkoutTime / 60) * 15)) // 1 hour = 15 points
-    score += durationScore
-    
-    // Workout intensity (15 points)
-    const highIntensityWorkouts = todayWorkouts.filter(w => w.intensity === 'vigorous' || w.intensity === 'maximum').length
-    const intensityScore = Math.min(15, highIntensityWorkouts * 7.5) // 2 high intensity = 15 points
-    score += intensityScore
-    
-    // Goal Achievement (25 points)
-    const dailyGoalProgress = getDailyGoalProgress()
-    const goalScore = Math.min(25, (dailyGoalProgress / 100) * 25)
-    score += goalScore
-    
-    // Consistency (15 points)
-    const streakScore = Math.min(15, currentStreak * 1.5) // 10 day streak = 15 points
-    score += streakScore
-    
-    return Math.round(score)
-  }
-
-  const meals = [
-    { meal: "Avocado Toast", calories: 320, time: "8:30 AM" },
-    { meal: "Grilled Salmon", calories: 450, time: "12:45 PM" },
-    { meal: "Protein Smoothie", calories: 280, time: "3:15 PM" }
-  ]
-
-  const quickActions = [
-    { label: "Log Meal", icon: Apple },
-    { label: "Record Workout", icon: Dumbbell },
-    { label: "Track Water", icon: Droplets },
-    { label: "View Stats", icon: BarChart3 }
-  ]
-
-  const handleQuickAction = (action) => {
-    if (action.label === "Log Meal") {
-      setIsFoodModalOpen(true)
-    } else if (action.label === "Record Workout") {
-      setIsWorkoutModalOpen(true)
-    } else if (action.label === "Track Water") {
-      setIsWaterModalOpen(true)
-    }
-    // Add other action handlers here as needed
-  }
 
   // Handle overlay quick actions
   const handleOverlayAction = (action) => {
@@ -5871,13 +5496,20 @@ export default function FitnessDashboard({ user }) {
               }}>
                 <Camera style={{ width: '20px', height: '20px', color: isDark ? 'black' : 'white' }} strokeWidth={2.5} />
               </div>
-              Today's Meals
+              Recent Meals (Past 7 Days)
             </h2>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
               {loggedMeals.length > 0 ? (
                 loggedMeals
-                  .filter(meal => new Date(meal.timestamp).toDateString() === new Date().toDateString())
+                  .filter(meal => {
+                    // Show meals from the last 7 days instead of just today
+                    const mealDate = new Date(meal.timestamp)
+                    const today = new Date()
+                    const sevenDaysAgo = new Date(today.getTime() - (7 * 24 * 60 * 60 * 1000))
+                    return mealDate >= sevenDaysAgo && mealDate <= today
+                  })
+                  .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)) // Sort by most recent first
                   .map((meal, index) => (
                     <MealCard 
                       key={`${meal.food}-${index}`} 
@@ -5891,7 +5523,13 @@ export default function FitnessDashboard({ user }) {
                         fiber: meal.fiber,
                         originalTimestamp: meal.timestamp,
                         time: meal.mealType ? meal.mealType.charAt(0).toUpperCase() + meal.mealType.slice(1) : 'Meal',
-
+                        date: new Date(meal.timestamp).toLocaleDateString('en-US', { 
+                          month: 'short', 
+                          day: 'numeric',
+                          hour: 'numeric',
+                          minute: '2-digit',
+                          hour12: true
+                        })
                       }} 
                       isDark={isDark} 
                       onDelete={handleMealDelete}
@@ -5904,7 +5542,7 @@ export default function FitnessDashboard({ user }) {
                   color: isDark ? '#a3a3a3' : '#6b7280',
                   fontStyle: 'italic'
                 }}>
-                  No meals logged today. Log your first meal to get started!
+                  No meals logged in the past 7 days. Log your first meal to get started!
                 </div>
               )}
             </div>
