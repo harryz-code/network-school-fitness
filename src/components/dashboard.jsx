@@ -4455,6 +4455,7 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
 
 // Meal Calendar Component
 function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selectedDate = new Date() }) {
+  console.log('🎯 MealCalendar component rendering with:', { isDark, loggedMealsLength: loggedMeals.length, selectedDate })
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [viewMode, setViewMode] = useState('week') // 'week' or 'month'
 
@@ -5917,6 +5918,28 @@ export default function FitnessDashboard({ user }) {
 
         {/* Calendar Section */}
         <div style={{ marginBottom: '64px' }}>
+          <div style={{
+            backgroundColor: isDark ? '#000000' : 'white',
+            border: `2px solid ${isDark ? 'white' : 'black'}`,
+            borderRadius: '8px',
+            padding: '32px',
+            marginBottom: '32px'
+          }}>
+            <h2 style={{
+              fontSize: '20px',
+              fontWeight: 'bold',
+              color: isDark ? 'white' : 'black',
+              fontFamily: 'Georgia, "Times New Roman", Times, serif'
+            }}>
+              Calendar Debug - Should be visible
+            </h2>
+            <p style={{
+              color: isDark ? '#cccccc' : '#666666',
+              fontSize: '14px'
+            }}>
+              If you can see this, the calendar component is loading. If not, there's an error.
+            </p>
+          </div>
           <MealCalendar 
             isDark={isDark}
             loggedMeals={loggedMeals}
