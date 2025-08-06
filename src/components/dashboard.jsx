@@ -42,7 +42,7 @@ import {
   Info,
   ChevronDown,
   ChevronLeft,
-  Calendar
+  Calendar as CalendarIcon
 } from "lucide-react"
 import useResponsive from '../hooks/useResponsive'
 
@@ -4835,7 +4835,7 @@ function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selected
             justifyContent: 'center',
             borderRadius: '4px'
           }}>
-            <Calendar style={{ width: '20px', height: '20px', color: isDark ? 'black' : 'white' }} strokeWidth={2.5} />
+                            <CalendarIcon style={{ width: '20px', height: '20px', color: isDark ? 'black' : 'white' }} strokeWidth={2.5} />
           </div>
           Meal Calendar
         </h2>
