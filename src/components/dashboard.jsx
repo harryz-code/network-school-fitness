@@ -4649,34 +4649,21 @@ function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selected
                 }} />
               )}
               
-              {/* Meal indicators - show green dots for days with meals */}
+              {/* Meal indicator - show single green dot for days with meals */}
               {meals.length > 0 && (
                 <div style={{
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '2px',
                   alignItems: 'center'
                 }}>
-                  {meals.slice(0, 3).map((meal, mealIndex) => (
-                    <div
-                      key={mealIndex}
-                      style={{
-                        width: '6px',
-                        height: '6px',
-                        borderRadius: '50%',
-                        backgroundColor: isSelectedDay ? 'white' : '#10b981'
-                      }}
-                    />
-                  ))}
-                  {meals.length > 3 && (
-                    <div style={{
-                      fontSize: '10px',
-                      fontWeight: 'bold',
-                      color: isSelectedDay ? 'white' : '#6b7280'
-                    }}>
-                      +{meals.length - 3}
-                    </div>
-                  )}
+                  <div
+                    style={{
+                      width: '6px',
+                      height: '6px',
+                      borderRadius: '50%',
+                      backgroundColor: isSelectedDay ? 'white' : '#10b981'
+                    }}
+                  />
                 </div>
               )}
             </div>
