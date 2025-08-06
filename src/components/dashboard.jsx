@@ -667,26 +667,25 @@ function MealCard({ meal, isDark = false, onDelete }) {
         </div>
          <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.3)' }} />
 
-
-        
-        {/* Date badge for retroactive meals */}
-        {meal.date && (
-          <div style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            backgroundColor: isDark ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.9)',
-            color: isDark ? 'white' : 'black',
-            border: `1px solid ${isDark ? 'white' : 'black'}`,
-            padding: '2px 6px',
-            borderRadius: '4px',
-            fontSize: '10px',
-            fontWeight: '500',
-            fontFamily: 'system-ui, -apple-system, sans-serif'
-          }}>
-            {meal.date}
-          </div>
-        )}
+        {/* Meal type badge */}
+        <div style={{
+          position: 'absolute',
+          top: '12px',
+          left: '12px',
+          backgroundColor: isDark ? '#000000' : 'white',
+          color: isDark ? 'white' : 'black',
+          border: `2px solid ${isDark ? 'white' : 'black'}`,
+          padding: '4px 8px',
+          borderRadius: '4px',
+          fontSize: '12px',
+          fontWeight: 'bold',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '4px'
+        }}>
+          <Clock style={{ width: '12px', height: '12px' }} />
+          {meal.mealType ? meal.mealType.charAt(0).toUpperCase() + meal.mealType.slice(1) : 'Meal'}
+        </div>
 
 
       </div>
