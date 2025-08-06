@@ -773,7 +773,7 @@ function MealCard({ meal, isDark = false, onDelete }) {
           top: '0',
           left: '0',
           right: '0',
-          bottom: '48px', // Adjusted to leave exact space for button area
+          bottom: '60px', // Increased space to prevent overlap with delete button
           backgroundColor: isDark ? 'rgba(0, 0, 0, 0.98)' : 'rgba(255, 255, 255, 0.98)',
           borderRadius: '8px 8px 0 0',
           padding: '12px',
@@ -4640,7 +4640,8 @@ function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selected
                 fontSize: '12px',
                 fontWeight: 'bold',
                 marginBottom: '4px',
-                textAlign: 'center'
+                textAlign: 'center',
+                fontFamily: 'Georgia, "Times New Roman", Times, serif'
               }}>
                 {day.toLocaleDateString('en-US', { weekday: 'short' })}
               </div>
@@ -4650,7 +4651,8 @@ function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selected
                 fontSize: '16px',
                 fontWeight: 'bold',
                 marginBottom: '4px',
-                color: isCurrentDay ? '#ef4444' : 'inherit'
+                color: isCurrentDay ? (isDark ? '#9ca3af' : '#6b7280') : 'inherit',
+                fontFamily: 'Georgia, "Times New Roman", Times, serif'
               }}>
                 {day.getDate()}
               </div>
@@ -4803,13 +4805,7 @@ function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selected
   }
 
   return (
-    <div style={{
-      backgroundColor: isDark ? '#000000' : 'white',
-      border: `2px solid ${isDark ? 'white' : 'black'}`,
-      borderRadius: '8px',
-      padding: '32px',
-      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-    }}>
+    <div>
       {/* View mode toggle */}
       <div style={{
         display: 'flex',
@@ -4885,7 +4881,7 @@ function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selected
           gap: '16px'
         }}>
           <h3 style={{
-            fontSize: '18px',
+            fontSize: '16px',
             fontWeight: 'bold',
             color: isDark ? 'white' : 'black',
             fontFamily: 'Georgia, "Times New Roman", Times, serif'
@@ -6003,7 +5999,7 @@ export default function FitnessDashboard({ user }) {
                 }}>
                   <CalendarIcon style={{ width: '20px', height: '20px', color: isDark ? 'black' : 'white' }} strokeWidth={2.5} />
                 </div>
-                Meal Calendar
+                Meals
               </h2>
 
               <MealCalendar 
