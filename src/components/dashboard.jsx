@@ -4493,7 +4493,6 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
 
 // Meal Calendar Component
 function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selectedDate = new Date() }) {
-  console.log('🎯 MealCalendar component rendering with:', { isDark, loggedMealsLength: loggedMeals.length, selectedDate })
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [viewMode, setViewMode] = useState('week') // 'week' or 'month'
 
