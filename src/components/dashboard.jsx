@@ -4936,65 +4936,7 @@ function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selected
       {viewMode === 'week' ? renderWeekView() : renderMonthView()}
       
       {/* Selected date info */}
-      <div style={{
-        marginTop: '24px',
-        padding: '16px',
-        backgroundColor: isDark ? '#1a1a1a' : '#f9f9f9',
-        borderRadius: '8px',
-        border: `1px solid ${isDark ? '#333333' : '#e5e7eb'}`
-      }}>
-        <h4 style={{
-          fontSize: '16px',
-          fontWeight: 'bold',
-          marginBottom: '12px',
-          color: isDark ? 'white' : 'black'
-        }}>
-          {selectedDate.toLocaleDateString('en-US', { 
-            weekday: 'long', 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
-          })}
-        </h4>
-        
-        {getMealsForDate(selectedDate).length > 0 ? (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {getMealsForDate(selectedDate).map((meal, index) => (
-              <div key={index} style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                padding: '8px',
-                backgroundColor: isDark ? '#000000' : 'white',
-                borderRadius: '4px',
-                border: `1px solid ${isDark ? '#333333' : '#e5e7eb'}`
-              }}>
-                <span style={{
-                  fontSize: '14px',
-                  color: isDark ? 'white' : 'black'
-                }}>
-                  {meal.food}
-                </span>
-                <span style={{
-                  fontSize: '14px',
-                  fontWeight: 'bold',
-                  color: isDark ? '#10b981' : '#059669'
-                }}>
-                  {meal.calories} cal
-                </span>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p style={{
-            fontSize: '14px',
-            color: isDark ? '#9ca3af' : '#6b7280',
-            fontStyle: 'italic'
-          }}>
-            No meals logged for this date. Click on any date to log meals retroactively.
-          </p>
-        )}
-      </div>
+
     </div>
   )
 }
@@ -5687,11 +5629,10 @@ export default function FitnessDashboard({ user }) {
     return streak
   }
 
-  // Handle calendar date selection
+  // Handle calendar date selection - only view meals, don't trigger food logging
   const handleCalendarDateSelect = (date) => {
     setSelectedCalendarDate(date)
-    // Open food modal with the selected date
-    setIsFoodModalOpen(true)
+    // Don't open food modal - just view meals for the selected date
   }
 
   // Handle food modal close - reset selected calendar date
