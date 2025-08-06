@@ -5987,7 +5987,7 @@ export default function FitnessDashboard({ user }) {
               color: isDark ? 'white' : 'black',
               fontFamily: 'Georgia, "Times New Roman", Times, serif'
             }}>
-              Calendar Debug - Should be visible
+              Calendar Debug - Should be visible (UPDATED)
             </h2>
             <p style={{
               color: isDark ? '#cccccc' : '#666666',
