@@ -5915,6 +5915,16 @@ export default function FitnessDashboard({ user }) {
               />
         </div>
 
+        {/* Calendar Section */}
+        <div style={{ marginBottom: '64px' }}>
+          <MealCalendar 
+            isDark={isDark}
+            loggedMeals={loggedMeals}
+            onDateSelect={handleCalendarDateSelect}
+            selectedDate={selectedCalendarDate}
+          />
+        </div>
+
         {/* Main Content Grid */}
         <div style={{ 
           display: 'grid', 
@@ -6080,16 +6090,6 @@ export default function FitnessDashboard({ user }) {
             </div>
             </div>
           </div>
-        </div>
-
-        {/* Calendar Section */}
-        <div style={{ marginTop: '64px' }}>
-          <MealCalendar 
-            isDark={isDark}
-            loggedMeals={loggedMeals}
-            onDateSelect={handleCalendarDateSelect}
-            selectedDate={selectedCalendarDate}
-          />
         </div>
 
 
