@@ -15,7 +15,6 @@ import {
 import {
   Plus,
   Target,
-  Camera,
   Clock,
   Moon,
   Sun,
@@ -1385,6 +1384,71 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
     { id: 21, name: "Almond Butter Avocado", calories: 363.7, protein: 23.1, carbs: 13.4, fat: 26.5, fiber: 7.4, serving: "1 serving" },
   ]
 
+  // Breakfast food database (common foods with estimated calories)
+  const breakfastFoodDatabase = [
+    // Eggs
+    { id: 3001, name: "Scrambled Eggs", calories: 180, protein: 12, carbs: 2, fat: 14, fiber: 0, serving: "2 eggs" },
+    { id: 3002, name: "Sunny Side Up Eggs", calories: 160, protein: 12, carbs: 1, fat: 12, fiber: 0, serving: "2 eggs" },
+    { id: 3003, name: "Plain Omelette", calories: 154, protein: 12, carbs: 1, fat: 11, fiber: 0, serving: "2 eggs" },
+    { id: 3004, name: "Cheese Omelette", calories: 240, protein: 16, carbs: 2, fat: 19, fiber: 0, serving: "2 eggs + cheese" },
+    { id: 3005, name: "Vegetable Omelette", calories: 200, protein: 14, carbs: 5, fat: 14, fiber: 2, serving: "2 eggs + veggies" },
+
+    // Pastries & bakery
+    { id: 3010, name: "Butter Croissant", calories: 270, protein: 5, carbs: 31, fat: 14, fiber: 1, serving: "1 piece" },
+    { id: 3011, name: "Chocolate Croissant", calories: 330, protein: 6, carbs: 36, fat: 18, fiber: 2, serving: "1 piece" },
+    { id: 3012, name: "Danish Pastry", calories: 300, protein: 5, carbs: 38, fat: 15, fiber: 1, serving: "1 piece" },
+    { id: 3013, name: "Blueberry Muffin", calories: 420, protein: 6, carbs: 58, fat: 18, fiber: 2, serving: "1 piece" },
+    { id: 3014, name: "Plain Bagel", calories: 290, protein: 10, carbs: 56, fat: 2, fiber: 2, serving: "1 piece" },
+    { id: 3015, name: "Toast with Butter", calories: 190, protein: 4, carbs: 22, fat: 9, fiber: 1, serving: "2 slices" },
+    { id: 3016, name: "Kaya Toast", calories: 320, protein: 7, carbs: 45, fat: 12, fiber: 1, serving: "2 halves" },
+
+    // Salad components
+    { id: 3020, name: "Mixed Greens", calories: 25, protein: 2, carbs: 4, fat: 0, fiber: 2, serving: "2 cups" },
+    { id: 3021, name: "Sliced Cucumber", calories: 8, protein: 0.3, carbs: 1.9, fat: 0.1, fiber: 0.3, serving: "1/2 cup" },
+    { id: 3022, name: "Cherry Tomatoes", calories: 18, protein: 0.9, carbs: 3.9, fat: 0.2, fiber: 1.2, serving: "1/2 cup" },
+    { id: 3023, name: "Avocado (sliced)", calories: 120, protein: 2, carbs: 6, fat: 10, fiber: 5, serving: "1/2 fruit" },
+    { id: 3024, name: "Greek Yogurt (plain)", calories: 100, protein: 9, carbs: 5, fat: 5, fiber: 0, serving: "150g" },
+
+    // Cheeses
+    { id: 3030, name: "Cheddar Cheese", calories: 113, protein: 7, carbs: 0, fat: 9, fiber: 0, serving: "1 slice (28g)" },
+    { id: 3031, name: "Mozzarella Cheese", calories: 85, protein: 6, carbs: 1, fat: 6, fiber: 0, serving: "1 slice (28g)" },
+    { id: 3032, name: "Cream Cheese", calories: 100, protein: 2, carbs: 2, fat: 9, fiber: 0, serving: "2 tbsp (30g)" },
+
+    // Fruits
+    { id: 3040, name: "Banana", calories: 105, protein: 1.3, carbs: 27, fat: 0.3, fiber: 3, serving: "1 medium" },
+    { id: 3041, name: "Apple", calories: 95, protein: 0.5, carbs: 25, fat: 0.3, fiber: 4, serving: "1 medium" },
+    { id: 3042, name: "Orange", calories: 62, protein: 1.2, carbs: 15.4, fat: 0.2, fiber: 3.1, serving: "1 medium" },
+    { id: 3043, name: "Watermelon", calories: 46, protein: 0.9, carbs: 11.5, fat: 0.2, fiber: 0.6, serving: "1 cup" },
+    { id: 3044, name: "Pineapple", calories: 82, protein: 0.9, carbs: 21.6, fat: 0.2, fiber: 2.3, serving: "1 cup" },
+    { id: 3045, name: "Papaya", calories: 62, protein: 0.7, carbs: 16, fat: 0.4, fiber: 2.5, serving: "1 cup" },
+
+    // Juices (fresh, 100%)
+    { id: 3050, name: "Fresh Carrot Juice (100%)", calories: 80, protein: 2, carbs: 18, fat: 0.3, fiber: 2, serving: "250ml" },
+    { id: 3051, name: "Fresh Celery Juice (100%)", calories: 35, protein: 1.5, carbs: 7, fat: 0.2, fiber: 1.5, serving: "250ml" },
+
+    // Chinese breakfast items and soups
+    { id: 3060, name: "Plain Congee", calories: 150, protein: 3, carbs: 33, fat: 1, fiber: 0, serving: "1 bowl" },
+    { id: 3061, name: "Chicken Congee", calories: 220, protein: 12, carbs: 34, fat: 5, fiber: 0, serving: "1 bowl" },
+    { id: 3062, name: "Steamed Sweet Potato", calories: 180, protein: 3, carbs: 41, fat: 0.2, fiber: 4, serving: "200g" },
+    { id: 3063, name: "Steamed Purple Potato", calories: 170, protein: 3, carbs: 39, fat: 0.2, fiber: 4, serving: "200g" },
+    { id: 3064, name: "Chicken Soup", calories: 120, protein: 10, carbs: 3, fat: 7, fiber: 0, serving: "1 bowl (300ml)" },
+    { id: 3065, name: "Beef Soup", calories: 150, protein: 12, carbs: 2, fat: 10, fiber: 0, serving: "1 bowl (300ml)" },
+    { id: 3066, name: "Tom Yum Soup", calories: 120, protein: 8, carbs: 10, fat: 5, fiber: 1, serving: "1 bowl (300ml)" },
+
+    // Malay breakfast items
+    { id: 3070, name: "Roti Canai (plain)", calories: 300, protein: 6, carbs: 44, fat: 11, fiber: 2, serving: "1 piece" },
+    { id: 3071, name: "Nasi Lemak (small)", calories: 400, protein: 10, carbs: 45, fat: 18, fiber: 2, serving: "1 small pack" },
+    { id: 3072, name: "Kuih Seri Muka", calories: 180, protein: 3, carbs: 30, fat: 5, fiber: 1, serving: "1 piece" },
+
+    // Indian breakfast items
+    { id: 3080, name: "Idli", calories: 60, protein: 2, carbs: 12, fat: 0.4, fiber: 1, serving: "1 piece" },
+    { id: 3081, name: "Dosa (plain)", calories: 170, protein: 4, carbs: 30, fat: 3, fiber: 2, serving: "1 piece" },
+    { id: 3082, name: "Vada (medu)", calories: 190, protein: 4, carbs: 22, fat: 10, fiber: 2, serving: "1 piece" },
+    { id: 3083, name: "Upma", calories: 200, protein: 5, carbs: 30, fat: 7, fiber: 3, serving: "1 bowl" },
+    { id: 3084, name: "Poha", calories: 250, protein: 5, carbs: 45, fat: 5, fiber: 3, serving: "1 bowl" },
+    { id: 3085, name: "Aloo Paratha", calories: 320, protein: 7, carbs: 45, fat: 12, fiber: 4, serving: "1 piece" }
+  ]
+
   // Lunch food database (organized by day)
   const lunchFoodDatabase = {
     monday: [
@@ -1638,6 +1702,8 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
     switch (mealType) {
       case "cafe":
         return cafeFoodDatabase
+      case "breakfast":
+        return breakfastFoodDatabase
       case "lunch":
         return selectedDay ? (lunchFoodDatabase[selectedDay] || []) : []
       case "dinner":
@@ -1787,6 +1853,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
               gap: '16px'
             }}>
               {[
+                { id: 'breakfast', name: 'Breakfast', icon: Sun },
                 { id: 'cafe', name: 'Cafe', icon: Utensils },
                 { id: 'lunch', name: 'Lunch', icon: Apple },
                 { id: 'dinner', name: 'Dinner', icon: Moon }
@@ -1795,7 +1862,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
                   key={type.id}
                   onClick={() => {
                     setMealType(type.id)
-                    if (type.id === 'cafe') {
+                    if (type.id === 'cafe' || type.id === 'breakfast') {
                       setShowMealTypeSelection(false)
                     } else {
                       setShowDaySelection(true)
@@ -1976,7 +2043,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
             <div style={{ marginBottom: '24px' }}>
               <button
                 onClick={() => {
-                  if (mealType === 'cafe') {
+                  if (mealType === 'cafe' || mealType === 'breakfast') {
                     setShowMealTypeSelection(true)
                     setMealType("")
                   } else {
@@ -2000,7 +2067,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
                   fontWeight: 'bold'
                 }}
               >
-                ← Back to {mealType === 'cafe' ? 'Meal Types' : 'Day Selection'}
+                ← Back to {(mealType === 'cafe' || mealType === 'breakfast') ? 'Meal Types' : 'Day Selection'}
           </button>
         </div>
 
@@ -4649,21 +4716,38 @@ function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selected
                 }} />
               )}
               
-              {/* Meal indicator - show single green dot for days with meals */}
+              {/* Meal indicators - show multiple dots based on number of meals */}
               {meals.length > 0 && (
                 <div style={{
                   display: 'flex',
                   flexDirection: 'column',
-                  alignItems: 'center'
+                  alignItems: 'center',
+                  gap: '2px'
                 }}>
-                  <div
-                    style={{
-                      width: '6px',
-                      height: '6px',
-                      borderRadius: '50%',
-                      backgroundColor: isSelectedDay ? 'white' : '#10b981'
-                    }}
-                  />
+                  {/* Show up to 4 dots, then "+1" if more */}
+                  {meals.slice(0, 4).map((_, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        width: '6px',
+                        height: '6px',
+                        borderRadius: '50%',
+                        backgroundColor: isSelectedDay ? 'white' : '#10b981'
+                      }}
+                    />
+                  ))}
+                  {/* Show "+1" indicator if more than 4 meals */}
+                  {meals.length > 4 && (
+                    <div style={{
+                      fontSize: '10px',
+                      fontWeight: 'bold',
+                      color: isSelectedDay ? 'white' : '#10b981',
+                      lineHeight: '1',
+                      marginTop: '2px'
+                    }}>
+                      +1
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -4745,35 +4829,26 @@ function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selected
                   {day.getDate()}
                 </div>
                 
-                {/* Meal indicators */}
-                {meals.length > 0 && (
+                {/* Day indicators - single dot rule (same as week view) */}
+                {isCurrentDay && meals.length === 0 && (
                   <div style={{
-                    display: 'flex',
-                    gap: '2px',
-                    flexWrap: 'wrap',
-                    justifyContent: 'center'
-                  }}>
-                    {meals.slice(0, 4).map((meal, mealIndex) => (
-                      <div
-                        key={mealIndex}
-                        style={{
-                          width: '4px',
-                          height: '4px',
-                          borderRadius: '50%',
-                          backgroundColor: isSelectedDay ? 'white' : '#10b981'
-                          }}
-                        />
-                    ))}
-                    {meals.length > 4 && (
-                      <div style={{
-                        fontSize: '8px',
-                        fontWeight: 'bold',
-                        color: isSelectedDay ? 'white' : '#6b7280'
-                      }}>
-                        +{meals.length - 4}
-                      </div>
-                    )}
-                  </div>
+                    width: '6px',
+                    height: '6px',
+                    borderRadius: '50%',
+                    backgroundColor: isDark ? '#9ca3af' : '#6b7280',
+                    marginTop: '2px'
+                  }} />
+                )}
+
+                {meals.length > 0 && (
+                  <div
+                    style={{
+                      width: '6px',
+                      height: '6px',
+                      borderRadius: '50%',
+                      backgroundColor: isSelectedDay ? 'white' : '#10b981'
+                    }}
+                  />
                 )}
               </div>
             )
