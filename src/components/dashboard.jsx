@@ -1849,7 +1849,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
             </h3>
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
+              gridTemplateColumns: 'repeat(2, 1fr)',
               gap: '16px'
             }}>
               {[
@@ -4716,38 +4716,21 @@ function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selected
                 }} />
               )}
               
-              {/* Meal indicators - show multiple dots based on number of meals */}
+              {/* Meal indicator - show single green dot for days with meals */}
               {meals.length > 0 && (
                 <div style={{
                   display: 'flex',
                   flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '2px'
+                  alignItems: 'center'
                 }}>
-                  {/* Show up to 4 dots, then "+1" if more */}
-                  {meals.slice(0, 4).map((_, index) => (
-                    <div
-                      key={index}
-                      style={{
-                        width: '6px',
-                        height: '6px',
-                        borderRadius: '50%',
-                        backgroundColor: isSelectedDay ? 'white' : '#10b981'
-                      }}
-                    />
-                  ))}
-                  {/* Show "+1" indicator if more than 4 meals */}
-                  {meals.length > 4 && (
-                    <div style={{
-                      fontSize: '10px',
-                      fontWeight: 'bold',
-                      color: isSelectedDay ? 'white' : '#10b981',
-                      lineHeight: '1',
-                      marginTop: '2px'
-                    }}>
-                      +1
-                    </div>
-                  )}
+                  <div
+                    style={{
+                      width: '6px',
+                      height: '6px',
+                      borderRadius: '50%',
+                      backgroundColor: isSelectedDay ? 'white' : '#10b981'
+                    }}
+                  />
                 </div>
               )}
             </div>
@@ -4840,39 +4823,16 @@ function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selected
                   }} />
                 )}
 
-                {/* Meal indicators - show multiple dots based on number of meals */}
+                {/* Meal indicator - show single green dot for days with meals */}
                 {meals.length > 0 && (
-                  <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '2px'
-                  }}>
-                    {/* Show up to 4 dots, then "+1" if more */}
-                    {meals.slice(0, 4).map((_, index) => (
-                      <div
-                        key={index}
-                        style={{
-                          width: '6px',
-                          height: '6px',
-                          borderRadius: '50%',
-                          backgroundColor: isSelectedDay ? 'white' : '#10b981'
-                        }}
-                      />
-                    ))}
-                    {/* Show "+1" indicator if more than 4 meals */}
-                    {meals.length > 4 && (
-                      <div style={{
-                        fontSize: '10px',
-                        fontWeight: 'bold',
-                        color: isSelectedDay ? 'white' : '#10b981',
-                        lineHeight: '1',
-                        marginTop: '2px'
-                      }}>
-                        +1
-                      </div>
-                    )}
-                  </div>
+                  <div
+                    style={{
+                      width: '6px',
+                      height: '6px',
+                      borderRadius: '50%',
+                      backgroundColor: isSelectedDay ? 'white' : '#10b981'
+                    }}
+                  />
                 )}
               </div>
             )
