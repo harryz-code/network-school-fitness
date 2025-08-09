@@ -101,33 +101,54 @@ export const getUserProfile = async () => {
     .from('profiles')
     .select('*')
     .eq('id', user.id)
-    .single()
 
   if (error) {
     console.log('❌ Database query error:', error.code, error.message)
     console.log('❌ Full error object:', error)
-    if (error.code !== 'PGRST116') throw error // PGRST116 = not found
+    throw error
   }
 
-  console.log('📊 Profile query result:', data)
-  console.log('✅ Profile found?', !!data)
+  // Handle multiple profiles - take the most recent one
+  let profileData = null
+  if (data && data.length > 0) {
+    console.log(`📊 Found ${data.length} profile(s) for user`)
+    if (data.length > 1) {
+      console.log('⚠️ Multiple profiles found, using most recent one')
+      // Sort by created_at if available, otherwise use the first one
+      profileData = data.sort((a, b) => {
+        if (a.created_at && b.created_at) {
+          return new Date(b.created_at) - new Date(a.created_at)
+        }
+        return 0
+      })[0]
+      console.log('🔄 Selected profile:', profileData.id)
+    } else {
+      profileData = data[0]
+      console.log('✅ Single profile found')
+    }
+  } else {
+    console.log('📭 No profiles found for user')
+  }
+
+  console.log('📊 Profile query result:', profileData)
+  console.log('✅ Profile found?', !!profileData)
   
-  if (data) {
+  if (profileData) {
     console.log('📋 Profile details:', {
-      id: data.id,
-      email: data.email,
-      age: data.age,
-      sex: data.sex,
-      weight: data.weight,
-      height: data.height,
-      activity_level: data.activity_level,
-      bmr: data.bmr,
-      tdee: data.tdee,
-      daily_calories: data.daily_calories
+      id: profileData.id,
+      email: profileData.email,
+      age: profileData.age,
+      sex: profileData.sex,
+      weight: profileData.weight,
+      height: profileData.height,
+      activity_level: profileData.activity_level,
+      bmr: profileData.bmr,
+      tdee: profileData.tdee,
+      daily_calories: profileData.daily_calories
     })
   }
   
-  return data
+  return profileData
 }
 
 // Meal operations
