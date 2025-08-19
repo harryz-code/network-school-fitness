@@ -146,7 +146,7 @@ const PWAInstallPrompt = ({ isDark = false }) => {
               color: '#1a1a1a',
               border: 'none',
               padding: '8px 16px',
-              borderRadius: '6px',
+              borderRadius: '0px',
               fontWeight: '600',
               fontSize: '14px',
               minHeight: '36px',
@@ -162,7 +162,7 @@ const PWAInstallPrompt = ({ isDark = false }) => {
               border: '1px solid white',
               color: 'white',
               padding: '8px 12px',
-              borderRadius: '6px',
+              borderRadius: '0px',
               fontSize: '14px',
               minHeight: '36px',
               cursor: 'pointer'

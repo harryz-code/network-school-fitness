@@ -333,11 +333,7 @@ function TrendReport({
               <insight.icon style={{
                 width: '20px',
                 height: '20px',
-                color: insight.type === 'success' 
-                  ? '#22c55e' 
-                  : insight.type === 'warning' 
-                  ? '#f59e0b' 
-                  : isDark ? 'white' : 'black',
+                color: isDark ? 'white' : 'black',
                 marginTop: '2px'
               }} />
               <div>

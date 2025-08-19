@@ -29,7 +29,7 @@ const CustomTooltip = ({ active, payload, label, isDark }) => {
       <div style={{
         backgroundColor: isDark ? '#000000' : 'white',
         border: `2px solid ${isDark ? 'white' : 'black'}`,
-        borderRadius: '8px',
+        borderRadius: '0px',
         padding: '12px',
         color: isDark ? 'white' : 'black',
         fontSize: '12px',
@@ -244,7 +244,7 @@ export default function StatsModal({ isOpen, onClose, isDark = true, userProfile
           <div style={{
             backgroundColor: isDark ? '#000000' : 'white',
             border: `2px solid ${isDark ? 'white' : 'black'}`,
-            borderRadius: '12px',
+            borderRadius: '0px',
             padding: '24px',
             textAlign: 'center'
           }}>
@@ -263,7 +263,7 @@ export default function StatsModal({ isOpen, onClose, isDark = true, userProfile
           <div style={{
             backgroundColor: isDark ? '#000000' : 'white',
             border: `2px solid ${isDark ? 'white' : 'black'}`,
-            borderRadius: '12px',
+            borderRadius: '0px',
             padding: '24px',
             textAlign: 'center'
           }}>
@@ -282,7 +282,7 @@ export default function StatsModal({ isOpen, onClose, isDark = true, userProfile
           <div style={{
             backgroundColor: isDark ? '#000000' : 'white',
             border: `2px solid ${isDark ? 'white' : 'black'}`,
-            borderRadius: '12px',
+            borderRadius: '0px',
             padding: '24px',
             textAlign: 'center'
           }}>
@@ -301,7 +301,7 @@ export default function StatsModal({ isOpen, onClose, isDark = true, userProfile
           <div style={{
             backgroundColor: isDark ? '#000000' : 'white',
             border: `2px solid ${isDark ? 'white' : 'black'}`,
-            borderRadius: '12px',
+            borderRadius: '0px',
             padding: '24px',
             textAlign: 'center'
           }}>
@@ -328,7 +328,7 @@ export default function StatsModal({ isOpen, onClose, isDark = true, userProfile
           <div style={{
             backgroundColor: isDark ? '#000000' : 'white',
             border: `2px solid ${isDark ? 'white' : 'black'}`,
-            borderRadius: '12px',
+            borderRadius: '0px',
             padding: '24px',
             minHeight: '350px'
           }}>
@@ -367,7 +367,7 @@ export default function StatsModal({ isOpen, onClose, isDark = true, userProfile
           <div style={{
             backgroundColor: isDark ? '#000000' : 'white',
             border: `2px solid ${isDark ? 'white' : 'black'}`,
-            borderRadius: '12px',
+            borderRadius: '0px',
             padding: '24px',
             minHeight: '350px'
           }}>
@@ -401,7 +401,7 @@ export default function StatsModal({ isOpen, onClose, isDark = true, userProfile
           <div style={{
             backgroundColor: isDark ? '#000000' : 'white',
             border: `2px solid ${isDark ? 'white' : 'black'}`,
-            borderRadius: '12px',
+            borderRadius: '0px',
             padding: '48px',
             textAlign: 'center',
             marginBottom: '32px'
@@ -429,7 +429,7 @@ export default function StatsModal({ isOpen, onClose, isDark = true, userProfile
           <div style={{
             backgroundColor: isDark ? '#000000' : 'white',
             border: `2px solid ${isDark ? 'white' : 'black'}`,
-            borderRadius: '12px',
+            borderRadius: '0px',
             padding: '24px',
             textAlign: 'center',
             marginBottom: '32px'

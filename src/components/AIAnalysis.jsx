@@ -242,7 +242,7 @@ function AIAnalysis({
             transition: 'all 0.2s ease'
           }}
         >
-          💪 Exercise
+          Exercise
         </button>
         <button
           onClick={() => setActiveTab('biometrics')}
@@ -263,7 +263,7 @@ function AIAnalysis({
             transition: 'all 0.2s ease'
           }}
         >
-          📊 Biometrics
+          Biometrics
         </button>
       </div>
 
@@ -292,7 +292,7 @@ function AIAnalysis({
 
         {activeTab === 'biometrics' && !biometricAnalysis && (
           <EmptyState 
-            icon="📊" 
+            icon="" 
             title="No biometric data" 
             description="Add your body measurements to get health insights!"
             isDark={isDark}
@@ -363,7 +363,7 @@ function NutritionAnalysisView({ analysis, isDark }) {
           fontSize: '16px',
           fontWeight: 'bold'
         }}>
-          📊 Macro Distribution
+          Macro Distribution
         </h4>
         <div style={{ display: 'flex', gap: '2px', marginBottom: '12px' }}>
           <div style={{
@@ -969,7 +969,7 @@ function ExerciseAnalysisView({ analysis, isDark }) {
             color: isDark ? 'white' : 'black',
             fontFamily: 'Georgia, "Times New Roman", Times, serif'
           }}>
-            🎯 Key Insights
+            Key Insights
           </h4>
           <div style={{
             display: 'flex',

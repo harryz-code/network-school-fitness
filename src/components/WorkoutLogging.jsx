@@ -469,8 +469,8 @@ function WorkoutLogging({
                     fontFamily: 'system-ui, -apple-system, sans-serif',
                     color: isDark ? '#a3a3a3' : '#6b7280'
                   }}>
-                    <span>📊 {Math.round(calculateTotalDuration())} min</span>
-                    <span>🔥 {calculateTotalCalories()} cal</span>
+                    <span>{Math.round(calculateTotalDuration())} min</span>
+                    <span>{calculateTotalCalories()} cal</span>
                   </div>
                   
                   {selectedExercises.map((exercise, index) => (

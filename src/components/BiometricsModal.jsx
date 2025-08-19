@@ -160,7 +160,7 @@ const BiometricsModal = ({
             color: isDark ? 'white' : 'black',
             fontFamily: 'Georgia, "Times New Roman", Times, serif'
           }}>
-            📊 Biometric Data
+            Biometric Data
           </h2>
           <button
             onClick={onClose}
