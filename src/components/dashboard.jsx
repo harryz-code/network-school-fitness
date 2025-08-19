@@ -373,7 +373,7 @@ function StatsCard({ icon: Icon, title, value, change, isDark = false, userData 
       style={{
         backgroundColor: isDark ? '#000000' : 'white',
         border: `2px solid ${isDark ? 'white' : 'black'}`,
-        borderRadius: '8px',
+        borderRadius: '0px',
         padding: '24px',
         boxShadow: isHovered ? '0 20px 25px -5px rgba(0, 0, 0, 0.1)' : '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
         transition: 'all 0.3s ease',
@@ -393,7 +393,7 @@ function StatsCard({ icon: Icon, title, value, change, isDark = false, userData 
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          borderRadius: '4px'
+          borderRadius: '0px'
         }}>
           <Icon style={{ width: '24px', height: '24px', color: isDark ? 'black' : 'white' }} strokeWidth={2.5} />
         </div>
@@ -440,7 +440,7 @@ function StatsCard({ icon: Icon, title, value, change, isDark = false, userData 
           right: '0',
           bottom: '0',
           backgroundColor: isDark ? 'rgba(0, 0, 0, 0.95)' : 'rgba(255, 255, 255, 0.95)',
-          borderRadius: '8px',
+          borderRadius: '0px',
           padding: '24px',
           display: 'flex',
           flexDirection: 'column',
@@ -489,7 +489,7 @@ function DarkModeToggle({ isDark, toggleDarkMode }) {
         backgroundColor: isDark ? 'white' : 'black',
         color: isDark ? 'black' : 'white',
         border: `2px solid ${isDark ? 'white' : 'black'}`,
-        borderRadius: '4px',
+        borderRadius: '0px',
         cursor: 'pointer',
         transition: 'all 0.3s ease'
       }}
@@ -647,7 +647,7 @@ function MealCard({ meal, isDark = false, onDelete }) {
       style={{
         backgroundColor: isDark ? '#000000' : 'white',
         border: `2px solid ${isDark ? 'white' : 'black'}`,
-        borderRadius: '8px',
+        borderRadius: '0px',
         overflow: 'hidden',
         boxShadow: isHovered ? '0 20px 25px -5px rgba(0, 0, 0, 0.1)' : '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
         transition: 'all 0.3s ease',
@@ -680,7 +680,7 @@ function MealCard({ meal, isDark = false, onDelete }) {
           color: isDark ? 'white' : 'black',
           border: `2px solid ${isDark ? 'white' : 'black'}`,
           padding: '4px 8px',
-          borderRadius: '4px',
+          borderRadius: '0px',
           fontSize: '12px',
           fontWeight: 'bold',
           display: 'flex',
@@ -730,7 +730,7 @@ function MealCard({ meal, isDark = false, onDelete }) {
             letterSpacing: '0.05em',
             padding: '4px 12px',
               fontSize: '12px',
-            borderRadius: '4px',
+            borderRadius: '0px',
             cursor: 'pointer',
             transition: 'all 0.3s ease',
             display: 'flex',
@@ -761,7 +761,7 @@ function MealCard({ meal, isDark = false, onDelete }) {
           right: '0',
           bottom: '60px', // Increased space to prevent overlap with delete button
           backgroundColor: isDark ? 'rgba(0, 0, 0, 0.98)' : 'rgba(255, 255, 255, 0.98)',
-          borderRadius: '8px 8px 0 0',
+          borderRadius: '0px',
           padding: '12px',
           display: 'flex',
           flexDirection: 'column',
@@ -778,7 +778,7 @@ function MealCard({ meal, isDark = false, onDelete }) {
             padding: '12px',
             backgroundColor: isDark ? '#1a1a1a' : '#ffffff',
             border: `1px solid ${isDark ? '#333333' : '#e0e0e0'}`,
-            borderRadius: '6px',
+            borderRadius: '0px',
             marginBottom: '12px'
           }}>
             <div style={{
@@ -813,7 +813,7 @@ function MealCard({ meal, isDark = false, onDelete }) {
               padding: '6px',
               backgroundColor: isDark ? '#1a1a1a' : '#ffffff',
               border: `1px solid ${isDark ? '#333333' : '#e0e0e0'}`,
-              borderRadius: '4px'
+              borderRadius: '0px'
             }}>
               <div style={{
                 fontSize: '16px',
@@ -841,7 +841,7 @@ function MealCard({ meal, isDark = false, onDelete }) {
               padding: '6px',
               backgroundColor: isDark ? '#1a1a1a' : '#ffffff',
               border: `1px solid ${isDark ? '#333333' : '#e0e0e0'}`,
-              borderRadius: '4px'
+              borderRadius: '0px'
             }}>
               <div style={{
                 fontSize: '16px',
@@ -869,7 +869,7 @@ function MealCard({ meal, isDark = false, onDelete }) {
               padding: '6px',
               backgroundColor: isDark ? '#1a1a1a' : '#ffffff',
               border: `1px solid ${isDark ? '#333333' : '#e0e0e0'}`,
-              borderRadius: '4px'
+              borderRadius: '0px'
             }}>
               <div style={{
                 fontSize: '16px',
@@ -897,7 +897,7 @@ function MealCard({ meal, isDark = false, onDelete }) {
               padding: '6px',
               backgroundColor: isDark ? '#1a1a1a' : '#ffffff',
               border: `1px solid ${isDark ? '#333333' : '#e0e0e0'}`,
-              borderRadius: '4px'
+              borderRadius: '0px'
             }}>
               <div style={{
                 fontSize: '16px',
@@ -1023,7 +1023,7 @@ function WorkoutRecordingModal({ isOpen, onClose, isDark = false, userProfile, o
       <div style={{
         backgroundColor: isDark ? '#000000' : 'white',
         border: `2px solid ${isDark ? 'white' : 'black'}`,
-        borderRadius: '12px',
+        borderRadius: '0px',
         padding: '32px',
         maxWidth: '600px',
         width: '100%',
@@ -1053,7 +1053,7 @@ function WorkoutRecordingModal({ isOpen, onClose, isDark = false, userProfile, o
               border: 'none',
               cursor: 'pointer',
               padding: '8px',
-              borderRadius: '4px',
+              borderRadius: '0px',
               color: isDark ? 'white' : 'black'
             }}
           >
@@ -1080,7 +1080,7 @@ function WorkoutRecordingModal({ isOpen, onClose, isDark = false, userProfile, o
               width: '100%',
               padding: '12px',
               border: `2px solid ${isDark ? 'white' : 'black'}`,
-              borderRadius: '8px',
+              borderRadius: '0px',
               backgroundColor: isDark ? '#000000' : 'white',
               color: isDark ? 'white' : 'black',
               fontSize: '16px',
@@ -1113,7 +1113,7 @@ function WorkoutRecordingModal({ isOpen, onClose, isDark = false, userProfile, o
                   border: `2px solid ${workoutType === type.id ? (isDark ? 'white' : 'black') : (isDark ? '#333333' : '#e5e7eb')}`,
                   backgroundColor: workoutType === type.id ? (isDark ? 'white' : 'black') : 'transparent',
                   color: workoutType === type.id ? (isDark ? 'black' : 'white') : (isDark ? 'white' : 'black'),
-                  borderRadius: '8px',
+                  borderRadius: '0px',
                   cursor: 'pointer',
                   fontWeight: 'bold',
                   transition: 'all 0.2s',
@@ -1152,7 +1152,7 @@ function WorkoutRecordingModal({ isOpen, onClose, isDark = false, userProfile, o
                 border: `2px solid ${isDark ? 'white' : 'black'}`,
                 backgroundColor: isDark ? '#000000' : 'white',
                 color: isDark ? 'white' : 'black',
-                borderRadius: '4px',
+                borderRadius: '0px',
                 cursor: 'pointer',
                 fontSize: '18px',
                 fontWeight: 'bold'
@@ -1176,7 +1176,7 @@ function WorkoutRecordingModal({ isOpen, onClose, isDark = false, userProfile, o
                 border: `2px solid ${isDark ? 'white' : 'black'}`,
                 backgroundColor: isDark ? '#000000' : 'white',
                 color: isDark ? 'white' : 'black',
-                borderRadius: '4px',
+                borderRadius: '0px',
                 cursor: 'pointer',
                 fontSize: '18px',
                 fontWeight: 'bold'
@@ -1197,7 +1197,7 @@ function WorkoutRecordingModal({ isOpen, onClose, isDark = false, userProfile, o
             marginTop: '12px',
             padding: '12px',
             border: `2px solid ${isDark ? 'white' : 'black'}`,
-            borderRadius: '8px',
+            borderRadius: '0px',
             backgroundColor: isDark ? '#111111' : '#f9f9f9',
             textAlign: 'center'
           }}>
@@ -1263,7 +1263,7 @@ function WorkoutRecordingModal({ isOpen, onClose, isDark = false, userProfile, o
                   border: `2px solid ${intensity === level.id ? (isDark ? 'white' : 'black') : (isDark ? '#333333' : '#e5e7eb')}`,
                   backgroundColor: intensity === level.id ? (isDark ? 'white' : 'black') : 'transparent',
                   color: intensity === level.id ? (isDark ? 'black' : 'white') : (isDark ? 'white' : 'black'),
-                  borderRadius: '8px',
+                  borderRadius: '0px',
                   cursor: 'pointer',
                   textAlign: 'left',
                   transition: 'all 0.2s'
@@ -1298,7 +1298,7 @@ function WorkoutRecordingModal({ isOpen, onClose, isDark = false, userProfile, o
               width: '100%',
               padding: '12px',
               border: `2px solid ${isDark ? 'white' : 'black'}`,
-              borderRadius: '8px',
+              borderRadius: '0px',
               backgroundColor: isDark ? '#000000' : 'white',
               color: isDark ? 'white' : 'black',
               fontSize: '16px',
@@ -1318,7 +1318,7 @@ function WorkoutRecordingModal({ isOpen, onClose, isDark = false, userProfile, o
             backgroundColor: isDark ? 'white' : 'black',
             color: isDark ? 'black' : 'white',
             border: 'none',
-            borderRadius: '8px',
+            borderRadius: '0px',
             fontSize: '16px',
             fontWeight: 'bold',
             cursor: 'pointer',
@@ -1990,7 +1990,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
       <div style={{
         backgroundColor: isDark ? '#000000' : 'white',
         border: `2px solid ${isDark ? 'white' : 'black'}`,
-        borderRadius: '12px',
+        borderRadius: '0px',
         padding: '32px',
         maxWidth: '600px',
         width: '100%',
@@ -2020,7 +2020,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
               border: 'none',
               cursor: 'pointer',
               padding: '8px',
-              borderRadius: '4px',
+              borderRadius: '0px',
               color: isDark ? 'white' : 'black'
             }}
           >
@@ -2047,7 +2047,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
               width: '100%',
               padding: '12px',
               border: `2px solid ${isDark ? 'white' : 'black'}`,
-              borderRadius: '8px',
+              borderRadius: '0px',
               backgroundColor: isDark ? '#000000' : 'white',
               color: isDark ? 'white' : 'black',
               fontSize: '16px',
@@ -2096,7 +2096,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
                     border: `3px solid ${isDark ? 'white' : 'black'}`,
                     backgroundColor: isDark ? '#000000' : 'white',
                     color: isDark ? 'white' : 'black',
-                    borderRadius: '12px',
+                    borderRadius: '0px',
                     cursor: 'pointer',
                     transition: 'all 0.3s ease',
                     display: 'flex',
@@ -2161,7 +2161,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
                   border: 'none',
                   cursor: 'pointer',
                   padding: '8px',
-                  borderRadius: '4px',
+                  borderRadius: '0px',
                   color: isDark ? 'white' : 'black',
                   display: 'flex',
                   alignItems: 'center',
@@ -2209,7 +2209,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
                     border: `3px solid ${isDark ? 'white' : 'black'}`,
                     backgroundColor: isDark ? '#000000' : 'white',
                     color: isDark ? 'white' : 'black',
-                    borderRadius: '8px',
+                    borderRadius: '0px',
                     cursor: 'pointer',
                     transition: 'all 0.3s ease',
                     display: 'flex',
@@ -2280,7 +2280,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
                   border: 'none',
                   cursor: 'pointer',
                   padding: '8px',
-                  borderRadius: '4px',
+                  borderRadius: '0px',
                   color: isDark ? 'white' : 'black',
                   display: 'flex',
                   alignItems: 'center',
@@ -2317,7 +2317,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
                 width: '100%',
                 padding: '12px 12px 12px 40px',
                 border: `2px solid ${isDark ? 'white' : 'black'}`,
-                borderRadius: '8px',
+                borderRadius: '0px',
                 backgroundColor: isDark ? '#000000' : 'white',
                 color: isDark ? 'white' : 'black',
                 fontSize: '16px'
@@ -2354,7 +2354,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
                 border: `2px solid ${isDark ? 'white' : 'black'}`,
                 backgroundColor: multiSelectMode ? (isDark ? 'white' : 'black') : (isDark ? '#000000' : 'white'),
                 color: multiSelectMode ? (isDark ? 'black' : 'white') : (isDark ? 'white' : 'black'),
-                borderRadius: '6px',
+                borderRadius: '0px',
                 cursor: 'pointer',
                 fontSize: '12px',
                 fontWeight: 'bold',
@@ -2370,7 +2370,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
                 maxHeight: '300px',
             overflow: 'auto',
             border: `2px solid ${isDark ? 'white' : 'black'}`,
-            borderRadius: '8px'
+            borderRadius: '0px'
           }}>
                 {filteredFoods.length > 0 ? (
                   filteredFoods.map((food) => (
@@ -2414,7 +2414,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
                         width: '18px',
                         height: '18px',
                         border: `2px solid ${isDark ? 'white' : 'black'}`,
-                        borderRadius: '3px',
+                        borderRadius: '0px',
                         backgroundColor: selectedForBatch.some(item => item.id === food.id) 
                           ? (isDark ? 'white' : 'black') 
                           : 'transparent',
@@ -2504,7 +2504,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
                 border: `2px solid ${isDark ? 'white' : 'black'}`,
                 backgroundColor: isDark ? 'white' : 'black',
                 color: isDark ? 'black' : 'white',
-                borderRadius: '8px',
+                borderRadius: '0px',
                 cursor: 'pointer',
                 fontSize: '16px',
                 fontWeight: 'bold',
@@ -2555,7 +2555,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
                   border: `2px solid ${isDark ? 'white' : 'black'}`,
                   backgroundColor: isDark ? '#000000' : 'white',
                   color: isDark ? 'white' : 'black',
-                  borderRadius: '4px',
+                  borderRadius: '0px',
                   cursor: 'pointer',
                   fontSize: '18px',
                   fontWeight: 'bold'
@@ -2587,7 +2587,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
                   border: `2px solid ${isDark ? 'white' : 'black'}`,
                   backgroundColor: isDark ? '#000000' : 'white',
                   color: isDark ? 'white' : 'black',
-                  borderRadius: '4px',
+                  borderRadius: '0px',
                   cursor: 'pointer',
                   fontSize: '18px',
                   fontWeight: 'bold'
@@ -2629,7 +2629,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
                     backgroundColor: isDark ? '#333333' : '#f3f4f6',
                     color: isDark ? 'white' : 'black',
                     border: `2px solid ${isDark ? 'white' : 'black'}`,
-                    borderRadius: '8px',
+                    borderRadius: '0px',
                     fontSize: '16px',
                     fontFamily: 'system-ui, -apple-system, sans-serif',
                     fontWeight: 'bold',
@@ -2656,7 +2656,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
           </h3>
           <div style={{
                   border: `2px solid ${isDark ? 'white' : 'black'}`,
-                  borderRadius: '8px',
+                  borderRadius: '0px',
                   maxHeight: '200px',
                   overflow: 'auto'
                 }}>
@@ -2739,7 +2739,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
                           style={{
                             padding: '6px 12px',
                             border: `1px solid ${isDark ? 'white' : 'black'}`,
-                            borderRadius: '4px',
+                            borderRadius: '0px',
                             backgroundColor: 'transparent',
                             color: isDark ? 'white' : 'black',
                             cursor: 'pointer',
@@ -2785,7 +2785,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
                           style={{
                             padding: '6px 12px',
                             border: `1px solid ${isDark ? 'white' : 'black'}`,
-                            borderRadius: '4px',
+                            borderRadius: '0px',
                             backgroundColor: 'transparent',
                             color: isDark ? 'white' : 'black',
                             cursor: 'pointer',
@@ -2806,7 +2806,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
                   padding: '16px',
                   backgroundColor: isDark ? '#111111' : '#f9f9f9',
                   border: `2px solid ${isDark ? 'white' : 'black'}`,
-                  borderRadius: '8px'
+                  borderRadius: '0px'
                 }}>
                   <div style={{
                     fontSize: '16px',
@@ -2843,7 +2843,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
                       padding: '16px',
                       backgroundColor: isDark ? '#1a1a1a' : '#ffffff',
                       border: `1px solid ${isDark ? '#333333' : '#e0e0e0'}`,
-                      borderRadius: '6px'
+                      borderRadius: '0px'
                     }}>
                       <div style={{
                         fontSize: '28px',
@@ -2871,7 +2871,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
                       padding: '12px',
                       backgroundColor: isDark ? '#1a1a1a' : '#ffffff',
                       border: `1px solid ${isDark ? '#333333' : '#e0e0e0'}`,
-                      borderRadius: '6px'
+                      borderRadius: '0px'
                     }}>
                       <div style={{
                         fontSize: '20px',
@@ -2899,7 +2899,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
                       padding: '12px',
                       backgroundColor: isDark ? '#1a1a1a' : '#ffffff',
                       border: `1px solid ${isDark ? '#333333' : '#e0e0e0'}`,
-                      borderRadius: '6px'
+                      borderRadius: '0px'
                     }}>
                       <div style={{
                         fontSize: '20px',
@@ -2927,7 +2927,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
                       padding: '12px',
                       backgroundColor: isDark ? '#1a1a1a' : '#ffffff',
                       border: `1px solid ${isDark ? '#333333' : '#e0e0e0'}`,
-                      borderRadius: '6px'
+                      borderRadius: '0px'
                     }}>
                       <div style={{
                         fontSize: '20px',
@@ -2955,7 +2955,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
                       padding: '12px',
                       backgroundColor: isDark ? '#1a1a1a' : '#ffffff',
                       border: `1px solid ${isDark ? '#333333' : '#e0e0e0'}`,
-                      borderRadius: '6px'
+                      borderRadius: '0px'
                     }}>
                       <div style={{
                         fontSize: '20px',
@@ -3030,7 +3030,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
                 backgroundColor: (selectedItems.length > 0 || selectedFood) ? (isDark ? 'white' : 'black') : (isDark ? '#333333' : '#e5e7eb'),
                 color: (selectedItems.length > 0 || selectedFood) ? (isDark ? 'black' : 'white') : (isDark ? '#666666' : '#9ca3af'),
             border: 'none',
-            borderRadius: '8px',
+            borderRadius: '0px',
             fontSize: '16px',
             fontWeight: 'bold',
                 cursor: (selectedItems.length > 0 || selectedFood) ? 'pointer' : 'not-allowed',
@@ -3181,7 +3181,7 @@ function OnboardingModal({ isOpen, onClose, isDark = false, onComplete }) {
       <div style={{
         backgroundColor: isDark ? '#000000' : 'white',
         border: `2px solid ${isDark ? 'white' : 'black'}`,
-        borderRadius: '12px',
+        borderRadius: '0px',
         padding: '32px',
         maxWidth: '600px',
         width: '100%',
@@ -3222,7 +3222,7 @@ function OnboardingModal({ isOpen, onClose, isDark = false, onComplete }) {
               border: 'none',
               cursor: 'pointer',
               padding: '8px',
-              borderRadius: '4px',
+              borderRadius: '0px',
               color: isDark ? 'white' : 'black'
             }}
           >
@@ -3243,7 +3243,7 @@ function OnboardingModal({ isOpen, onClose, isDark = false, onComplete }) {
                 flex: 1,
                 height: '4px',
                 backgroundColor: s <= step ? (isDark ? 'white' : 'black') : (isDark ? '#333333' : '#e5e7eb'),
-                borderRadius: '2px',
+                borderRadius: '0px',
                 transition: 'background-color 0.3s'
               }}
             />
@@ -3284,7 +3284,7 @@ function OnboardingModal({ isOpen, onClose, isDark = false, onComplete }) {
                     width: '100%',
                     padding: '12px',
                     border: `2px solid ${isDark ? 'white' : 'black'}`,
-                    borderRadius: '8px',
+                    borderRadius: '0px',
                     backgroundColor: isDark ? '#000000' : 'white',
                     color: isDark ? 'white' : 'black',
                     fontSize: '16px',
@@ -3316,7 +3316,7 @@ function OnboardingModal({ isOpen, onClose, isDark = false, onComplete }) {
                     width: '100%',
                     padding: '12px',
                     border: `2px solid ${isDark ? 'white' : 'black'}`,
-                    borderRadius: '8px',
+                    borderRadius: '0px',
                     backgroundColor: isDark ? '#000000' : 'white',
                     color: isDark ? 'white' : 'black',
                     fontSize: '16px',
@@ -3348,7 +3348,7 @@ function OnboardingModal({ isOpen, onClose, isDark = false, onComplete }) {
                     width: '100%',
                     padding: '12px',
                     border: `2px solid ${isDark ? 'white' : 'black'}`,
-                    borderRadius: '8px',
+                    borderRadius: '0px',
                     backgroundColor: isDark ? '#000000' : 'white',
                     color: isDark ? 'white' : 'black',
                     fontSize: '16px',
@@ -3380,7 +3380,7 @@ function OnboardingModal({ isOpen, onClose, isDark = false, onComplete }) {
                         border: `2px solid ${userData.sex === sex ? (isDark ? 'white' : 'black') : (isDark ? '#333333' : '#e5e7eb')}`,
                         backgroundColor: userData.sex === sex ? (isDark ? 'white' : 'black') : 'transparent',
                         color: userData.sex === sex ? (isDark ? 'black' : 'white') : (isDark ? 'white' : 'black'),
-                        borderRadius: '8px',
+                        borderRadius: '0px',
                         cursor: 'pointer',
                         textTransform: 'capitalize',
                         fontWeight: 'bold',
@@ -3417,7 +3417,7 @@ function OnboardingModal({ isOpen, onClose, isDark = false, onComplete }) {
                     border: `2px solid ${userData.activityLevel === level.id ? (isDark ? 'white' : 'black') : (isDark ? '#333333' : '#e5e7eb')}`,
                     backgroundColor: userData.activityLevel === level.id ? (isDark ? 'white' : 'black') : 'transparent',
                     color: userData.activityLevel === level.id ? (isDark ? 'black' : 'white') : (isDark ? 'white' : 'black'),
-                    borderRadius: '8px',
+                    borderRadius: '0px',
                     cursor: 'pointer',
                     textAlign: 'left',
                     transition: 'all 0.2s'
@@ -3456,7 +3456,7 @@ function OnboardingModal({ isOpen, onClose, isDark = false, onComplete }) {
                     border: `2px solid ${userData.goal === goal.id ? (isDark ? 'white' : 'black') : (isDark ? '#333333' : '#e5e7eb')}`,
                     backgroundColor: userData.goal === goal.id ? (isDark ? 'white' : 'black') : 'transparent',
                     color: userData.goal === goal.id ? (isDark ? 'black' : 'white') : (isDark ? 'white' : 'black'),
-                    borderRadius: '8px',
+                    borderRadius: '0px',
                     cursor: 'pointer',
                     textAlign: 'left',
                     transition: 'all 0.2s',
@@ -3516,7 +3516,7 @@ function OnboardingModal({ isOpen, onClose, isDark = false, onComplete }) {
                       width: '100%',
                       padding: '12px',
                       border: `2px solid ${isDark ? 'white' : 'black'}`,
-                      borderRadius: '8px',
+                      borderRadius: '0px',
                       backgroundColor: isDark ? '#000000' : 'white',
                       color: isDark ? 'white' : 'black',
                       fontSize: '16px',
@@ -3548,7 +3548,7 @@ function OnboardingModal({ isOpen, onClose, isDark = false, onComplete }) {
                       width: '100%',
                       padding: '12px',
                       border: `2px solid ${isDark ? 'white' : 'black'}`,
-                      borderRadius: '8px',
+                      borderRadius: '0px',
                       backgroundColor: isDark ? '#000000' : 'white',
                       color: isDark ? 'white' : 'black',
                       fontSize: '16px',
@@ -3563,7 +3563,7 @@ function OnboardingModal({ isOpen, onClose, isDark = false, onComplete }) {
                 <div style={{
                   padding: '16px',
                   border: `2px solid ${isDark ? 'white' : 'black'}`,
-                  borderRadius: '8px',
+                  borderRadius: '0px',
                   backgroundColor: isDark ? '#111111' : '#f9f9f9'
                 }}>
                   <h4 style={{
@@ -3617,7 +3617,7 @@ function OnboardingModal({ isOpen, onClose, isDark = false, onComplete }) {
                 border: `2px solid ${isDark ? 'white' : 'black'}`,
                 backgroundColor: 'transparent',
                 color: isDark ? 'white' : 'black',
-                borderRadius: '8px',
+                borderRadius: '0px',
                 cursor: 'pointer',
                 fontWeight: 'bold',
                 transition: 'all 0.2s'
@@ -3635,7 +3635,7 @@ function OnboardingModal({ isOpen, onClose, isDark = false, onComplete }) {
               backgroundColor: isStepValid() ? (isDark ? 'white' : 'black') : (isDark ? '#333333' : '#e5e7eb'),
               color: isStepValid() ? (isDark ? 'black' : 'white') : (isDark ? '#666666' : '#9ca3af'),
               border: 'none',
-              borderRadius: '8px',
+              borderRadius: '0px',
               cursor: isStepValid() ? 'pointer' : 'not-allowed',
               fontWeight: 'bold',
               transition: 'all 0.2s',
@@ -3752,7 +3752,7 @@ function WaterTrackingModal({ isOpen, onClose, onWaterLogged, isDark, totalWater
       <div style={{
         backgroundColor: isDark ? '#000000' : 'white',
         border: `2px solid ${isDark ? 'white' : 'black'}`,
-        borderRadius: '12px',
+        borderRadius: '0px',
         padding: '24px',
         maxWidth: '450px',
         width: '100%',
@@ -3846,7 +3846,7 @@ function WaterTrackingModal({ isOpen, onClose, onWaterLogged, isDark, totalWater
               width: '100%',
               padding: '12px',
               border: `2px solid ${isDark ? 'white' : 'black'}`,
-              borderRadius: '8px',
+              borderRadius: '0px',
               backgroundColor: isDark ? '#000000' : 'white',
               color: isDark ? 'white' : 'black',
               fontSize: '16px',
@@ -3867,7 +3867,7 @@ function WaterTrackingModal({ isOpen, onClose, onWaterLogged, isDark, totalWater
             width: '80px',
             height: '120px',
             border: `3px solid ${isDark ? 'white' : 'black'}`,
-            borderRadius: '8px 8px 12px 12px',
+            borderRadius: '0px',
             position: 'relative',
             overflow: 'hidden',
             backgroundColor: isDark ? '#111111' : '#f9f9f9',
@@ -3883,7 +3883,7 @@ function WaterTrackingModal({ isOpen, onClose, onWaterLogged, isDark, totalWater
               height: `${progressPercentage}%`,
               backgroundColor: isDark ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)',
               transition: 'height 0.5s ease',
-              borderRadius: '0 0 8px 8px'
+              borderRadius: '0px'
             }}>
               {/* Water Surface Animation */}
               <div style={{
@@ -3907,7 +3907,7 @@ function WaterTrackingModal({ isOpen, onClose, onWaterLogged, isDark, totalWater
               width: '24px',
               height: '8px',
               backgroundColor: isDark ? 'white' : 'black',
-              borderRadius: '4px 4px 0 0'
+              borderRadius: '0px'
             }} />
           </div>
         </div>
@@ -3975,7 +3975,7 @@ function WaterTrackingModal({ isOpen, onClose, onWaterLogged, isDark, totalWater
           marginBottom: '24px',
           padding: '16px',
           backgroundColor: isDark ? '#111111' : '#f9f9f9',
-          borderRadius: '8px',
+          borderRadius: '0px',
           border: `1px solid ${isDark ? '#333333' : '#e5e7eb'}`
         }}>
           <div style={{
@@ -4021,7 +4021,7 @@ function WaterTrackingModal({ isOpen, onClose, onWaterLogged, isDark, totalWater
               style={{
                 padding: '16px 12px',
                 border: `2px solid ${isDark ? 'white' : 'black'}`,
-                borderRadius: '8px',
+                borderRadius: '0px',
                 backgroundColor: selectedAmount === size.amount 
                   ? (isDark ? 'white' : 'black')
                   : (isDark ? '#000000' : 'white'),
@@ -4065,7 +4065,7 @@ function WaterTrackingModal({ isOpen, onClose, onWaterLogged, isDark, totalWater
             padding: '16px',
             backgroundColor: isDark ? '#1a1a1a' : '#f9f9f9',
             border: `2px solid ${isDark ? 'white' : 'black'}`,
-            borderRadius: '8px',
+            borderRadius: '0px',
             animation: 'pulse 2s infinite',
             marginBottom: '16px'
           }}>
@@ -4096,7 +4096,7 @@ function WaterTrackingModal({ isOpen, onClose, onWaterLogged, isDark, totalWater
               width: '100%',
               padding: '12px 16px',
               border: `1px solid ${isDark ? '#333333' : '#e5e7eb'}`,
-              borderRadius: '8px',
+              borderRadius: '0px',
               backgroundColor: isDark ? '#111111' : '#f9f9f9',
               color: isDark ? 'white' : 'black',
               fontSize: '14px',
@@ -4134,7 +4134,7 @@ function WaterTrackingModal({ isOpen, onClose, onWaterLogged, isDark, totalWater
               padding: '12px',
               backgroundColor: isDark ? '#0a0a0a' : '#fafafa',
               border: `1px solid ${isDark ? '#333333' : '#e5e7eb'}`,
-              borderRadius: '8px',
+              borderRadius: '0px',
               maxHeight: '120px',
               overflowY: 'auto'
             }}>
@@ -4158,7 +4158,7 @@ function WaterTrackingModal({ isOpen, onClose, onWaterLogged, isDark, totalWater
                   marginTop: '8px',
                   padding: '8px',
                   backgroundColor: isDark ? '#1a1a1a' : '#f9f9f9',
-                  borderRadius: '4px',
+                  borderRadius: '0px',
                   border: `1px solid ${isDark ? '#444444' : '#e5e7eb'}`
                 }}>
                   <div style={{
@@ -4359,7 +4359,7 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
                     width: '100%',
                     padding: '12px',
                     border: `2px solid ${isDark ? 'white' : 'black'}`,
-                    borderRadius: '8px',
+                    borderRadius: '0px',
                     backgroundColor: isDark ? '#000000' : 'white',
                     color: isDark ? 'white' : 'black',
                     fontSize: '16px',
@@ -4388,7 +4388,7 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
                         flex: 1,
                         padding: '12px',
                         border: `2px solid ${isDark ? 'white' : 'black'}`,
-                        borderRadius: '8px',
+                        borderRadius: '0px',
                         backgroundColor: formData.gender === gender ? (isDark ? 'white' : 'black') : (isDark ? '#000000' : 'white'),
                         color: formData.gender === gender ? (isDark ? 'black' : 'white') : (isDark ? 'white' : 'black'),
                         fontSize: '16px',
@@ -4427,7 +4427,7 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
                     width: '100%',
                     padding: '12px',
                     border: `2px solid ${isDark ? 'white' : 'black'}`,
-                    borderRadius: '8px',
+                    borderRadius: '0px',
                     backgroundColor: isDark ? '#000000' : 'white',
                     color: isDark ? 'white' : 'black',
                     fontSize: '16px',
@@ -4460,7 +4460,7 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
                     width: '100%',
                     padding: '12px',
                     border: `2px solid ${isDark ? 'white' : 'black'}`,
-                    borderRadius: '8px',
+                    borderRadius: '0px',
                     backgroundColor: isDark ? '#000000' : 'white',
                     color: isDark ? 'white' : 'black',
                     fontSize: '16px',
@@ -4510,7 +4510,7 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
                   style={{
                     padding: '16px',
                     border: `2px solid ${isDark ? 'white' : 'black'}`,
-                    borderRadius: '8px',
+                    borderRadius: '0px',
                     backgroundColor: formData.activityLevel === activity.key ? (isDark ? 'white' : 'black') : (isDark ? '#000000' : 'white'),
                     color: formData.activityLevel === activity.key ? (isDark ? 'black' : 'white') : (isDark ? 'white' : 'black'),
                     cursor: 'pointer',
@@ -4577,7 +4577,7 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
                   style={{
                     width: '100%',
                     height: '8px',
-                    borderRadius: '4px',
+                    borderRadius: '0px',
                     background: isDark ? '#333333' : '#e5e7eb',
                     outline: 'none',
                     cursor: 'pointer'
@@ -4599,7 +4599,7 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
               <div style={{
                 backgroundColor: isDark ? '#1a1a1a' : '#f9f9f9',
                 border: `1px solid ${isDark ? '#333333' : '#e5e7eb'}`,
-                borderRadius: '8px',
+                borderRadius: '0px',
                 padding: '16px',
                 marginBottom: '24px'
               }}>
@@ -4672,7 +4672,7 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
                   style={{
                     width: '100%',
                     height: '8px',
-                    borderRadius: '4px',
+                    borderRadius: '0px',
                     background: isDark ? '#333333' : '#e5e7eb',
                     outline: 'none',
                     cursor: 'pointer'
@@ -4696,7 +4696,7 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
               <div style={{
                 backgroundColor: isDark ? '#1a1a1a' : '#f9f9f9',
                 border: `2px solid ${isDark ? 'white' : 'black'}`,
-                borderRadius: '8px',
+                borderRadius: '0px',
                 padding: '20px'
               }}>
                 <h4 style={{ color: isDark ? 'white' : 'black', marginBottom: '16px', textAlign: 'center' }}>Your Personalized Plan</h4>
@@ -4745,7 +4745,7 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
       <div style={{
         backgroundColor: isDark ? '#000000' : 'white',
         border: `2px solid ${isDark ? 'white' : 'black'}`,
-        borderRadius: '12px',
+        borderRadius: '0px',
         padding: '40px',
         maxWidth: '600px',
         width: '100%',
@@ -4782,13 +4782,13 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
           <div style={{
             height: '4px',
             backgroundColor: isDark ? '#333333' : '#e5e7eb',
-            borderRadius: '2px',
+            borderRadius: '0px',
             position: 'relative'
           }}>
             <div style={{
               height: '100%',
               backgroundColor: isDark ? 'white' : 'black',
-              borderRadius: '2px',
+              borderRadius: '0px',
               width: `${(step / 4) * 100}%`,
               transition: 'width 0.3s ease'
             }} />
@@ -4810,7 +4810,7 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
             style={{
               padding: '12px 24px',
               border: `2px solid ${isDark ? 'white' : 'black'}`,
-              borderRadius: '8px',
+              borderRadius: '0px',
               backgroundColor: isDark ? '#000000' : 'white',
               color: isDark ? 'white' : 'black',
               fontSize: '16px',
@@ -4839,7 +4839,7 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
               style={{
                 padding: '12px 24px',
                 border: `2px solid ${isDark ? 'white' : 'black'}`,
-                borderRadius: '8px',
+                borderRadius: '0px',
                 backgroundColor: isDark ? 'white' : 'black',
                 color: isDark ? 'black' : 'white',
                 fontSize: '16px',
@@ -4858,7 +4858,7 @@ function DeficitOnboarding({ isOpen, onComplete, isDark }) {
               style={{
                 padding: '12px 24px',
                 border: `2px solid ${isDark ? 'white' : 'black'}`,
-                borderRadius: '8px',
+                borderRadius: '0px',
                 backgroundColor: isDark ? 'white' : 'black',
                 color: isDark ? 'black' : 'white',
                 fontSize: '16px',
@@ -4978,7 +4978,7 @@ function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selected
               style={{
                 padding: '12px',
                 border: `2px solid ${isSelectedDay ? (isDark ? 'white' : 'black') : isDark ? '#333333' : '#e5e7eb'}`,
-                borderRadius: '8px',
+                borderRadius: '0px',
                 backgroundColor: isSelectedDay ? (isDark ? 'white' : 'black') : isDark ? '#1a1a1a' : 'white',
                 color: isSelectedDay ? (isDark ? 'black' : 'white') : isDark ? 'white' : 'black',
                 cursor: 'pointer',
@@ -5097,7 +5097,7 @@ function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selected
                 style={{
                   padding: '8px',
                   border: `2px solid ${isSelectedDay ? '#3b82f6' : isDark ? '#333333' : '#e5e7eb'}`,
-                  borderRadius: '6px',
+                  borderRadius: '0px',
                   backgroundColor: isSelectedDay ? '#3b82f6' : isDark ? '#1a1a1a' : 'white',
                   color: isSelectedDay ? 'white' : isDark ? 'white' : 'black',
                   cursor: 'pointer',
@@ -5177,7 +5177,7 @@ function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selected
             style={{
               padding: '6px 12px',
               border: `2px solid ${viewMode === 'week' ? (isDark ? 'white' : 'black') : isDark ? 'white' : 'black'}`,
-              borderRadius: '6px',
+              borderRadius: '0px',
               backgroundColor: viewMode === 'week' ? (isDark ? 'white' : 'black') : 'transparent',
               color: viewMode === 'week' ? (isDark ? 'black' : 'white') : isDark ? 'white' : 'black',
               fontSize: '12px',
@@ -5192,7 +5192,7 @@ function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selected
             style={{
               padding: '6px 12px',
               border: `2px solid ${viewMode === 'month' ? (isDark ? 'white' : 'black') : isDark ? 'white' : 'black'}`,
-              borderRadius: '6px',
+              borderRadius: '0px',
               backgroundColor: viewMode === 'month' ? (isDark ? 'white' : 'black') : 'transparent',
               color: viewMode === 'month' ? (isDark ? 'black' : 'white') : isDark ? 'white' : 'black',
               fontSize: '12px',
@@ -5217,7 +5217,7 @@ function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selected
           style={{
             padding: '8px 12px',
             border: `2px solid ${isDark ? 'white' : 'black'}`,
-            borderRadius: '6px',
+            borderRadius: '0px',
             backgroundColor: 'transparent',
             color: isDark ? 'white' : 'black',
             cursor: 'pointer',
@@ -5255,7 +5255,7 @@ function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selected
             style={{
               padding: '6px 12px',
               border: `2px solid ${isDark ? 'white' : 'black'}`,
-              borderRadius: '6px',
+              borderRadius: '0px',
               backgroundColor: 'transparent',
               color: isDark ? 'white' : 'black',
               fontSize: '12px',
@@ -5272,7 +5272,7 @@ function MealCalendar({ isDark = false, loggedMeals = [], onDateSelect, selected
           style={{
             padding: '8px 12px',
             border: `2px solid ${isDark ? 'white' : 'black'}`,
-            borderRadius: '6px',
+            borderRadius: '0px',
             backgroundColor: 'transparent',
             color: isDark ? 'white' : 'black',
             cursor: 'pointer',
@@ -5335,7 +5335,7 @@ function QuickAccessOverlay({ isOpen, onClose, isDark, onActionSelect, isMobile,
         style={{
           backgroundColor: isDark ? '#000000' : 'white',
           border: `2px solid ${isDark ? 'white' : 'black'}`,
-          borderRadius: '16px',
+          borderRadius: '0px',
           padding: '24px',
           maxWidth: '320px',
           width: '100%',
@@ -5356,7 +5356,7 @@ function QuickAccessOverlay({ isOpen, onClose, isDark, onActionSelect, isMobile,
             color: isDark ? 'white' : 'black',
             cursor: 'pointer',
             padding: '4px',
-            borderRadius: '4px',
+            borderRadius: '0px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
@@ -5395,7 +5395,7 @@ function QuickAccessOverlay({ isOpen, onClose, isDark, onActionSelect, isMobile,
                 padding: isMobile ? '20px 12px' : '28px',
                 minHeight: isMobile ? '80px' : '100px',
                 border: `2px solid ${isDark ? 'white' : 'black'}`,
-                borderRadius: '16px',
+                borderRadius: '0px',
                 backgroundColor: isDark ? '#000000' : 'white',
                 color: isDark ? 'white' : 'black',
                 cursor: 'pointer',
@@ -6179,7 +6179,7 @@ export default function FitnessDashboard({ user }) {
                   backgroundColor: 'transparent',
                   color: isDark ? 'white' : 'black',
                   border: `1px solid ${isDark ? 'white' : 'black'}`,
-                  borderRadius: '8px',
+                  borderRadius: '0px',
                   cursor: 'pointer',
                   transition: 'all 0.3s ease',
                   fontFamily: 'system-ui, -apple-system, sans-serif',
@@ -6325,7 +6325,7 @@ export default function FitnessDashboard({ user }) {
             <div style={{
               backgroundColor: isDark ? '#000000' : 'white',
               border: `2px solid ${isDark ? 'white' : 'black'}`,
-              borderRadius: '8px',
+              borderRadius: '0px',
               padding: '32px',
               boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
             }}>
@@ -6346,7 +6346,7 @@ export default function FitnessDashboard({ user }) {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  borderRadius: '4px'
+                  borderRadius: '0px'
                 }}>
                   <BarChart3 style={{ width: '20px', height: '20px', color: isDark ? 'black' : 'white' }} strokeWidth={2.5} />
                 </div>
@@ -6402,7 +6402,7 @@ export default function FitnessDashboard({ user }) {
             <div style={{
               backgroundColor: isDark ? '#000000' : 'white',
               border: `2px solid ${isDark ? 'white' : 'black'}`,
-              borderRadius: '8px',
+              borderRadius: '0px',
               padding: '32px',
               boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
             }}>
@@ -6423,7 +6423,7 @@ export default function FitnessDashboard({ user }) {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  borderRadius: '4px'
+                  borderRadius: '0px'
                 }}>
                   <CalendarIcon style={{ width: '20px', height: '20px', color: isDark ? 'black' : 'white' }} strokeWidth={2.5} />
                 </div>
@@ -7394,7 +7394,7 @@ export default function FitnessDashboard({ user }) {
           right: '24px',
           width: '72px',
           height: '72px',
-          borderRadius: '16px',
+          borderRadius: '0px',
           backgroundColor: isDark ? 'white' : 'black',
           color: isDark ? 'black' : 'white',
           border: 'none',

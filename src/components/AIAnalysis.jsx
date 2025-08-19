@@ -563,7 +563,7 @@ function BiometricAnalysisView({ analysis, isDark }) {
             gap: '16px',
             padding: '12px',
             backgroundColor: isDark ? '#262626' : '#f8fafc',
-            borderRadius: '8px',
+            borderRadius: '0px',
             border: `1px solid ${isDark ? '#333' : '#e5e7eb'}`
           }}>
             <div style={{
@@ -614,7 +614,7 @@ function BiometricAnalysisView({ analysis, isDark }) {
               gap: '12px',
               padding: '12px',
               backgroundColor: isDark ? '#262626' : '#f8fafc',
-              borderRadius: '8px',
+              borderRadius: '0px',
               marginBottom: '8px',
               border: `1px solid ${isDark ? '#333' : '#e5e7eb'}`
             }}>
@@ -660,7 +660,7 @@ function BiometricAnalysisView({ analysis, isDark }) {
               gap: '12px',
               padding: '12px',
               backgroundColor: '#10B98120',
-              borderRadius: '8px',
+              borderRadius: '0px',
               marginBottom: '8px',
               border: '1px solid #10B98140'
             }}>

@@ -12,7 +12,6 @@ function TrendReport({
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
 
   const reportData = useMemo(() => {
-    const today = new Date()
     const last7Days = Array.from({ length: 7 }, (_, i) => {
       const date = new Date()
       date.setDate(date.getDate() - i)
@@ -183,7 +182,6 @@ function TrendReport({
     // Compare with goals
     if (userProfile?.dailyDeficit && weeklyNutrition.avgCalories > 0) {
       const recommendedCalories = userProfile.recommendedCalories || 2200
-      const targetCalories = recommendedCalories - userProfile.dailyDeficit
       const avgDeficit = recommendedCalories - weeklyNutrition.avgCalories
 
       if (avgDeficit >= userProfile.dailyDeficit * 0.8) {

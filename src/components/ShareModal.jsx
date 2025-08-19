@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Share2, Twitter, Facebook, Instagram, Link2, Download, X } from 'lucide-react'
+import { Twitter, Facebook, Instagram, Link2, Download, X } from 'lucide-react'
 
 function ShareModal({ isOpen, onClose, isDark = false, reportData = null }) {
   const [copySuccess, setCopySuccess] = useState(false)
