@@ -160,24 +160,7 @@ function AIAnalysis({
         borderBottom: `2px solid ${isDark ? 'white' : 'black'}`,
         backgroundColor: isDark ? 'black' : 'white'
       }}>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '16px',
-          marginBottom: '12px'
-        }}>
-          <Brain style={{ width: '32px', height: '32px', color: isDark ? 'white' : 'black' }} />
-          <h3 style={{
-            margin: 0,
-            color: isDark ? 'white' : 'black',
-            fontSize: '24px',
-            fontWeight: 'bold',
-            letterSpacing: '-0.025em',
-            fontFamily: 'Georgia, "Times New Roman", Times, serif'
-          }}>
-            AI
-          </h3>
-        </div>
+
         <p style={{
           margin: 0,
           color: isDark ? '#a3a3a3' : '#6b7280',

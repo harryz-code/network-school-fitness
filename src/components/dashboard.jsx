@@ -6935,95 +6935,7 @@ export default function FitnessDashboard({ user }) {
             </div>
           </div>
 
-          {/* Health Status Summary */}
-          {userProfile?.height && userProfile?.weight && (
-            <div style={{
-              padding: '24px',
-              backgroundColor: isDark ? 'black' : 'white',
-              border: `2px solid ${isDark ? 'white' : 'black'}`,
-              marginBottom: '32px'
-            }}>
-              <h3 style={{
-                fontSize: '18px',
-                fontWeight: 'bold',
-                color: isDark ? 'white' : 'black',
-                fontFamily: 'Georgia, "Times New Roman", Times, serif',
-                marginBottom: '16px'
-              }}>
-                Health Status
-              </h3>
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                gap: '20px'
-              }}>
-                <div>
-                  <div style={{
-                    fontSize: '14px',
-                    fontWeight: 'bold',
-                    color: isDark ? 'white' : 'black',
-                    marginBottom: '8px',
-                    fontFamily: 'system-ui, -apple-system, sans-serif'
-                  }}>
-                    BMI Category
-                  </div>
-                  <div style={{
-                    fontSize: '16px',
-                    color: isDark ? 'white' : 'black',
-                    fontFamily: 'system-ui, -apple-system, sans-serif'
-                  }}>
-                    {(() => {
-                      const bmi = userProfile.weight / Math.pow(userProfile.height / 100, 2);
-                      if (bmi < 18.5) return 'Underweight';
-                      if (bmi < 25) return 'Normal Weight';
-                      if (bmi < 30) return 'Overweight';
-                      return 'Obese';
-                    })()}
-                  </div>
-                </div>
-                
-                {userProfile.targetWeight && (
-                  <div>
-                    <div style={{
-                      fontSize: '14px',
-                      fontWeight: 'bold',
-                      color: isDark ? 'white' : 'black',
-                      marginBottom: '8px',
-                      fontFamily: 'system-ui, -apple-system, sans-serif'
-                    }}>
-                      Target Progress
-                    </div>
-                    <div style={{
-                      fontSize: '16px',
-                      color: isDark ? 'white' : 'black',
-                      fontFamily: 'system-ui, -apple-system, sans-serif'
-                    }}>
-                      {Math.abs(userProfile.weight - userProfile.targetWeight).toFixed(1)} kg {userProfile.weight > userProfile.targetWeight ? 'to lose' : 'to gain'}
-                    </div>
-                  </div>
-                )}
 
-                <div>
-                  <div style={{
-                    fontSize: '14px',
-                    fontWeight: 'bold',
-                    color: isDark ? 'white' : 'black',
-                    marginBottom: '8px',
-                    fontFamily: 'system-ui, -apple-system, sans-serif'
-                  }}>
-                    Age Group
-                  </div>
-                  <div style={{
-                    fontSize: '16px',
-                    color: isDark ? 'white' : 'black',
-                    fontFamily: 'system-ui, -apple-system, sans-serif'
-                  }}>
-                    {userProfile.age ? `${userProfile.age} years old` : 'Not set'}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
 
           {!userProfile?.height || !userProfile?.weight ? (
             <div style={{
@@ -7068,7 +6980,7 @@ export default function FitnessDashboard({ user }) {
             </div>
           ) : null}
 
-          {/* Biometric Trends Chart */}
+          {/* Health Trends Charts */}
           {userProfile?.height && userProfile?.weight && (
             <div style={{
               backgroundColor: isDark ? 'black' : 'white',
@@ -7080,30 +6992,36 @@ export default function FitnessDashboard({ user }) {
                 fontSize: '18px',
                 fontWeight: 'bold',
                 color: isDark ? 'white' : 'black',
-                marginBottom: '16px',
+                marginBottom: '24px',
                 fontFamily: 'Georgia, "Times New Roman", Times, serif'
               }}>
                 Health Trends
               </h3>
               
-              {/* BMI Progress Chart */}
-              <div style={{ marginBottom: '24px' }}>
-                <div style={{
-                  fontSize: '14px',
-                  fontWeight: 'bold',
-                  color: isDark ? 'white' : 'black',
-                  marginBottom: '12px',
-                  fontFamily: 'system-ui, -apple-system, sans-serif'
-                }}>
-                  BMI Progress (Last 30 Days)
-                </div>
+              {/* Three Trend Charts */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                gap: '24px',
+                marginBottom: '24px'
+              }}>
                 
-                {userProfile?.height && userProfile?.weight ? (
+                {/* Weight Trend */}
+                <div>
+                  <div style={{
+                    fontSize: '14px',
+                    fontWeight: 'bold',
+                    color: isDark ? 'white' : 'black',
+                    marginBottom: '12px',
+                    fontFamily: 'system-ui, -apple-system, sans-serif'
+                  }}>
+                    Weight (kg)
+                  </div>
                   <div style={{
                     display: 'flex',
                     justifyContent: 'center',
-                    alignItems: 'center',
-                    height: '80px',
+                    alignItems: 'end',
+                    height: '120px',
                     padding: '0 8px',
                     marginBottom: '8px'
                   }}>
@@ -7114,13 +7032,34 @@ export default function FitnessDashboard({ user }) {
                       justifyContent: 'center'
                     }}>
                       <div style={{
-                        width: '16px',
-                        height: '40px',
+                        width: '32px',
+                        height: '80px',
                         backgroundColor: isDark ? 'white' : 'black',
-                        marginBottom: '4px'
-                      }} />
+                        marginBottom: '4px',
+                        position: 'relative'
+                      }}>
+                        {/* Hover tooltip */}
+                        <div style={{
+                          position: 'absolute',
+                          top: '-30px',
+                          left: '50%',
+                          transform: 'translateX(-50%)',
+                          background: isDark ? 'white' : 'black',
+                          color: isDark ? 'black' : 'white',
+                          padding: '4px 8px',
+                          fontSize: '12px',
+                          fontFamily: 'system-ui, -apple-system, sans-serif',
+                          opacity: 0,
+                          transition: 'opacity 0.2s',
+                          pointerEvents: 'none'
+                        }}
+                        className="weight-tooltip"
+                        >
+                          {userProfile.weight}kg
+                        </div>
+                      </div>
                       <div style={{
-                        fontSize: '8px',
+                        fontSize: '10px',
                         color: isDark ? '#a3a3a3' : '#6b7280',
                         fontFamily: 'system-ui, -apple-system, sans-serif'
                       }}>
@@ -7128,37 +7067,159 @@ export default function FitnessDashboard({ user }) {
                       </div>
                     </div>
                   </div>
-                ) : (
+                </div>
+
+                {/* Body Fat Trend */}
+                <div>
+                  <div style={{
+                    fontSize: '14px',
+                    fontWeight: 'bold',
+                    color: isDark ? 'white' : 'black',
+                    marginBottom: '12px',
+                    fontFamily: 'system-ui, -apple-system, sans-serif'
+                  }}>
+                    Body Fat (%)
+                  </div>
                   <div style={{
                     display: 'flex',
                     justifyContent: 'center',
-                    alignItems: 'center',
-                    height: '80px',
+                    alignItems: 'end',
+                    height: '120px',
                     padding: '0 8px',
-                    marginBottom: '8px',
-                    color: isDark ? '#a3a3a3' : '#6b7280',
-                    fontFamily: 'system-ui, -apple-system, sans-serif',
-                    fontSize: '12px'
+                    marginBottom: '8px'
                   }}>
-                    No biometric data available. Add your height and weight to see trends.
+                    {userProfile?.bodyFat ? (
+                      <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}>
+                        <div style={{
+                          width: '32px',
+                          height: `${Math.min(80, (userProfile.bodyFat / 40) * 80)}px`,
+                          backgroundColor: isDark ? 'white' : 'black',
+                          marginBottom: '4px',
+                          position: 'relative'
+                        }}>
+                          {/* Hover tooltip */}
+                          <div style={{
+                            position: 'absolute',
+                            top: '-30px',
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                            background: isDark ? 'white' : 'black',
+                            color: isDark ? 'black' : 'white',
+                            padding: '4px 8px',
+                            fontSize: '12px',
+                            fontFamily: 'system-ui, -apple-system, sans-serif',
+                            opacity: 0,
+                            transition: 'opacity 0.2s',
+                            pointerEvents: 'none'
+                          }}
+                          className="bodyfat-tooltip"
+                          >
+                            {userProfile.bodyFat}%
+                          </div>
+                        </div>
+                        <div style={{
+                          fontSize: '10px',
+                          color: isDark ? '#a3a3a3' : '#6b7280',
+                          fontFamily: 'system-ui, -apple-system, sans-serif'
+                        }}>
+                          Today
+                        </div>
+                      </div>
+                    ) : (
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: '100%',
+                        color: isDark ? '#a3a3a3' : '#6b7280',
+                        fontSize: '12px',
+                        fontFamily: 'system-ui, -apple-system, sans-serif'
+                      }}>
+                        No body fat data
+                      </div>
+                    )}
                   </div>
-                )}
                 </div>
-                
-                <div style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  fontSize: '12px',
-                  color: isDark ? '#a3a3a3' : '#6b7280',
-                  fontFamily: 'system-ui, -apple-system, sans-serif'
-                }}>
-                  <span>Underweight (&lt;18.5)</span>
-                  <span>Normal (18.5-24.9)</span>
-                  <span>Overweight (25-29.9)</span>
-                  <span>Obese (≥30)</span>
+
+                {/* BMI Trend */}
+                <div>
+                  <div style={{
+                    fontSize: '14px',
+                    fontWeight: 'bold',
+                    color: isDark ? 'white' : 'black',
+                    marginBottom: '12px',
+                    fontFamily: 'system-ui, -apple-system, sans-serif'
+                  }}>
+                    BMI
+                  </div>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'end',
+                    height: '120px',
+                    padding: '0 8px',
+                    marginBottom: '8px'
+                  }}>
+                    <div style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                      <div style={{
+                        width: '32px',
+                        height: `${Math.min(80, ((userProfile.weight / Math.pow(userProfile.height / 100, 2)) / 35) * 80)}px`,
+                        backgroundColor: isDark ? 'white' : 'black',
+                        marginBottom: '4px',
+                        position: 'relative'
+                      }}>
+                        {/* Hover tooltip */}
+                        <div style={{
+                          position: 'absolute',
+                          top: '-30px',
+                          left: '50%',
+                          transform: 'translateX(-50%)',
+                          background: isDark ? 'white' : 'black',
+                          color: isDark ? 'black' : 'white',
+                          padding: '4px 8px',
+                          fontSize: '12px',
+                          fontFamily: 'system-ui, -apple-system, sans-serif',
+                          opacity: 0,
+                          transition: 'opacity 0.2s',
+                          pointerEvents: 'none'
+                        }}
+                        className="bmi-tooltip"
+                        >
+                          {(userProfile.weight / Math.pow(userProfile.height / 100, 2)).toFixed(1)}
+                        </div>
+                      </div>
+                      <div style={{
+                        fontSize: '10px',
+                        color: isDark ? '#a3a3a3' : '#6b7280',
+                        fontFamily: 'system-ui, -apple-system, sans-serif'
+                      }}>
+                        Today
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-
+              
+              {/* Note about future historical data */}
+              <div style={{
+                fontSize: '12px',
+                color: isDark ? '#a3a3a3' : '#6b7280',
+                fontFamily: 'system-ui, -apple-system, sans-serif',
+                textAlign: 'center',
+                fontStyle: 'italic'
+              }}>
+                Historical trend data will appear as you continue logging your biometrics over time
+              </div>
 
               <div style={{
                 display: 'grid',
@@ -7266,8 +7327,45 @@ export default function FitnessDashboard({ user }) {
           )}
         </div>
 
-        {/* AI Analysis Section */}
+        {/* Trend Report Section */}
         <div style={{ marginTop: '64px' }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: '32px'
+          }}>
+            <h2 style={{
+              fontSize: '28px',
+              fontWeight: 'bold',
+              color: isDark ? 'white' : 'black',
+              fontFamily: 'Georgia, "Times New Roman", Times, serif',
+              margin: 0
+            }}>
+              Trend Report
+            </h2>
+          </div>
+
+          <TrendReport
+            loggedMeals={loggedMeals}
+            loggedWorkouts={loggedWorkouts}
+            userProfile={userProfile}
+            isDark={isDark}
+            selectedDate={selectedCalendarDate}
+          />
+        </div>
+
+        {/* AI Section */}
+        <div style={{ marginTop: '64px' }}>
+          <h2 style={{
+            fontSize: '28px',
+            fontWeight: 'bold',
+            color: isDark ? 'white' : 'black',
+            fontFamily: 'Georgia, "Times New Roman", Times, serif',
+            marginBottom: '32px'
+          }}>
+            AI
+          </h2>
           <AIAnalysis
             dailyData={useMemo(() => ({
               calories: getCaloriesForDate(selectedCalendarDate),
@@ -7298,34 +7396,6 @@ export default function FitnessDashboard({ user }) {
               age: userProfile.age,
               gender: userProfile.gender
             } : null, [userProfile])}
-            isDark={isDark}
-            selectedDate={selectedCalendarDate}
-          />
-        </div>
-
-        {/* Trend Report Section */}
-        <div style={{ marginTop: '64px' }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: '32px'
-          }}>
-            <h2 style={{
-              fontSize: '28px',
-              fontWeight: 'bold',
-              color: isDark ? 'white' : 'black',
-              fontFamily: 'Georgia, "Times New Roman", Times, serif',
-              margin: 0
-            }}>
-              Trend Report
-            </h2>
-          </div>
-
-          <TrendReport
-            loggedMeals={loggedMeals}
-            loggedWorkouts={loggedWorkouts}
-            userProfile={userProfile}
             isDark={isDark}
             selectedDate={selectedCalendarDate}
           />
