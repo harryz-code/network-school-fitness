@@ -58,9 +58,7 @@ export const saveUserProfile = async (profileData) => {
     daily_calories: profileData.recommendedCalories,
     daily_deficit: profileData.dailyDeficit || 500,
     workout_split: profileData.workoutSplit || 50,
-    protein: 0, // these columns already exist in your schema
-    carbs: 0,
-    fat: 0,
+    weekly_exercise_goal: profileData.weeklyExerciseGoal,
     updated_at: new Date().toISOString()
   }
 
