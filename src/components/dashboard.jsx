@@ -1402,6 +1402,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
     { id: 3011, name: "Sunny Side Up Egg", calories: 80, protein: 6, carbs: 0.5, fat: 6, fiber: 0, serving: "1 egg" },
     { id: 3012, name: "Boiled Egg", calories: 70, protein: 6, carbs: 0.5, fat: 5, fiber: 0, serving: "1 egg" },
     { id: 3013, name: "Salted Egg", calories: 85, protein: 6, carbs: 1, fat: 6.5, fiber: 0, serving: "1 egg" },
+    { id: 3014, name: "Plain Omelette", calories: 95, protein: 6, carbs: 1, fat: 7.5, fiber: 0, serving: "1 omelette" },
 
     // Congee Toppings & Accompaniments
     { id: 3020, name: "Salted Fish (shredded)", calories: 30, protein: 6, carbs: 0, fat: 0.5, fiber: 0, serving: "1 tbsp" },
@@ -1414,16 +1415,16 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
     { id: 3027, name: "Sesame Oil", calories: 40, protein: 0, carbs: 0, fat: 4.5, fiber: 0, serving: "1 tsp" },
 
     // Salad components
-    { id: 3020, name: "Mixed Greens", calories: 25, protein: 2, carbs: 4, fat: 0, fiber: 2, serving: "2 cups" },
-    { id: 3021, name: "Sliced Cucumber", calories: 8, protein: 0.3, carbs: 1.9, fat: 0.1, fiber: 0.3, serving: "1/2 cup" },
-    { id: 3022, name: "Cherry Tomatoes", calories: 18, protein: 0.9, carbs: 3.9, fat: 0.2, fiber: 1.2, serving: "1/2 cup" },
-    { id: 3023, name: "Avocado (sliced)", calories: 120, protein: 2, carbs: 6, fat: 10, fiber: 5, serving: "1/2 fruit" },
-    { id: 3024, name: "Greek Yogurt (plain)", calories: 100, protein: 9, carbs: 5, fat: 5, fiber: 0, serving: "150g" },
+    { id: 3028, name: "Mixed Greens", calories: 25, protein: 2, carbs: 4, fat: 0, fiber: 2, serving: "2 cups" },
+    { id: 3029, name: "Sliced Cucumber", calories: 8, protein: 0.3, carbs: 1.9, fat: 0.1, fiber: 0.3, serving: "1/2 cup" },
+    { id: 3030, name: "Cherry Tomatoes", calories: 18, protein: 0.9, carbs: 3.9, fat: 0.2, fiber: 1.2, serving: "1/2 cup" },
+    { id: 3031, name: "Avocado (sliced)", calories: 120, protein: 2, carbs: 6, fat: 10, fiber: 5, serving: "1/2 fruit" },
+    { id: 3032, name: "Greek Yogurt (plain)", calories: 100, protein: 9, carbs: 5, fat: 5, fiber: 0, serving: "150g" },
 
     // Cheeses
-    { id: 3030, name: "Cheddar Cheese", calories: 113, protein: 7, carbs: 0, fat: 9, fiber: 0, serving: "1 slice (28g)" },
-    { id: 3031, name: "Mozzarella Cheese", calories: 85, protein: 6, carbs: 1, fat: 6, fiber: 0, serving: "1 slice (28g)" },
-    { id: 3032, name: "Cream Cheese", calories: 100, protein: 2, carbs: 2, fat: 9, fiber: 0, serving: "2 tbsp (30g)" },
+    { id: 3033, name: "Cheddar Cheese", calories: 113, protein: 7, carbs: 0, fat: 9, fiber: 0, serving: "1 slice (28g)" },
+    { id: 3034, name: "Mozzarella Cheese", calories: 85, protein: 6, carbs: 1, fat: 6, fiber: 0, serving: "1 slice (28g)" },
+    { id: 3035, name: "Cream Cheese", calories: 100, protein: 2, carbs: 2, fat: 9, fiber: 0, serving: "2 tbsp (30g)" },
 
     // Fruits
     { id: 3040, name: "Banana", calories: 105, protein: 1.3, carbs: 27, fat: 0.3, fiber: 3, serving: "1 medium" },
