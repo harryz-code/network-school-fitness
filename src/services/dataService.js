@@ -3,6 +3,15 @@ import { supabase } from '../lib/supabase'
 // Helper function to check if user is guest
 const isGuestUser = (user) => user && user.isGuest
 
+// Helper function to get user with null check
+const getCurrentUser = async () => {
+  if (!supabase) {
+    throw new Error('Supabase client not available')
+  }
+  const { data: { user } } = await supabase.auth.getUser()
+  return user
+}
+
 // Guest mode local storage helpers
 const getGuestData = () => {
   const data = localStorage.getItem('fitness-guest-data')
@@ -20,7 +29,7 @@ const saveGuestData = (data) => {
 
 // Profile operations
 export const saveUserProfile = async (profileData) => {
-  const { data: { user } } = await supabase.auth.getUser()
+  const user = await getCurrentUser()
   if (!user) throw new Error('No authenticated user')
 
   // Handle guest mode
@@ -78,7 +87,7 @@ export const saveUserProfile = async (profileData) => {
 export const getUserProfile = async () => {
   console.log('🔍 getUserProfile called')
   
-  const { data: { user } } = await supabase.auth.getUser()
+  const user = await getCurrentUser()
   if (!user) {
     console.log('❌ No authenticated user found')
     throw new Error('No authenticated user')
@@ -153,7 +162,7 @@ export const getUserProfile = async () => {
 
 // Meal operations
 export const saveMeal = async (mealData) => {
-  const { data: { user } } = await supabase.auth.getUser()
+  const user = await getCurrentUser()
   if (!user) throw new Error('No authenticated user')
 
   // Handle guest mode
@@ -182,7 +191,7 @@ export const saveMeal = async (mealData) => {
 }
 
 export const getUserMeals = async () => {
-  const { data: { user } } = await supabase.auth.getUser()
+  const user = await getCurrentUser()
   if (!user) throw new Error('No authenticated user')
 
   // Handle guest mode
@@ -225,7 +234,7 @@ export const getUserMeals = async () => {
 }
 
 export const deleteMeal = async (mealId) => {
-  const { data: { user } } = await supabase.auth.getUser()
+  const user = await getCurrentUser()
   if (!user) throw new Error('No authenticated user')
 
   // Handle guest mode
@@ -249,7 +258,7 @@ export const deleteMeal = async (mealId) => {
 
 // Workout operations
 export const saveWorkout = async (workoutData) => {
-  const { data: { user } } = await supabase.auth.getUser()
+  const user = await getCurrentUser()
   if (!user) throw new Error('No authenticated user')
 
   // Handle guest mode
@@ -278,7 +287,7 @@ export const saveWorkout = async (workoutData) => {
 }
 
 export const getUserWorkouts = async () => {
-  const { data: { user } } = await supabase.auth.getUser()
+  const user = await getCurrentUser()
   if (!user) throw new Error('No authenticated user')
 
   // Handle guest mode
@@ -299,7 +308,7 @@ export const getUserWorkouts = async () => {
 
 // Water log operations
 export const saveWaterLog = async (waterData) => {
-  const { data: { user } } = await supabase.auth.getUser()
+  const user = await getCurrentUser()
   if (!user) throw new Error('No authenticated user')
 
   // Handle guest mode
@@ -328,7 +337,7 @@ export const saveWaterLog = async (waterData) => {
 }
 
 export const getUserWaterLogs = async () => {
-  const { data: { user } } = await supabase.auth.getUser()
+  const user = await getCurrentUser()
   if (!user) throw new Error('No authenticated user')
 
   // Handle guest mode

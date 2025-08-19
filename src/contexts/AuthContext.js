@@ -35,6 +35,13 @@ export const AuthProvider = ({ children }) => {
       return
     }
 
+    // Only initialize Supabase auth if client exists
+    if (!supabase) {
+      console.log('Supabase client not available, skipping auth initialization')
+      setLoading(false)
+      return
+    }
+
     // Get initial session
     const getSession = async () => {
       console.log('Getting initial session...')
@@ -60,6 +67,7 @@ export const AuthProvider = ({ children }) => {
 
   // Sign in with Google
   const signInWithGoogle = async () => {
+    if (!supabase) throw new Error('Supabase client not available')
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
     })
@@ -70,6 +78,7 @@ export const AuthProvider = ({ children }) => {
 
   // Sign up with email
   const signUpWithEmail = async (email, password) => {
+    if (!supabase) throw new Error('Supabase client not available')
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -80,6 +89,7 @@ export const AuthProvider = ({ children }) => {
 
   // Sign in with email
   const signInWithEmail = async (email, password) => {
+    if (!supabase) throw new Error('Supabase client not available')
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -110,6 +120,12 @@ export const AuthProvider = ({ children }) => {
     if (isGuest) {
       console.log('Guest user signing out')
       setIsGuest(false)
+      setUser(null)
+      return
+    }
+    
+    if (!supabase) {
+      console.log('Supabase client not available, clearing user state')
       setUser(null)
       return
     }

@@ -168,14 +168,14 @@ function CircularProgress({ value, max, size = 120, strokeWidth = 8, label, unit
 
 
 // Stats Card Component
-function StatsCard({ icon: Icon, title, value, change, isDark = false, userData = null, loggedMeals = [], loggedWorkouts = [], currentStreak = 0, netCalories = 0, weeklyProgress = 0 }) {
+function StatsCard({ icon: Icon, title, value, change, isDark = false, userData = null, loggedMeals = [], loggedWorkouts = [], currentStreak = 0, netCalories = 0, weeklyProgress = 0, selectedDate = new Date() }) {
   const [isHovered, setIsHovered] = useState(false)
 
   // Calculate real data based on user inputs
   const getDetailedInfo = () => {
-    const today = new Date().toDateString()
-    const todayMeals = loggedMeals.filter(meal => new Date(meal.timestamp).toDateString() === today)
-    const todayWorkouts = loggedWorkouts.filter(workout => new Date(workout.timestamp).toDateString() === today)
+    const targetDate = selectedDate.toDateString()
+    const targetDateMeals = loggedMeals.filter(meal => new Date(meal.timestamp).toDateString() === targetDate)
+    const targetDateWorkouts = loggedWorkouts.filter(workout => new Date(workout.timestamp).toDateString() === targetDate)
     
     switch (title) {
             case "Daily Deficit Goal":
@@ -188,8 +188,8 @@ function StatsCard({ icon: Icon, title, value, change, isDark = false, userData 
           }
         }
         
-        // Check if there's activity today
-        const hasActivity = todayMeals.length > 0 || todayWorkouts.length > 0
+        // Check if there's activity on the selected date
+        const hasActivity = targetDateMeals.length > 0 || targetDateWorkouts.length > 0
         
         if (!hasActivity) {
         return {
@@ -201,8 +201,8 @@ function StatsCard({ icon: Icon, title, value, change, isDark = false, userData 
         }
         
         const recommendedCalories = userData.recommendedCalories || 2200
-        const caloriesConsumed = todayMeals.reduce((total, meal) => total + meal.calories, 0)
-        const caloriesBurned = todayWorkouts.reduce((total, workout) => total + workout.caloriesBurned, 0)
+        const caloriesConsumed = targetDateMeals.reduce((total, meal) => total + meal.calories, 0)
+        const caloriesBurned = targetDateWorkouts.reduce((total, workout) => total + workout.caloriesBurned, 0)
         const currentDeficit = (recommendedCalories + caloriesBurned) - caloriesConsumed
         const targetDeficit = userData.dailyDeficit
         const remainingDeficit = Math.max(0, targetDeficit - currentDeficit)
@@ -302,8 +302,8 @@ function StatsCard({ icon: Icon, title, value, change, isDark = false, userData 
           }
         }
         
-        // Check if there are workouts today
-        const hasWorkouts = todayWorkouts.length > 0
+        // Check if there are workouts on the selected date
+        const hasWorkouts = targetDateWorkouts.length > 0
         
         if (!hasWorkouts) {
           return {
@@ -314,14 +314,14 @@ function StatsCard({ icon: Icon, title, value, change, isDark = false, userData 
           }
         }
         
-        const totalBurned = todayWorkouts.reduce((total, workout) => total + workout.caloriesBurned, 0)
+        const totalBurned = targetDateWorkouts.reduce((total, workout) => total + workout.caloriesBurned, 0)
         const targetWorkoutCalories = userData.workoutCalories
         const remainingWorkoutCalories = Math.max(0, targetWorkoutCalories - totalBurned)
         
         // Calculate breakdown by workout type
-        const cardioWorkouts = todayWorkouts.filter(w => w.type === 'cardio')
-        const strengthWorkouts = todayWorkouts.filter(w => w.type === 'strength')
-        const otherWorkouts = todayWorkouts.filter(w => !['cardio', 'strength'].includes(w.type))
+        const cardioWorkouts = targetDateWorkouts.filter(w => w.type === 'cardio')
+        const strengthWorkouts = targetDateWorkouts.filter(w => w.type === 'strength')
+        const otherWorkouts = targetDateWorkouts.filter(w => !['cardio', 'strength'].includes(w.type))
         
         const cardioBurned = cardioWorkouts.reduce((total, w) => total + w.caloriesBurned, 0)
         const strengthBurned = strengthWorkouts.reduce((total, w) => total + w.caloriesBurned, 0)
@@ -344,8 +344,8 @@ function StatsCard({ icon: Icon, title, value, change, isDark = false, userData 
         }
         
         const recommendedCals = userData.recommendedCalories
-        const consumedCals = todayMeals.reduce((total, meal) => total + meal.calories, 0)
-        const burnedCals = todayWorkouts.reduce((total, workout) => total + workout.caloriesBurned, 0)
+        const consumedCals = targetDateMeals.reduce((total, meal) => total + meal.calories, 0)
+        const burnedCals = targetDateWorkouts.reduce((total, workout) => total + workout.caloriesBurned, 0)
         const remainingCals = Math.round(recommendedCals + burnedCals - consumedCals)
         
         const absRemaining = Math.abs(remainingCals)
@@ -508,7 +508,7 @@ function MealCard({ meal, isDark = false, onDelete }) {
     if (meal.calories !== undefined) {
       return {
         protein: `${(meal.protein || 0).toFixed(1)}g`,
-        carbs: `${(meal.carbs || 0).toFixed(1)}g`,
+        carbs: `${(meal.carbs || 0).toFixed(1)}g`, 
         fat: `${(meal.fat || 0).toFixed(1)}g`,
         fiber: `${(meal.fiber || 0).toFixed(1)}g`,
         totalCalories: `${Math.round(meal.calories || 0)}`
@@ -3692,7 +3692,7 @@ function WaterTrackingModal({ isOpen, onClose, onWaterLogged, isDark, totalWater
         {/* Quick Add Buttons */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
+          gridTemplateColumns: 'repeat(2, 1fr)',
           gap: '12px',
           marginBottom: '24px'
         }}>
@@ -5345,50 +5345,50 @@ export default function FitnessDashboard({ user }) {
     }
   }
 
-  // Calculate total calories consumed today
-  const getTotalCaloriesConsumed = () => {
-    const today = new Date().toDateString()
+  // Calculate total calories consumed for a specific date (defaults to today)
+  const getTotalCaloriesConsumed = (date = new Date()) => {
+    const targetDate = date.toDateString()
     return Math.round(loggedMeals
-      .filter(meal => new Date(meal.timestamp).toDateString() === today)
+      .filter(meal => new Date(meal.timestamp).toDateString() === targetDate)
       .reduce((total, meal) => total + meal.calories, 0))
   }
 
-  // Calculate total calories burned today
-  const getTotalCaloriesBurned = () => {
-    const today = new Date().toDateString()
+  // Calculate total calories burned for a specific date (defaults to today)
+  const getTotalCaloriesBurned = (date = new Date()) => {
+    const targetDate = date.toDateString()
     return Math.round(loggedWorkouts
-      .filter(workout => new Date(workout.timestamp).toDateString() === today)
+      .filter(workout => new Date(workout.timestamp).toDateString() === targetDate)
       .reduce((total, workout) => total + workout.caloriesBurned, 0))
   }
 
-  // Calculate calorie deficit based on deficit goals
-  const getRemainingCalories = () => {
+  // Calculate calorie deficit based on deficit goals for a specific date
+  const getRemainingCalories = (date = new Date()) => {
     if (!userProfile?.recommendedCalories) return 0
     const recommendedCalories = userProfile.recommendedCalories
-    const caloriesConsumed = getTotalCaloriesConsumed()
-    const caloriesBurned = getTotalCaloriesBurned()
+    const caloriesConsumed = getTotalCaloriesConsumed(date)
+    const caloriesBurned = getTotalCaloriesBurned(date)
     
     // Formula: remaining = recommended + burned - consumed
     return Math.round(recommendedCalories + caloriesBurned - caloriesConsumed)
   }
 
-  // Calculate net calories (consumed - burned)
-  const getNetCalories = () => {
-    return Math.round(getTotalCaloriesConsumed() - getTotalCaloriesBurned())
+  // Calculate net calories (consumed - burned) for a specific date
+  const getNetCalories = (date = new Date()) => {
+    return Math.round(getTotalCaloriesConsumed(date) - getTotalCaloriesBurned(date))
   }
 
-  // Calculate daily deficit progress (how close to deficit goal)
-  const getDailyDeficitProgress = () => {
+  // Calculate daily deficit progress (how close to deficit goal) for a specific date
+  const getDailyDeficitProgress = (date = new Date()) => {
     if (!userProfile?.dailyDeficit) return 0
     const recommendedCalories = userProfile.recommendedCalories || 0
-    const caloriesConsumed = getTotalCaloriesConsumed()
-    const caloriesBurned = getTotalCaloriesBurned()
+    const caloriesConsumed = getTotalCaloriesConsumed(date)
+    const caloriesBurned = getTotalCaloriesBurned(date)
     
-    // Only calculate deficit if there's actual activity (meals or workouts logged today)
-    const today = new Date().toDateString()
-    const todayMeals = loggedMeals.filter(meal => new Date(meal.timestamp).toDateString() === today)
-    const todayWorkouts = loggedWorkouts.filter(workout => new Date(workout.timestamp).toDateString() === today)
-    const hasActivity = todayMeals.length > 0 || todayWorkouts.length > 0
+    // Only calculate deficit if there's actual activity (meals or workouts logged on the target date)
+    const targetDate = date.toDateString()
+    const targetDateMeals = loggedMeals.filter(meal => new Date(meal.timestamp).toDateString() === targetDate)
+    const targetDateWorkouts = loggedWorkouts.filter(workout => new Date(workout.timestamp).toDateString() === targetDate)
+    const hasActivity = targetDateMeals.length > 0 || targetDateWorkouts.length > 0
     
     if (!hasActivity) {
       return 0 // No activity = no progress toward deficit goal
@@ -5401,14 +5401,20 @@ export default function FitnessDashboard({ user }) {
     return Math.max(0, Math.round((currentDeficit / targetDeficit) * 100))
   }
 
-
-
-  // Calculate workout goal progress
-  const getWorkoutProgress = () => {
+  // Calculate workout progress (how close to workout calorie goal) for a specific date
+  const getWorkoutProgress = (date = new Date()) => {
     if (!userProfile?.workoutCalories) return 0
-    const caloriesBurned = getTotalCaloriesBurned()
+    const targetDate = date.toDateString()
+    const targetDateWorkouts = loggedWorkouts.filter(workout => new Date(workout.timestamp).toDateString() === targetDate)
+    
+    if (targetDateWorkouts.length === 0) {
+      return 0 // No workouts = no progress
+    }
+    
+    const totalBurned = targetDateWorkouts.reduce((total, workout) => total + workout.caloriesBurned, 0)
     const targetWorkoutCalories = userProfile.workoutCalories
-    return Math.max(0, Math.round((caloriesBurned / targetWorkoutCalories) * 100))
+    
+    return Math.min(100, Math.round((totalBurned / targetWorkoutCalories) * 100))
   }
 
   // Calculate weekly deficit progress
@@ -5445,6 +5451,8 @@ export default function FitnessDashboard({ user }) {
     return Math.max(0, Math.round((weeklyDeficitAchieved / targetWeeklyDeficit) * 100))
   }
 
+
+
   // Calculate streak
   const updateStreak = () => {
     const today = new Date().toDateString()
@@ -5463,16 +5471,16 @@ export default function FitnessDashboard({ user }) {
     setLastActivityDate(today)
   }
 
-  // Calculate macros from logged meals
-  const getMacros = () => {
-    const today = new Date().toDateString()
-    const todayMeals = loggedMeals.filter(meal => new Date(meal.timestamp).toDateString() === today)
+  // Calculate macros from logged meals for a specific date (defaults to today)
+  const getMacros = (date = new Date()) => {
+    const targetDate = date.toDateString()
+    const targetDateMeals = loggedMeals.filter(meal => new Date(meal.timestamp).toDateString() === targetDate)
     
-    const totalCalories = Math.round(todayMeals.reduce((total, meal) => total + (meal.calories || 0), 0))
-    const totalProtein = Math.round(todayMeals.reduce((total, meal) => total + (meal.protein || 0), 0))
-    const totalCarbs = Math.round(todayMeals.reduce((total, meal) => total + (meal.carbs || 0), 0))
-    const totalFat = Math.round(todayMeals.reduce((total, meal) => total + (meal.fat || 0), 0))
-    const totalFiber = Math.round(todayMeals.reduce((total, meal) => total + (meal.fiber || 0), 0))
+    const totalCalories = Math.round(targetDateMeals.reduce((total, meal) => total + (meal.calories || 0), 0))
+    const totalProtein = Math.round(targetDateMeals.reduce((total, meal) => total + (meal.protein || 0), 0))
+    const totalCarbs = Math.round(targetDateMeals.reduce((total, meal) => total + (meal.carbs || 0), 0))
+    const totalFat = Math.round(targetDateMeals.reduce((total, meal) => total + (meal.fat || 0), 0))
+    const totalFiber = Math.round(targetDateMeals.reduce((total, meal) => total + (meal.fiber || 0), 0))
     
     return { calories: totalCalories, protein: totalProtein, carbs: totalCarbs, fat: totalFat, fiber: totalFiber }
   }
@@ -5599,11 +5607,11 @@ export default function FitnessDashboard({ user }) {
     }
   }
 
-  // Calculate total water intake today
-  const getTotalWaterToday = () => {
-    const today = new Date().toDateString()
+  // Calculate total water intake for a specific date (defaults to today)
+  const getTotalWaterToday = (date = new Date()) => {
+    const targetDate = date.toDateString()
     return loggedWater
-      .filter(entry => new Date(entry.timestamp).toDateString() === today)
+      .filter(entry => new Date(entry.timestamp).toDateString() === targetDate)
       .reduce((total, entry) => total + entry.amount, 0)
   }
 
@@ -5672,7 +5680,7 @@ export default function FitnessDashboard({ user }) {
   // Handle calendar date selection - only view meals, don't trigger food logging
   const handleCalendarDateSelect = (date) => {
     setSelectedCalendarDate(date)
-    // Don't open food modal - just view meals for the selected date
+    // Stats will update automatically when selectedCalendarDate changes
   }
 
   // Handle food modal close - reset selected calendar date
@@ -5857,19 +5865,20 @@ export default function FitnessDashboard({ user }) {
                 icon={Target} 
                 title="Daily Deficit Goal" 
                 value={userProfile ? ((() => {
-                  const today = new Date().toDateString()
-                  const todayMeals = loggedMeals.filter(meal => new Date(meal.timestamp).toDateString() === today)
-                  const todayWorkouts = loggedWorkouts.filter(workout => new Date(workout.timestamp).toDateString() === today)
-                  const hasActivity = todayMeals.length > 0 || todayWorkouts.length > 0
-                  return hasActivity ? `${Math.round(getDailyDeficitProgress())}%` : "—"
+                  const targetDate = selectedCalendarDate.toDateString()
+                  const targetDateMeals = loggedMeals.filter(meal => new Date(meal.timestamp).toDateString() === targetDate)
+                  const targetDateWorkouts = loggedWorkouts.filter(workout => new Date(workout.timestamp).toDateString() === targetDate)
+                  const hasActivity = targetDateMeals.length > 0 || targetDateWorkouts.length > 0
+                  return hasActivity ? `${Math.round(getDailyDeficitProgress(selectedCalendarDate))}%` : "—"
                 })()) : "—"} 
                 isDark={isDark} 
                 userData={userProfile}
                 loggedMeals={loggedMeals}
                 loggedWorkouts={loggedWorkouts}
                 currentStreak={currentStreak}
-                netCalories={getNetCalories()}
+                netCalories={getNetCalories(selectedCalendarDate)}
                 weeklyProgress={getWeeklyDeficitProgress()}
+                selectedDate={selectedCalendarDate}
               />
               <StatsCard 
                 icon={Activity} 
@@ -5897,34 +5906,37 @@ export default function FitnessDashboard({ user }) {
                 currentStreak={currentStreak}
                 netCalories={getNetCalories()}
                 weeklyProgress={getWeeklyDeficitProgress()}
+                selectedDate={selectedCalendarDate}
               />
               <StatsCard 
                 icon={Heart} 
                 title="Workout Progress" 
                 value={userProfile ? ((() => {
-                  const today = new Date().toDateString()
-                  const todayWorkouts = loggedWorkouts.filter(workout => new Date(workout.timestamp).toDateString() === today)
-                  return todayWorkouts.length > 0 ? `${Math.round(getWorkoutProgress())}%` : "—"
+                  const targetDate = selectedCalendarDate.toDateString()
+                  const targetDateWorkouts = loggedWorkouts.filter(workout => new Date(workout.timestamp).toDateString() === targetDate)
+                  return targetDateWorkouts.length > 0 ? `${Math.round(getWorkoutProgress(selectedCalendarDate))}%` : "—"
                 })()) : "—"} 
                 isDark={isDark} 
                 userData={userProfile}
                 loggedMeals={loggedMeals}
                 loggedWorkouts={loggedWorkouts}
                 currentStreak={currentStreak}
-                netCalories={getNetCalories()}
+                netCalories={getNetCalories(selectedCalendarDate)}
                 weeklyProgress={getWeeklyDeficitProgress()}
+                selectedDate={selectedCalendarDate}
               />
               <StatsCard 
                 icon={Award} 
                 title="Calorie Deficit" 
-                value={userProfile ? getRemainingCalories().toString() : "—"} 
+                value={userProfile ? getRemainingCalories(selectedCalendarDate).toString() : "—"} 
                 isDark={isDark} 
                 userData={userProfile}
                 loggedMeals={loggedMeals}
                 loggedWorkouts={loggedWorkouts}
                 currentStreak={currentStreak}
-                netCalories={getNetCalories()}
+                netCalories={getNetCalories(selectedCalendarDate)}
                 weeklyProgress={getWeeklyDeficitProgress()}
+                selectedDate={selectedCalendarDate}
               />
         </div>
 
@@ -5975,35 +5987,35 @@ export default function FitnessDashboard({ user }) {
                 gap: '48px'
               }}>
                 <CircularProgress 
-                  value={getMacros().calories} 
+                  value={getMacros(selectedCalendarDate).calories} 
                   max={userProfile?.recommendedCalories || 2000} 
                   label="Calories" 
                   unit="cal" 
                   isDark={isDark} 
                 />
                 <CircularProgress 
-                  value={getMacros().protein} 
+                  value={getMacros(selectedCalendarDate).protein} 
                   max={userProfile?.calories?.protein || 120} 
                   label="Protein" 
                   unit="g" 
                   isDark={isDark} 
                 />
                 <CircularProgress 
-                  value={getMacros().carbs} 
+                  value={getMacros(selectedCalendarDate).carbs} 
                   max={userProfile?.calories?.carbs || 200} 
                   label="Carbs" 
                   unit="g" 
                   isDark={isDark} 
                 />
                 <CircularProgress 
-                  value={getMacros().fat} 
+                  value={getMacros(selectedCalendarDate).fat} 
                   max={userProfile?.calories?.fat || 65} 
                   label="Fat" 
                   unit="g" 
                 isDark={isDark} 
                 />
                 <CircularProgress 
-                  value={getMacros().fiber} 
+                  value={getMacros(selectedCalendarDate).fiber} 
                   max={userProfile?.calories?.fiber || 25} 
                   label="Fiber" 
                   unit="g" 
@@ -6146,7 +6158,7 @@ export default function FitnessDashboard({ user }) {
         onClose={() => setIsWaterModalOpen(false)}
         onWaterLogged={handleWaterLogged}
         isDark={isDark}
-        totalWaterToday={getTotalWaterToday()}
+        totalWaterToday={getTotalWaterToday(selectedCalendarDate)}
         waterStreak={getWaterStreak()}
         dailyGoal={getDailyWaterGoal()}
         userProfile={userProfile}
