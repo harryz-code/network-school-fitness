@@ -6499,6 +6499,292 @@ export default function FitnessDashboard({ user }) {
           </div>
         </div>
 
+        {/* Workouts Section */}
+        <div style={{ marginTop: '64px' }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: '32px'
+          }}>
+            <h2 style={{
+              fontSize: '28px',
+              fontWeight: 'bold',
+              color: isDark ? 'white' : 'black',
+              fontFamily: 'Georgia, "Times New Roman", Times, serif',
+              margin: 0
+            }}>
+              Workouts
+            </h2>
+            <button
+              onClick={() => setIsWorkoutModalOpen(true)}
+              style={{
+                padding: '12px 20px',
+                border: `2px solid ${isDark ? 'white' : 'black'}`,
+                backgroundColor: isDark ? 'black' : 'white',
+                color: isDark ? 'white' : 'black',
+                fontSize: '14px',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                fontFamily: 'system-ui, -apple-system, sans-serif'
+              }}
+            >
+              Log Workout
+            </button>
+          </div>
+
+          {/* Workout Progress Chart */}
+          <div style={{
+            backgroundColor: isDark ? 'black' : 'white',
+            border: `2px solid ${isDark ? 'white' : 'black'}`,
+            padding: '24px',
+            marginBottom: '24px'
+          }}>
+            <h3 style={{
+              fontSize: '18px',
+              fontWeight: 'bold',
+              color: isDark ? 'white' : 'black',
+              marginBottom: '16px',
+              fontFamily: 'Georgia, "Times New Roman", Times, serif'
+            }}>
+              Weekly Progress
+            </h3>
+            
+            {/* Weekly Workout Chart */}
+            <div style={{ marginBottom: '20px' }}>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'end',
+                height: '120px',
+                padding: '0 8px'
+              }}>
+                {Array.from({ length: 7 }, (_, i) => {
+                  const date = new Date()
+                  date.setDate(date.getDate() - (6 - i))
+                  const dateString = date.toDateString()
+                  
+                  const dayWorkouts = loggedWorkouts.filter(workout => 
+                    new Date(workout.timestamp).toDateString() === dateString
+                  )
+                  const totalCalories = dayWorkouts.reduce((sum, w) => sum + w.caloriesBurned, 0)
+                  const maxCalories = Math.max(400, Math.max(...Array.from({ length: 7 }, (_, j) => {
+                    const d = new Date()
+                    d.setDate(d.getDate() - (6 - j))
+                    const ds = d.toDateString()
+                    const dw = loggedWorkouts.filter(w => new Date(w.timestamp).toDateString() === ds)
+                    return dw.reduce((sum, w) => sum + w.caloriesBurned, 0)
+                  })))
+                  
+                  const height = totalCalories > 0 ? Math.max(8, (totalCalories / maxCalories) * 100) : 8
+                  const isToday = dateString === new Date().toDateString()
+                  
+                  return (
+                    <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
+                      <div style={{
+                        width: '24px',
+                        height: `${height}px`,
+                        backgroundColor: totalCalories > 0 
+                          ? (isDark ? 'white' : 'black')
+                          : (isDark ? '#333' : '#e5e5e5'),
+                        marginBottom: '8px',
+                        border: isToday ? `2px solid ${isDark ? '#666' : '#999'}` : 'none'
+                      }} />
+                      <div style={{
+                        fontSize: '10px',
+                        color: isDark ? '#a3a3a3' : '#6b7280',
+                        fontFamily: 'system-ui, -apple-system, sans-serif'
+                      }}>
+                        {date.toLocaleDateString('en-US', { weekday: 'short' })}
+                      </div>
+                      <div style={{
+                        fontSize: '9px',
+                        color: isDark ? '#666' : '#999',
+                        fontFamily: 'system-ui, -apple-system, sans-serif'
+                      }}>
+                        {totalCalories}
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+      </div>
+
+            {/* Weekly Stats */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
+              gap: '16px',
+              marginTop: '20px'
+            }}>
+              <div style={{ textAlign: 'center' }}>
+                <div style={{
+                  fontSize: '20px',
+                  fontWeight: 'bold',
+                  color: isDark ? 'white' : 'black',
+                  fontFamily: 'Georgia, "Times New Roman", Times, serif'
+                }}>
+                  {(() => {
+                    const last7Days = Array.from({ length: 7 }, (_, i) => {
+                      const date = new Date()
+                      date.setDate(date.getDate() - i)
+                      return date.toDateString()
+                    })
+                    return loggedWorkouts.filter(w => 
+                      last7Days.includes(new Date(w.timestamp).toDateString())
+                    ).length
+                  })()}
+                </div>
+                <div style={{
+                  fontSize: '12px',
+                  color: isDark ? '#a3a3a3' : '#6b7280',
+                  fontFamily: 'system-ui, -apple-system, sans-serif'
+                }}>
+                  Workouts
+                </div>
+              </div>
+              
+              <div style={{ textAlign: 'center' }}>
+                <div style={{
+                  fontSize: '20px',
+                  fontWeight: 'bold',
+                  color: isDark ? 'white' : 'black',
+                  fontFamily: 'Georgia, "Times New Roman", Times, serif'
+                }}>
+                  {(() => {
+                    const last7Days = Array.from({ length: 7 }, (_, i) => {
+                      const date = new Date()
+                      date.setDate(date.getDate() - i)
+                      return date.toDateString()
+                    })
+                    return Math.round(loggedWorkouts.filter(w => 
+                      last7Days.includes(new Date(w.timestamp).toDateString())
+                    ).reduce((sum, w) => sum + (w.totalDuration || w.duration || 0), 0))
+                  })()}
+                </div>
+                <div style={{
+                  fontSize: '12px',
+                  color: isDark ? '#a3a3a3' : '#6b7280',
+                  fontFamily: 'system-ui, -apple-system, sans-serif'
+                }}>
+                  Minutes
+                </div>
+              </div>
+              
+              <div style={{ textAlign: 'center' }}>
+                <div style={{
+                  fontSize: '20px',
+                  fontWeight: 'bold',
+                  color: isDark ? 'white' : 'black',
+                  fontFamily: 'Georgia, "Times New Roman", Times, serif'
+                }}>
+                  {(() => {
+                    const last7Days = Array.from({ length: 7 }, (_, i) => {
+                      const date = new Date()
+                      date.setDate(date.getDate() - i)
+                      return date.toDateString()
+                    })
+                    return Math.round(loggedWorkouts.filter(w => 
+                      last7Days.includes(new Date(w.timestamp).toDateString())
+                    ).reduce((sum, w) => sum + w.caloriesBurned, 0))
+                  })()}
+                </div>
+                <div style={{
+                  fontSize: '12px',
+                  color: isDark ? '#a3a3a3' : '#6b7280',
+                  fontFamily: 'system-ui, -apple-system, sans-serif'
+                }}>
+                  Calories
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Recent Workouts */}
+          <div style={{
+            backgroundColor: isDark ? 'black' : 'white',
+            border: `2px solid ${isDark ? 'white' : 'black'}`,
+            padding: '24px'
+          }}>
+            <h3 style={{
+              fontSize: '18px',
+              fontWeight: 'bold',
+              color: isDark ? 'white' : 'black',
+              marginBottom: '16px',
+              fontFamily: 'Georgia, "Times New Roman", Times, serif'
+            }}>
+              {selectedCalendarDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+            </h3>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {loggedWorkouts.length > 0 ? (
+                loggedWorkouts
+                  .filter(workout => {
+                    const workoutDate = new Date(workout.timestamp)
+                    return workoutDate.toDateString() === selectedCalendarDate.toDateString()
+                  })
+                  .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+                  .map((workout, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        padding: '16px',
+                        border: `1px solid ${isDark ? '#333' : '#e5e5e5'}`,
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
+                      }}
+                    >
+                      <div>
+                        <div style={{
+                          fontSize: '16px',
+                          fontWeight: 'bold',
+                          color: isDark ? 'white' : 'black',
+                          marginBottom: '4px',
+                          fontFamily: 'system-ui, -apple-system, sans-serif'
+                        }}>
+                          {workout.workoutName || workout.type?.charAt(0).toUpperCase() + workout.type?.slice(1) || 'Workout'}
+                        </div>
+                        <div style={{
+                          fontSize: '14px',
+                          color: isDark ? '#a3a3a3' : '#6b7280',
+                          fontFamily: 'system-ui, -apple-system, sans-serif'
+                        }}>
+                          {workout.totalDuration || workout.duration || 0} min • {workout.caloriesBurned || 0} cal
+                          {workout.exercises && workout.exercises.length > 0 && (
+                            <span> • {workout.exercises.length} exercise{workout.exercises.length !== 1 ? 's' : ''}</span>
+                          )}
+                        </div>
+                      </div>
+                      <div style={{
+                        fontSize: '12px',
+                        color: isDark ? '#a3a3a3' : '#6b7280',
+                        fontFamily: 'system-ui, -apple-system, sans-serif'
+                      }}>
+                        {new Date(workout.timestamp).toLocaleTimeString('en-US', { 
+                          hour: 'numeric',
+                          minute: '2-digit',
+                          hour12: true
+                        })}
+                      </div>
+                    </div>
+                  ))
+              ) : (
+                <div style={{
+                  textAlign: 'center',
+                  padding: '32px',
+                  color: isDark ? '#a3a3a3' : '#6b7280',
+                  fontStyle: 'italic',
+                  fontSize: '14px',
+                  fontFamily: 'system-ui, -apple-system, sans-serif'
+                }}>
+                  No workouts logged for this date. Click "Log Workout" to get started!
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
         {/* Data Section */}
         <div style={{ marginTop: '64px' }}>
           <div style={{
