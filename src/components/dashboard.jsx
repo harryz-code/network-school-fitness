@@ -7327,7 +7327,7 @@ export default function FitnessDashboard({ user }) {
           )}
         </div>
 
-        {/* Trend Report Section */}
+        {/* Trends Section */}
         <div style={{ marginTop: '64px' }}>
           <div style={{
             display: 'flex',
@@ -7342,7 +7342,7 @@ export default function FitnessDashboard({ user }) {
               fontFamily: 'Georgia, "Times New Roman", Times, serif',
               margin: 0
             }}>
-              Trend Report
+              Trends
             </h2>
           </div>
 
@@ -7362,7 +7362,8 @@ export default function FitnessDashboard({ user }) {
             fontWeight: 'bold',
             color: isDark ? 'white' : 'black',
             fontFamily: 'Georgia, "Times New Roman", Times, serif',
-            marginBottom: '32px'
+            marginBottom: '32px',
+            textAlign: 'left'
           }}>
             AI
           </h2>
