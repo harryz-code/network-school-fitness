@@ -927,6 +927,7 @@ function MealCard({ meal, isDark = false, onDelete }) {
 
 
 // Workout Recording Modal Component
+// eslint-disable-next-line no-unused-vars
 function WorkoutRecordingModal({ isOpen, onClose, isDark = false, userProfile, onWorkoutRecorded }) {
   const [workoutType, setWorkoutType] = useState("strength")
   const [duration, setDuration] = useState(30)
@@ -7279,7 +7280,7 @@ export default function FitnessDashboard({ user }) {
               fiber: getFiberForDate(selectedCalendarDate),
               meals: loggedMeals.filter(meal => new Date(meal.timestamp).toDateString() === selectedCalendarDate.toDateString()),
               userProfile: userProfile
-            }), [selectedCalendarDate, loggedMeals, userProfile])}
+            }), [selectedCalendarDate, loggedMeals, userProfile, getCaloriesForDate, getProteinForDate, getCarbsForDate, getFatForDate, getFiberForDate])}
             exerciseData={useMemo(() => {
               const workoutsForDate = loggedWorkouts.filter(workout => 
                 new Date(workout.timestamp).toDateString() === selectedCalendarDate.toDateString()
