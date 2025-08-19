@@ -1,5 +1,6 @@
-import React, { useMemo } from 'react'
-import { TrendingUp, TrendingDown, Activity, Target, Calendar, Award } from 'lucide-react'
+import React, { useMemo, useState } from 'react'
+import { TrendingUp, TrendingDown, Activity, Target, Calendar, Award, Share2 } from 'lucide-react'
+import ShareModal from './ShareModal'
 
 function TrendReport({ 
   loggedMeals = [], 
@@ -8,6 +9,8 @@ function TrendReport({
   isDark = false,
   selectedDate = new Date()
 }) {
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false)
+
   const reportData = useMemo(() => {
     const today = new Date()
     const last7Days = Array.from({ length: 7 }, (_, i) => {
@@ -265,22 +268,44 @@ function TrendReport({
         justifyContent: 'space-between',
         marginBottom: '24px'
       }}>
-        <h3 style={{
-          fontSize: '20px',
-          fontWeight: 'bold',
-          color: isDark ? 'white' : 'black',
-          margin: 0,
-          fontFamily: 'Georgia, "Times New Roman", Times, serif'
-        }}>
-          Fitness Trend Report
-        </h3>
-        <div style={{
-          fontSize: '14px',
-          color: isDark ? '#a3a3a3' : '#6b7280',
-          fontFamily: 'system-ui, -apple-system, sans-serif'
-        }}>
-          Generated: {reportData.generatedAt}
+        <div>
+          <h3 style={{
+            fontSize: '20px',
+            fontWeight: 'bold',
+            color: isDark ? 'white' : 'black',
+            margin: 0,
+            fontFamily: 'Georgia, "Times New Roman", Times, serif'
+          }}>
+            Fitness Trend Report
+          </h3>
+          <div style={{
+            fontSize: '14px',
+            color: isDark ? '#a3a3a3' : '#6b7280',
+            fontFamily: 'system-ui, -apple-system, sans-serif',
+            marginTop: '4px'
+          }}>
+            Generated: {reportData.generatedAt}
+          </div>
         </div>
+        <button
+          onClick={() => setIsShareModalOpen(true)}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '12px 16px',
+            border: `2px solid ${isDark ? 'white' : 'black'}`,
+            backgroundColor: isDark ? 'black' : 'white',
+            color: isDark ? 'white' : 'black',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            fontFamily: 'system-ui, -apple-system, sans-serif'
+          }}
+        >
+          <Share2 size={16} />
+          Share Progress
+        </button>
       </div>
 
       {/* Key Insights */}
@@ -552,6 +577,13 @@ function TrendReport({
           </div>
         </div>
       </div>
+
+      <ShareModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+        isDark={isDark}
+        reportData={reportData}
+      />
     </div>
   )
 }
