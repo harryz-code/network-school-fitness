@@ -6969,13 +6969,7 @@ export default function FitnessDashboard({ user }) {
                   </div>
                   <div style={{
                     fontSize: '16px',
-                    color: (() => {
-                      const bmi = userProfile.weight / Math.pow(userProfile.height / 100, 2);
-                      if (bmi < 18.5) return '#F59E0B';
-                      if (bmi < 25) return '#10B981';
-                      if (bmi < 30) return '#F59E0B';
-                      return '#EF4444';
-                    })(),
+                    color: isDark ? 'white' : 'black',
                     fontFamily: 'system-ui, -apple-system, sans-serif'
                   }}>
                     {(() => {
@@ -7104,49 +7098,51 @@ export default function FitnessDashboard({ user }) {
                   BMI Progress (Last 30 Days)
                 </div>
                 
-                <div style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'end',
-                  height: '80px',
-                  padding: '0 8px',
-                  marginBottom: '8px'
-                }}>
-                  {Array.from({ length: 7 }, (_, i) => {
-                    const date = new Date()
-                    date.setDate(date.getDate() - (6 - i) * 4) // Show every 4 days for 30-day view
-                    
-                    // For demo purposes, show slight BMI variation around current BMI
-                    const currentBMI = userProfile?.height && userProfile?.weight 
-                      ? userProfile.weight / Math.pow(userProfile.height / 100, 2)
-                      : 22
-                    
-                    // Simulate slight variation (±0.5 BMI points)
-                    const variation = (Math.sin(i * 0.5) * 0.5) + (Math.random() - 0.5) * 0.3
-                    const bmi = currentBMI + variation
-                    
-                    const minBMI = Math.max(18, currentBMI - 2)
-                    const maxBMI = Math.min(35, currentBMI + 2)
-                    const height = Math.max(8, ((bmi - minBMI) / (maxBMI - minBMI)) * 60)
-                    
-                    return (
-                      <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
-                        <div style={{
-                          width: '16px',
-                          height: `${height}px`,
-                          backgroundColor: isDark ? 'white' : 'black',
-                          marginBottom: '4px'
-                        }} />
-                        <div style={{
-                          fontSize: '8px',
-                          color: isDark ? '#a3a3a3' : '#6b7280',
-                          fontFamily: 'system-ui, -apple-system, sans-serif'
-                        }}>
-                          {date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                        </div>
+                {userProfile?.height && userProfile?.weight ? (
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '80px',
+                    padding: '0 8px',
+                    marginBottom: '8px'
+                  }}>
+                    <div style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                      <div style={{
+                        width: '16px',
+                        height: '40px',
+                        backgroundColor: isDark ? 'white' : 'black',
+                        marginBottom: '4px'
+                      }} />
+                      <div style={{
+                        fontSize: '8px',
+                        color: isDark ? '#a3a3a3' : '#6b7280',
+                        fontFamily: 'system-ui, -apple-system, sans-serif'
+                      }}>
+                        Today
                       </div>
-                    )
-                  })}
+                    </div>
+                  </div>
+                ) : (
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '80px',
+                    padding: '0 8px',
+                    marginBottom: '8px',
+                    color: isDark ? '#a3a3a3' : '#6b7280',
+                    fontFamily: 'system-ui, -apple-system, sans-serif',
+                    fontSize: '12px'
+                  }}>
+                    No biometric data available. Add your height and weight to see trends.
+                  </div>
+                )}
                 </div>
                 
                 <div style={{
