@@ -3,6 +3,7 @@ import StatsModal from "./StatsModal"
 import AIAnalysis from "./AIAnalysis"
 import WorkoutLogging from "./WorkoutLogging"
 import BiometricsModal from "./BiometricsModal"
+import TrendReport from "./TrendReport"
 import { useAuth } from "../contexts/AuthContext"
 import { 
   saveUserProfile, 
@@ -7301,6 +7302,34 @@ export default function FitnessDashboard({ user }) {
               age: userProfile.age,
               gender: userProfile.gender
             } : null, [userProfile])}
+            isDark={isDark}
+            selectedDate={selectedCalendarDate}
+          />
+        </div>
+
+        {/* Trend Report Section */}
+        <div style={{ marginTop: '64px' }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: '32px'
+          }}>
+            <h2 style={{
+              fontSize: '28px',
+              fontWeight: 'bold',
+              color: isDark ? 'white' : 'black',
+              fontFamily: 'Georgia, "Times New Roman", Times, serif',
+              margin: 0
+            }}>
+              Trend Report
+            </h2>
+          </div>
+
+          <TrendReport
+            loggedMeals={loggedMeals}
+            loggedWorkouts={loggedWorkouts}
+            userProfile={userProfile}
             isDark={isDark}
             selectedDate={selectedCalendarDate}
           />
