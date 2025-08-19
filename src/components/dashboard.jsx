@@ -1,5 +1,6 @@
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useMemo } from "react"
 import StatsModal from "./StatsModal"
+import AIAnalysis from "./AIAnalysis"
 import { useAuth } from "../contexts/AuthContext"
 import { 
   saveUserProfile, 
@@ -28,6 +29,7 @@ import {
   X,
   Search,
   Utensils,
+  Cookie,
   Trash2,
   User,
   Zap,
@@ -1384,23 +1386,30 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
     { id: 21, name: "Almond Butter Avocado", calories: 363.7, protein: 23.1, carbs: 13.4, fat: 26.5, fiber: 7.4, serving: "1 serving" },
   ]
 
-  // Breakfast food database (common foods with estimated calories)
+  // Breakfast food database (individual ingredients for buffet customization)
   const breakfastFoodDatabase = [
-    // Eggs
-    { id: 3001, name: "Scrambled Eggs", calories: 180, protein: 12, carbs: 2, fat: 14, fiber: 0, serving: "2 eggs" },
-    { id: 3002, name: "Sunny Side Up Eggs", calories: 160, protein: 12, carbs: 1, fat: 12, fiber: 0, serving: "2 eggs" },
-    { id: 3003, name: "Plain Omelette", calories: 154, protein: 12, carbs: 1, fat: 11, fiber: 0, serving: "2 eggs" },
-    { id: 3004, name: "Cheese Omelette", calories: 240, protein: 16, carbs: 2, fat: 19, fiber: 0, serving: "2 eggs + cheese" },
-    { id: 3005, name: "Vegetable Omelette", calories: 200, protein: 14, carbs: 5, fat: 14, fiber: 2, serving: "2 eggs + veggies" },
+    // Base Carbohydrates
+    { id: 3001, name: "Congee (Plain)", calories: 60, protein: 2, carbs: 14, fat: 0.2, fiber: 0.5, serving: "1 bowl" },
+    { id: 3002, name: "White Rice (Steamed)", calories: 130, protein: 2.7, carbs: 28, fat: 0.3, fiber: 0.4, serving: "1/2 cup" },
+    { id: 3003, name: "Brown Rice (Steamed)", calories: 110, protein: 2.5, carbs: 23, fat: 0.9, fiber: 1.8, serving: "1/2 cup" },
+    { id: 3004, name: "White Bread", calories: 80, protein: 2.3, carbs: 15, fat: 1, fiber: 0.8, serving: "1 slice" },
+    { id: 3005, name: "Wholemeal Bread", calories: 70, protein: 3, carbs: 12, fat: 1.2, fiber: 2, serving: "1 slice" },
 
-    // Pastries & bakery
-    { id: 3010, name: "Butter Croissant", calories: 270, protein: 5, carbs: 31, fat: 14, fiber: 1, serving: "1 piece" },
-    { id: 3011, name: "Chocolate Croissant", calories: 330, protein: 6, carbs: 36, fat: 18, fiber: 2, serving: "1 piece" },
-    { id: 3012, name: "Danish Pastry", calories: 300, protein: 5, carbs: 38, fat: 15, fiber: 1, serving: "1 piece" },
-    { id: 3013, name: "Blueberry Muffin", calories: 420, protein: 6, carbs: 58, fat: 18, fiber: 2, serving: "1 piece" },
-    { id: 3014, name: "Plain Bagel", calories: 290, protein: 10, carbs: 56, fat: 2, fiber: 2, serving: "1 piece" },
-    { id: 3015, name: "Toast with Butter", calories: 190, protein: 4, carbs: 22, fat: 9, fiber: 1, serving: "2 slices" },
-    { id: 3016, name: "Kaya Toast", calories: 320, protein: 7, carbs: 45, fat: 12, fiber: 1, serving: "2 halves" },
+    // Proteins - Eggs
+    { id: 3010, name: "Scrambled Egg", calories: 90, protein: 6, carbs: 1, fat: 7, fiber: 0, serving: "1 egg" },
+    { id: 3011, name: "Sunny Side Up Egg", calories: 80, protein: 6, carbs: 0.5, fat: 6, fiber: 0, serving: "1 egg" },
+    { id: 3012, name: "Boiled Egg", calories: 70, protein: 6, carbs: 0.5, fat: 5, fiber: 0, serving: "1 egg" },
+    { id: 3013, name: "Salted Egg", calories: 85, protein: 6, carbs: 1, fat: 6.5, fiber: 0, serving: "1 egg" },
+
+    // Congee Toppings & Accompaniments
+    { id: 3020, name: "Salted Fish (shredded)", calories: 30, protein: 6, carbs: 0, fat: 0.5, fiber: 0, serving: "1 tbsp" },
+    { id: 3021, name: "Salted Egg (chopped)", calories: 85, protein: 6, carbs: 1, fat: 6.5, fiber: 0, serving: "1 egg" },
+    { id: 3022, name: "Cilantro (fresh)", calories: 1, protein: 0.1, carbs: 0.1, fat: 0, fiber: 0.1, serving: "1 tbsp" },
+    { id: 3023, name: "Boiled Peanuts", calories: 90, protein: 4, carbs: 6, fat: 6, fiber: 2, serving: "2 tbsp" },
+    { id: 3024, name: "Chili (sliced)", calories: 2, protein: 0.1, carbs: 0.4, fat: 0, fiber: 0.1, serving: "1 tsp" },
+    { id: 3025, name: "Pickled Ginger", calories: 5, protein: 0.1, carbs: 1, fat: 0, fiber: 0.1, serving: "1 tbsp" },
+    { id: 3026, name: "Scallions (chopped)", calories: 2, protein: 0.1, carbs: 0.4, fat: 0, fiber: 0.1, serving: "1 tbsp" },
+    { id: 3027, name: "Sesame Oil", calories: 40, protein: 0, carbs: 0, fat: 4.5, fiber: 0, serving: "1 tsp" },
 
     // Salad components
     { id: 3020, name: "Mixed Greens", calories: 25, protein: 2, carbs: 4, fat: 0, fiber: 2, serving: "2 cups" },
@@ -1422,9 +1431,45 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
     { id: 3044, name: "Pineapple", calories: 82, protein: 0.9, carbs: 21.6, fat: 0.2, fiber: 2.3, serving: "1 cup" },
     { id: 3045, name: "Papaya", calories: 62, protein: 0.7, carbs: 16, fat: 0.4, fiber: 2.5, serving: "1 cup" },
 
-    // Juices (fresh, 100%)
-    { id: 3050, name: "Fresh Carrot Juice (100%)", calories: 80, protein: 2, carbs: 18, fat: 0.3, fiber: 2, serving: "250ml" },
-    { id: 3051, name: "Fresh Celery Juice (100%)", calories: 35, protein: 1.5, carbs: 7, fat: 0.2, fiber: 1.5, serving: "250ml" },
+    // Beverages - Teas
+    { id: 3050, name: "Green Tea", calories: 2, protein: 0, carbs: 0, fat: 0, fiber: 0, serving: "1 cup (240ml)" },
+    { id: 3051, name: "Black Tea", calories: 2, protein: 0, carbs: 0.7, fat: 0, fiber: 0, serving: "1 cup (240ml)" },
+    { id: 3052, name: "Oolong Tea", calories: 2, protein: 0, carbs: 0.5, fat: 0, fiber: 0, serving: "1 cup (240ml)" },
+    { id: 3053, name: "Jasmine Tea", calories: 2, protein: 0, carbs: 0.5, fat: 0, fiber: 0, serving: "1 cup (240ml)" },
+    { id: 3054, name: "Pu-erh Tea", calories: 2, protein: 0, carbs: 0.5, fat: 0, fiber: 0, serving: "1 cup (240ml)" },
+    { id: 3055, name: "Chamomile Tea", calories: 2, protein: 0, carbs: 0.4, fat: 0, fiber: 0, serving: "1 cup (240ml)" },
+    { id: 3056, name: "Earl Grey Tea", calories: 2, protein: 0, carbs: 0.5, fat: 0, fiber: 0, serving: "1 cup (240ml)" },
+
+    // Beverages - Juices (Fresh)
+    { id: 3060, name: "Fresh Orange Juice", calories: 110, protein: 2, carbs: 26, fat: 0.5, fiber: 0.5, serving: "250ml" },
+    { id: 3061, name: "Fresh Apple Juice", calories: 115, protein: 0.2, carbs: 28, fat: 0.3, fiber: 0.2, serving: "250ml" },
+    { id: 3062, name: "Fresh Carrot Juice", calories: 80, protein: 2, carbs: 18, fat: 0.3, fiber: 2, serving: "250ml" },
+    { id: 3063, name: "Fresh Celery Juice", calories: 35, protein: 1.5, carbs: 7, fat: 0.2, fiber: 1.5, serving: "250ml" },
+    { id: 3064, name: "Fresh Watermelon Juice", calories: 70, protein: 1, carbs: 18, fat: 0.2, fiber: 0.8, serving: "250ml" },
+    { id: 3065, name: "Fresh Pineapple Juice", calories: 130, protein: 1, carbs: 32, fat: 0.3, fiber: 0.5, serving: "250ml" },
+    { id: 3066, name: "Fresh Lemon Juice", calories: 15, protein: 0.2, carbs: 5, fat: 0.2, fiber: 0.5, serving: "60ml" },
+    { id: 3067, name: "Fresh Lime Juice", calories: 10, protein: 0.1, carbs: 3.5, fat: 0.1, fiber: 0.2, serving: "60ml" },
+
+    // Beverages - Coffee
+    { id: 3070, name: "Black Coffee", calories: 2, protein: 0.3, carbs: 0, fat: 0, fiber: 0, serving: "1 cup (240ml)" },
+    { id: 3071, name: "Americano", calories: 5, protein: 0.3, carbs: 1, fat: 0, fiber: 0, serving: "1 cup (240ml)" },
+    { id: 3072, name: "Espresso", calories: 2, protein: 0.1, carbs: 0.4, fat: 0, fiber: 0, serving: "1 shot (30ml)" },
+    { id: 3073, name: "Latte", calories: 120, protein: 6, carbs: 9, fat: 6, fiber: 0, serving: "1 cup (240ml)" },
+    { id: 3074, name: "Cappuccino", calories: 80, protein: 4, carbs: 6, fat: 4, fiber: 0, serving: "1 cup (180ml)" },
+    { id: 3075, name: "Kopi O (Black)", calories: 2, protein: 0.3, carbs: 0, fat: 0, fiber: 0, serving: "1 cup (240ml)" },
+    { id: 3076, name: "Kopi C (with Milk)", calories: 35, protein: 1.5, carbs: 4, fat: 1.5, fiber: 0, serving: "1 cup (240ml)" },
+
+    // Fresh Fruits (Individual)
+    { id: 3080, name: "Banana", calories: 105, protein: 1.3, carbs: 27, fat: 0.3, fiber: 3, serving: "1 medium" },
+    { id: 3081, name: "Apple", calories: 95, protein: 0.5, carbs: 25, fat: 0.3, fiber: 4, serving: "1 medium" },
+    { id: 3082, name: "Orange", calories: 62, protein: 1.2, carbs: 15.4, fat: 0.2, fiber: 3.1, serving: "1 medium" },
+    { id: 3083, name: "Watermelon", calories: 46, protein: 0.9, carbs: 11.5, fat: 0.2, fiber: 0.6, serving: "1 cup cubes" },
+    { id: 3084, name: "Pineapple", calories: 82, protein: 0.9, carbs: 21.6, fat: 0.2, fiber: 2.3, serving: "1 cup chunks" },
+    { id: 3085, name: "Papaya", calories: 62, protein: 0.7, carbs: 16, fat: 0.4, fiber: 2.5, serving: "1 cup cubes" },
+    { id: 3086, name: "Mango", calories: 107, protein: 0.8, carbs: 28, fat: 0.4, fiber: 3, serving: "1 cup slices" },
+    { id: 3087, name: "Dragon Fruit", calories: 60, protein: 1.2, carbs: 13, fat: 0, fiber: 3, serving: "1 cup cubes" },
+    { id: 3088, name: "Kiwi", calories: 42, protein: 0.8, carbs: 10, fat: 0.4, fiber: 2.1, serving: "1 medium" },
+    { id: 3089, name: "Grapes", calories: 62, protein: 0.6, carbs: 16, fat: 0.2, fiber: 0.8, serving: "1 cup" },
 
     // Chinese breakfast items and soups
     { id: 3060, name: "Plain Congee", calories: 150, protein: 3, carbs: 33, fat: 1, fiber: 0, serving: "1 bowl" },
@@ -1523,6 +1568,77 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
     { id: 3170, name: "Cheesecake", calories: 400, protein: 6, carbs: 32, fat: 28, fiber: 1, serving: "1 slice" },
     { id: 3171, name: "Tiramisu", calories: 350, protein: 6, carbs: 35, fat: 20, fiber: 1, serving: "1 slice" },
     { id: 3172, name: "Chocolate Cake", calories: 380, protein: 4, carbs: 58, fat: 16, fiber: 3, serving: "1 slice" }
+  ]
+
+  // Snack food database (common snacks and supplements)
+  const snackFoodDatabase = [
+    // Nuts & Seeds
+    { id: 4001, name: "Almonds", calories: 164, protein: 6, carbs: 6, fat: 14, fiber: 4, serving: "1 oz (23 nuts)" },
+    { id: 4002, name: "Walnuts", calories: 185, protein: 4, carbs: 4, fat: 18, fiber: 2, serving: "1 oz (14 halves)" },
+    { id: 4003, name: "Cashews", calories: 157, protein: 5, carbs: 9, fat: 12, fiber: 1, serving: "1 oz (18 nuts)" },
+    { id: 4004, name: "Peanuts", calories: 161, protein: 7, carbs: 5, fat: 14, fiber: 2, serving: "1 oz (28 nuts)" },
+    { id: 4005, name: "Pistachios", calories: 159, protein: 6, carbs: 8, fat: 13, fiber: 3, serving: "1 oz (49 nuts)" },
+    { id: 4006, name: "Sunflower Seeds", calories: 165, protein: 6, carbs: 6, fat: 14, fiber: 3, serving: "1 oz" },
+    { id: 4007, name: "Pumpkin Seeds", calories: 151, protein: 7, carbs: 5, fat: 13, fiber: 2, serving: "1 oz" },
+    { id: 4008, name: "Mixed Nuts", calories: 175, protein: 5, carbs: 6, fat: 16, fiber: 3, serving: "1 oz" },
+
+    // Protein Bars & Supplements
+    { id: 4010, name: "Optimum Nutrition 100% Whey Gold Standard (Vanilla)", calories: 120, protein: 24, carbs: 3, fat: 1, fiber: 1, serving: "1 scoop (30g)" },
+    { id: 4011, name: "Optimum Nutrition 100% Whey Gold Standard (Chocolate)", calories: 120, protein: 24, carbs: 3, fat: 1, fiber: 1, serving: "1 scoop (30g)" },
+    { id: 4012, name: "Optimum Nutrition 100% Whey Gold Standard (Strawberry)", calories: 120, protein: 24, carbs: 3, fat: 1, fiber: 1, serving: "1 scoop (30g)" },
+    { id: 4013, name: "Optimum Nutrition 100% Whey Gold Standard (Cookies & Cream)", calories: 120, protein: 24, carbs: 3, fat: 1, fiber: 1, serving: "1 scoop (30g)" },
+    { id: 4014, name: "Protein Bar (average)", calories: 200, protein: 20, carbs: 15, fat: 8, fiber: 3, serving: "1 bar" },
+    { id: 4015, name: "Quest Protein Bar", calories: 190, protein: 21, carbs: 4, fat: 8, fiber: 14, serving: "1 bar" },
+    { id: 4016, name: "KIND Bar", calories: 200, protein: 6, carbs: 16, fat: 12, fiber: 7, serving: "1 bar" },
+
+    // Crackers & Chips
+    { id: 4020, name: "Whole Wheat Crackers", calories: 142, protein: 3, carbs: 22, fat: 5, fiber: 3, serving: "16 crackers" },
+    { id: 4021, name: "Rice Cakes", calories: 35, protein: 1, carbs: 7, fat: 0, fiber: 0, serving: "1 cake" },
+    { id: 4022, name: "Pretzels", calories: 108, protein: 3, carbs: 22, fat: 1, fiber: 1, serving: "1 oz" },
+    { id: 4023, name: "Potato Chips", calories: 152, protein: 2, carbs: 15, fat: 10, fiber: 1, serving: "1 oz" },
+    { id: 4024, name: "Popcorn (air-popped)", calories: 31, protein: 1, carbs: 6, fat: 0, fiber: 1, serving: "1 cup" },
+    { id: 4025, name: "Tortilla Chips", calories: 142, protein: 2, carbs: 18, fat: 7, fiber: 2, serving: "1 oz" },
+
+    // Yogurt & Dairy Snacks
+    { id: 4030, name: "Greek Yogurt (plain)", calories: 100, protein: 17, carbs: 6, fat: 0, fiber: 0, serving: "170g" },
+    { id: 4031, name: "Greek Yogurt (flavored)", calories: 150, protein: 15, carbs: 20, fat: 0, fiber: 0, serving: "170g" },
+    { id: 4032, name: "String Cheese", calories: 80, protein: 8, carbs: 1, fat: 6, fiber: 0, serving: "1 stick" },
+    { id: 4033, name: "Cottage Cheese", calories: 220, protein: 25, carbs: 8, fat: 10, fiber: 0, serving: "1 cup" },
+    { id: 4034, name: "Chocolate Milk", calories: 190, protein: 8, carbs: 26, fat: 8, fiber: 1, serving: "1 cup" },
+
+    // Fresh Fruits (Snack Portions)
+    { id: 4040, name: "Apple (small)", calories: 77, protein: 0, carbs: 21, fat: 0, fiber: 4, serving: "1 small apple" },
+    { id: 4041, name: "Banana (small)", calories: 90, protein: 1, carbs: 23, fat: 0, fiber: 3, serving: "1 small banana" },
+    { id: 4042, name: "Orange (medium)", calories: 62, protein: 1, carbs: 15, fat: 0, fiber: 3, serving: "1 medium orange" },
+    { id: 4043, name: "Grapes", calories: 62, protein: 1, carbs: 16, fat: 0, fiber: 1, serving: "1/2 cup" },
+    { id: 4044, name: "Berries (mixed)", calories: 42, protein: 1, carbs: 10, fat: 0, fiber: 4, serving: "1/2 cup" },
+
+    // Dried Fruits
+    { id: 4050, name: "Raisins", calories: 109, protein: 1, carbs: 29, fat: 0, fiber: 1, serving: "1/4 cup" },
+    { id: 4051, name: "Dried Dates", calories: 66, protein: 0, carbs: 18, fat: 0, fiber: 2, serving: "1 date" },
+    { id: 4052, name: "Dried Apricots", calories: 67, protein: 1, carbs: 17, fat: 0, fiber: 2, serving: "1/4 cup" },
+    { id: 4053, name: "Trail Mix", calories: 173, protein: 5, carbs: 16, fat: 11, fiber: 2, serving: "1/4 cup" },
+
+    // Chocolate & Candy
+    { id: 4060, name: "Dark Chocolate (70%)", calories: 170, protein: 2, carbs: 13, fat: 12, fiber: 3, serving: "1 oz" },
+    { id: 4061, name: "Milk Chocolate", calories: 150, protein: 2, carbs: 17, fat: 8, fiber: 1, serving: "1 oz" },
+    { id: 4062, name: "Granola Bar", calories: 140, protein: 3, carbs: 18, fat: 6, fiber: 2, serving: "1 bar" },
+
+    // Vegetables & Dips
+    { id: 4070, name: "Baby Carrots", calories: 35, protein: 1, carbs: 8, fat: 0, fiber: 2, serving: "1 cup" },
+    { id: 4071, name: "Celery Sticks", calories: 16, protein: 1, carbs: 3, fat: 0, fiber: 2, serving: "1 cup" },
+    { id: 4072, name: "Hummus", calories: 25, protein: 1, carbs: 3, fat: 1, fiber: 1, serving: "1 tbsp" },
+    { id: 4073, name: "Cherry Tomatoes", calories: 27, protein: 1, carbs: 6, fat: 0, fiber: 2, serving: "1 cup" },
+
+    // Asian Snacks
+    { id: 4080, name: "Seaweed Snacks", calories: 30, protein: 2, carbs: 3, fat: 1, fiber: 1, serving: "1 pack" },
+    { id: 4081, name: "Rice Crackers", calories: 110, protein: 2, carbs: 23, fat: 1, fiber: 1, serving: "16 pieces" },
+    { id: 4082, name: "Wasabi Peas", calories: 130, protein: 5, carbs: 18, fat: 4, fiber: 5, serving: "1/4 cup" },
+
+    // Beverages (Snack-time)
+    { id: 4090, name: "Green Tea", calories: 2, protein: 0, carbs: 0, fat: 0, fiber: 0, serving: "1 cup" },
+    { id: 4091, name: "Protein Smoothie (basic)", calories: 200, protein: 25, carbs: 15, fat: 5, fiber: 3, serving: "1 cup" },
+    { id: 4092, name: "Sports Drink", calories: 50, protein: 0, carbs: 14, fat: 0, fiber: 0, serving: "8 oz" }
   ]
 
   // Lunch food database (organized by day)
@@ -1780,6 +1896,8 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
         return cafeFoodDatabase
       case "breakfast":
         return breakfastFoodDatabase
+      case "snack":
+        return snackFoodDatabase
       case "lunch":
         return selectedDay ? (lunchFoodDatabase[selectedDay] || []) : []
       case "dinner":
@@ -1932,13 +2050,14 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
                 { id: 'breakfast', name: 'Breakfast', icon: Sun },
                 { id: 'cafe', name: 'Cafe', icon: Utensils },
                 { id: 'lunch', name: 'Lunch', icon: Apple },
-                { id: 'dinner', name: 'Dinner', icon: Moon }
+                { id: 'dinner', name: 'Dinner', icon: Moon },
+                { id: 'snack', name: 'Snack', icon: Cookie }
               ].map((type) => (
                 <button
                   key={type.id}
                   onClick={() => {
                     setMealType(type.id)
-                    if (type.id === 'cafe' || type.id === 'breakfast') {
+                    if (type.id === 'cafe' || type.id === 'breakfast' || type.id === 'snack') {
                       setShowMealTypeSelection(false)
                     } else {
                       setShowDaySelection(true)
@@ -2119,7 +2238,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
             <div style={{ marginBottom: '24px' }}>
               <button
                 onClick={() => {
-                  if (mealType === 'cafe' || mealType === 'breakfast') {
+                  if (mealType === 'cafe' || mealType === 'breakfast' || mealType === 'snack') {
                     setShowMealTypeSelection(true)
                     setMealType("")
                   } else {
@@ -2143,7 +2262,7 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
                   fontWeight: 'bold'
                 }}
               >
-                ← Back to {(mealType === 'cafe' || mealType === 'breakfast') ? 'Meal Types' : 'Day Selection'}
+                ← Back to {(mealType === 'cafe' || mealType === 'breakfast' || mealType === 'snack') ? 'Meal Types' : 'Day Selection'}
           </button>
         </div>
 
@@ -2530,35 +2649,35 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
                         marginBottom: '12px'
                       }}>
                         <div style={{ flex: 1 }}>
-                          <div style={{
-                            fontWeight: 'bold',
-                            color: isDark ? 'white' : 'black',
-                            marginBottom: '4px'
-                          }}>
+                        <div style={{
+                          fontWeight: 'bold',
+                          color: isDark ? 'white' : 'black',
+                          marginBottom: '4px'
+                        }}>
                             {item.name}
-                          </div>
-                          <div style={{
-                            fontSize: '12px',
-                            color: isDark ? '#cccccc' : '#6b7280'
-                          }}>
-                            {item.totalCalories} cal • {item.totalProtein}g protein • {item.totalCarbs}g carbs • {item.totalFat}g fat
-                          </div>
                         </div>
-                        <button
-                          onClick={() => {
-                            setSelectedItems(prev => prev.filter((_, i) => i !== index))
-                          }}
-                          style={{
-                            background: 'none',
-                            border: 'none',
-                            cursor: 'pointer',
-                            color: isDark ? '#ff6b6b' : '#dc2626',
-                            fontSize: '18px',
-                            padding: '4px'
-                          }}
-                        >
-                          ×
-                        </button>
+                        <div style={{
+                          fontSize: '12px',
+                          color: isDark ? '#cccccc' : '#6b7280'
+                        }}>
+                          {item.totalCalories} cal • {item.totalProtein}g protein • {item.totalCarbs}g carbs • {item.totalFat}g fat
+                        </div>
+                      </div>
+              <button
+                        onClick={() => {
+                          setSelectedItems(prev => prev.filter((_, i) => i !== index))
+                        }}
+                style={{
+                          background: 'none',
+                          border: 'none',
+                  cursor: 'pointer',
+                          color: isDark ? '#ff6b6b' : '#dc2626',
+                          fontSize: '18px',
+                          padding: '4px'
+                        }}
+                      >
+                        ×
+              </button>
                       </div>
 
                       {/* Portion Controls */}
@@ -5882,7 +6001,41 @@ export default function FitnessDashboard({ user }) {
     updateStreak()
   }
 
+  // Helper functions to get nutrition data for specific dates
+  const getCaloriesForDate = (date) => {
+    const targetDate = date.toDateString()
+    return loggedMeals
+      .filter(meal => new Date(meal.timestamp).toDateString() === targetDate)
+      .reduce((total, meal) => total + meal.calories, 0)
+  }
 
+  const getProteinForDate = (date) => {
+    const targetDate = date.toDateString()
+    return loggedMeals
+      .filter(meal => new Date(meal.timestamp).toDateString() === targetDate)
+      .reduce((total, meal) => total + (meal.protein || 0), 0)
+  }
+
+  const getCarbsForDate = (date) => {
+    const targetDate = date.toDateString()
+    return loggedMeals
+      .filter(meal => new Date(meal.timestamp).toDateString() === targetDate)
+      .reduce((total, meal) => total + (meal.carbs || 0), 0)
+  }
+
+  const getFatForDate = (date) => {
+    const targetDate = date.toDateString()
+    return loggedMeals
+      .filter(meal => new Date(meal.timestamp).toDateString() === targetDate)
+      .reduce((total, meal) => total + (meal.fat || 0), 0)
+  }
+
+  const getFiberForDate = (date) => {
+    const targetDate = date.toDateString()
+    return loggedMeals
+      .filter(meal => new Date(meal.timestamp).toDateString() === targetDate)
+      .reduce((total, meal) => total + (meal.fiber || 0), 0)
+  }
 
   return (
     <div style={{
@@ -6300,6 +6453,29 @@ export default function FitnessDashboard({ user }) {
           </div>
         </div>
 
+        {/* AI Analysis Section */}
+        <div style={{ marginTop: '64px' }}>
+          <AIAnalysis
+            dailyData={useMemo(() => ({
+              calories: getCaloriesForDate(selectedCalendarDate),
+              protein: getProteinForDate(selectedCalendarDate),
+              carbs: getCarbsForDate(selectedCalendarDate),
+              fat: getFatForDate(selectedCalendarDate),
+              fiber: getFiberForDate(selectedCalendarDate),
+              meals: loggedMeals.filter(meal => new Date(meal.timestamp).toDateString() === selectedCalendarDate.toDateString()),
+              userProfile: userProfile
+            }), [selectedCalendarDate, loggedMeals, userProfile])}
+            biometricData={useMemo(() => userProfile ? {
+              height: userProfile.height,
+              weight: userProfile.weight,
+              bodyFat: userProfile.bodyFat,
+              age: userProfile.age,
+              gender: userProfile.gender
+            } : null, [userProfile])}
+            isDark={isDark}
+            selectedDate={selectedCalendarDate}
+          />
+        </div>
 
       </div>
 
