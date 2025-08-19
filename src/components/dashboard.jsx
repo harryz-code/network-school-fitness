@@ -7159,7 +7159,7 @@ export default function FitnessDashboard({ user }) {
                 </div>
               </div>
 
-              {/* Health Score Summary */}
+
               <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',

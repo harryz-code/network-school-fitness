@@ -48,10 +48,11 @@ export const saveUserProfile = async (profileData) => {
     age: profileData.age,
     weight: profileData.weight, // use weight column from your schema
     height: profileData.height,
+    body_fat: profileData.bodyFat, // form uses 'bodyFat', db uses 'body_fat'
     sex: profileData.gender, // form uses 'gender', db uses 'sex'
     activity_level: profileData.activityLevel, // form uses 'activityLevel', db uses 'activity_level'
     goal: profileData.goal || 'weight_loss', // provide default
-    target_weight: profileData.weight, // set target same as current for now
+    target_weight: profileData.targetWeight || profileData.weight, // use targetWeight if provided
     bmr: profileData.bmr,
     tdee: profileData.tdee,
     daily_calories: profileData.recommendedCalories,
