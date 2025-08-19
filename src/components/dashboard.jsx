@@ -2442,43 +2442,138 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
                     <div
                       key={index}
                       style={{
-                        padding: '12px 16px',
-                        borderBottom: index < selectedItems.length - 1 ? `1px solid ${isDark ? '#333333' : '#e5e7eb'}` : 'none',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center'
+                        padding: '16px',
+                        borderBottom: index < selectedItems.length - 1 ? `1px solid ${isDark ? '#333333' : '#e5e7eb'}` : 'none'
                       }}
                     >
-                      <div style={{ flex: 1, textAlign: 'left' }}>
-                        <div style={{
+                      {/* Item Header */}
+                      <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'flex-start',
+                        marginBottom: '12px'
+                      }}>
+                        <div style={{ flex: 1 }}>
+                          <div style={{
+                            fontWeight: 'bold',
+                            color: isDark ? 'white' : 'black',
+                            marginBottom: '4px'
+                          }}>
+                            {item.name}
+                          </div>
+                          <div style={{
+                            fontSize: '12px',
+                            color: isDark ? '#cccccc' : '#6b7280'
+                          }}>
+                            {item.totalCalories} cal • {item.totalProtein}g protein • {item.totalCarbs}g carbs • {item.totalFat}g fat
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => {
+                            setSelectedItems(prev => prev.filter((_, i) => i !== index))
+                          }}
+                          style={{
+                            background: 'none',
+                            border: 'none',
+                            cursor: 'pointer',
+                            color: isDark ? '#ff6b6b' : '#dc2626',
+                            fontSize: '18px',
+                            padding: '4px'
+                          }}
+                        >
+                          ×
+                        </button>
+                      </div>
+
+                      {/* Portion Controls */}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        justifyContent: 'center'
+                      }}>
+                        <button
+                          onClick={() => {
+                            setSelectedItems(prev => prev.map((prevItem, i) => {
+                              if (i === index) {
+                                const newQuantity = mealType === 'lunch' 
+                                  ? Math.max(1, prevItem.quantity - 1)
+                                  : mealType === 'dinner'
+                                    ? Math.max(0.25, prevItem.quantity - 0.25)
+                                    : Math.max(0.5, prevItem.quantity - 0.5)
+                                return {
+                                  ...prevItem,
+                                  quantity: newQuantity,
+                                  totalCalories: Math.round(prevItem.calories * newQuantity),
+                                  totalProtein: Math.round(prevItem.protein * newQuantity * 10) / 10,
+                                  totalCarbs: Math.round(prevItem.carbs * newQuantity * 10) / 10,
+                                  totalFat: Math.round(prevItem.fat * newQuantity * 10) / 10,
+                                  totalFiber: prevItem.fiber ? Math.round(prevItem.fiber * newQuantity * 10) / 10 : 0
+                                }
+                              }
+                              return prevItem
+                            }))
+                          }}
+                          style={{
+                            padding: '6px 12px',
+                            border: `1px solid ${isDark ? 'white' : 'black'}`,
+                            borderRadius: '4px',
+                            backgroundColor: 'transparent',
+                            color: isDark ? 'white' : 'black',
+                            cursor: 'pointer',
+                            fontSize: '14px',
+                            fontWeight: 'bold'
+                          }}
+                        >
+                          −
+                        </button>
+                        
+                        <span style={{
+                          fontSize: '14px',
                           fontWeight: 'bold',
                           color: isDark ? 'white' : 'black',
-                          marginBottom: '4px'
+                          minWidth: '60px',
+                          textAlign: 'center'
                         }}>
-                          {item.name} {mealType === 'lunch' ? `(${item.quantity})` : `(${item.quantity}x)`}
-                        </div>
-                        <div style={{
-                          fontSize: '12px',
-                          color: isDark ? '#cccccc' : '#6b7280'
-                        }}>
-                          {item.totalCalories} cal • {item.totalProtein}g protein • {item.totalCarbs}g carbs • {item.totalFat}g fat
-                        </div>
+                          {mealType === 'lunch' ? item.quantity : `${item.quantity}x`}
+                        </span>
+                        
+                        <button
+                          onClick={() => {
+                            setSelectedItems(prev => prev.map((prevItem, i) => {
+                              if (i === index) {
+                                const newQuantity = mealType === 'lunch' 
+                                  ? prevItem.quantity + 1
+                                  : mealType === 'dinner'
+                                    ? prevItem.quantity + 0.25
+                                    : prevItem.quantity + 0.5
+                                return {
+                                  ...prevItem,
+                                  quantity: newQuantity,
+                                  totalCalories: Math.round(prevItem.calories * newQuantity),
+                                  totalProtein: Math.round(prevItem.protein * newQuantity * 10) / 10,
+                                  totalCarbs: Math.round(prevItem.carbs * newQuantity * 10) / 10,
+                                  totalFat: Math.round(prevItem.fat * newQuantity * 10) / 10,
+                                  totalFiber: prevItem.fiber ? Math.round(prevItem.fiber * newQuantity * 10) / 10 : 0
+                                }
+                              }
+                              return prevItem
+                            }))
+                          }}
+                          style={{
+                            padding: '6px 12px',
+                            border: `1px solid ${isDark ? 'white' : 'black'}`,
+                            borderRadius: '4px',
+                            backgroundColor: 'transparent',
+                            color: isDark ? 'white' : 'black',
+                            cursor: 'pointer',
+                            fontSize: '14px',
+                            fontWeight: 'bold'
+                          }}
+                        >
+                          +
+                        </button>
                       </div>
-              <button
-                        onClick={() => {
-                          setSelectedItems(prev => prev.filter((_, i) => i !== index))
-                        }}
-                style={{
-                          background: 'none',
-                          border: 'none',
-                  cursor: 'pointer',
-                          color: isDark ? '#ff6b6b' : '#dc2626',
-                          fontSize: '18px',
-                          padding: '4px'
-                        }}
-                      >
-                        ×
-              </button>
                     </div>
             ))}
           </div>
