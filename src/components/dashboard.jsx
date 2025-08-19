@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from "react"
 import StatsModal from "./StatsModal"
 import AIAnalysis from "./AIAnalysis"
 import WorkoutLogging from "./WorkoutLogging"
+import BiometricsModal from "./BiometricsModal"
 import { useAuth } from "../contexts/AuthContext"
 import { 
   saveUserProfile, 
@@ -5462,6 +5463,7 @@ export default function FitnessDashboard({ user }) {
   const [isWaterModalOpen, setIsWaterModalOpen] = useState(false)
   const [isQuickAccessOpen, setIsQuickAccessOpen] = useState(false)
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false)
+  const [isBiometricsModalOpen, setIsBiometricsModalOpen] = useState(false)
   const [userProfile, setUserProfile] = useState(null) // Store user profile data
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false) // New state for onboarding
   const [selectedCalendarDate, setSelectedCalendarDate] = useState(new Date()) // Calendar selected date
@@ -5897,6 +5899,21 @@ export default function FitnessDashboard({ user }) {
       console.log('Detailed workout saved to database')
     } catch (error) {
       console.error('Error saving workout:', error)
+    }
+  }
+
+  // Handle biometric data save
+  const handleBiometricsSave = async (biometricData) => {
+    try {
+      // Update local state immediately for UI responsiveness
+      setUserProfile(prev => ({ ...prev, ...biometricData }))
+      
+      // Save to database
+      await saveUserProfile(biometricData)
+      console.log('Biometric data saved successfully')
+    } catch (error) {
+      console.error('Error saving biometric data:', error)
+      throw error // Re-throw to let the modal handle the error display
     }
   }
 
@@ -6478,6 +6495,312 @@ export default function FitnessDashboard({ user }) {
           </div>
         </div>
 
+        {/* Data Section */}
+        <div style={{ marginTop: '64px' }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: '32px'
+          }}>
+            <h2 style={{
+              fontSize: '28px',
+              fontWeight: 'bold',
+              color: isDark ? 'white' : 'black',
+              fontFamily: 'Georgia, "Times New Roman", Times, serif',
+              margin: 0
+            }}>
+              📊 Data
+            </h2>
+            <button
+              onClick={() => setIsBiometricsModalOpen(true)}
+              style={{
+                padding: '12px 20px',
+                border: `2px solid ${isDark ? 'white' : 'black'}`,
+                backgroundColor: isDark ? 'black' : 'white',
+                color: isDark ? 'white' : 'black',
+                fontSize: '14px',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                fontFamily: 'system-ui, -apple-system, sans-serif',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em'
+              }}
+            >
+              Update Biometrics
+            </button>
+          </div>
+
+          {/* Biometric Cards */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '20px',
+            marginBottom: '32px'
+          }}>
+            {/* BMI Card */}
+            <div style={{
+              padding: '24px',
+              backgroundColor: isDark ? 'black' : 'white',
+              border: `2px solid ${isDark ? 'white' : 'black'}`,
+              textAlign: 'center'
+            }}>
+              <div style={{
+                fontSize: '32px',
+                fontWeight: 'bold',
+                color: isDark ? 'white' : 'black',
+                fontFamily: 'Georgia, "Times New Roman", Times, serif',
+                marginBottom: '8px'
+              }}>
+                {userProfile?.height && userProfile?.weight 
+                  ? Math.round((userProfile.weight / Math.pow(userProfile.height / 100, 2)) * 10) / 10 
+                  : '--'}
+              </div>
+              <div style={{
+                fontSize: '12px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                fontWeight: 'bold',
+                color: isDark ? '#a3a3a3' : '#6b7280',
+                fontFamily: 'system-ui, -apple-system, sans-serif'
+              }}>
+                BMI
+              </div>
+      </div>
+
+            {/* Weight Card */}
+            <div style={{
+              padding: '24px',
+              backgroundColor: isDark ? 'black' : 'white',
+              border: `2px solid ${isDark ? 'white' : 'black'}`,
+              textAlign: 'center'
+            }}>
+              <div style={{
+                fontSize: '32px',
+                fontWeight: 'bold',
+                color: isDark ? 'white' : 'black',
+                fontFamily: 'Georgia, "Times New Roman", Times, serif',
+                marginBottom: '8px'
+              }}>
+                {userProfile?.weight || '--'}
+              </div>
+              <div style={{
+                fontSize: '12px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                fontWeight: 'bold',
+                color: isDark ? '#a3a3a3' : '#6b7280',
+                fontFamily: 'system-ui, -apple-system, sans-serif'
+              }}>
+                Weight (kg)
+              </div>
+            </div>
+
+            {/* Height Card */}
+            <div style={{
+              padding: '24px',
+              backgroundColor: isDark ? 'black' : 'white',
+              border: `2px solid ${isDark ? 'white' : 'black'}`,
+              textAlign: 'center'
+            }}>
+              <div style={{
+                fontSize: '32px',
+                fontWeight: 'bold',
+                color: isDark ? 'white' : 'black',
+                fontFamily: 'Georgia, "Times New Roman", Times, serif',
+                marginBottom: '8px'
+              }}>
+                {userProfile?.height || '--'}
+              </div>
+              <div style={{
+                fontSize: '12px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                fontWeight: 'bold',
+                color: isDark ? '#a3a3a3' : '#6b7280',
+                fontFamily: 'system-ui, -apple-system, sans-serif'
+              }}>
+                Height (cm)
+              </div>
+            </div>
+
+            {/* Body Fat Card */}
+            <div style={{
+              padding: '24px',
+              backgroundColor: isDark ? 'black' : 'white',
+              border: `2px solid ${isDark ? 'white' : 'black'}`,
+              textAlign: 'center'
+            }}>
+              <div style={{
+                fontSize: '32px',
+                fontWeight: 'bold',
+                color: isDark ? 'white' : 'black',
+                fontFamily: 'Georgia, "Times New Roman", Times, serif',
+                marginBottom: '8px'
+              }}>
+                {userProfile?.bodyFat || '--'}
+              </div>
+              <div style={{
+                fontSize: '12px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                fontWeight: 'bold',
+                color: isDark ? '#a3a3a3' : '#6b7280',
+                fontFamily: 'system-ui, -apple-system, sans-serif'
+              }}>
+                Body Fat (%)
+              </div>
+            </div>
+          </div>
+
+          {/* Health Status Summary */}
+          {userProfile?.height && userProfile?.weight && (
+            <div style={{
+              padding: '24px',
+              backgroundColor: isDark ? 'black' : 'white',
+              border: `2px solid ${isDark ? 'white' : 'black'}`,
+              marginBottom: '32px'
+            }}>
+              <h3 style={{
+                fontSize: '18px',
+                fontWeight: 'bold',
+                color: isDark ? 'white' : 'black',
+                fontFamily: 'Georgia, "Times New Roman", Times, serif',
+                marginBottom: '16px'
+              }}>
+                Health Status
+              </h3>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                gap: '20px'
+              }}>
+                <div>
+                  <div style={{
+                    fontSize: '14px',
+                    fontWeight: 'bold',
+                    color: isDark ? 'white' : 'black',
+                    marginBottom: '8px',
+                    fontFamily: 'system-ui, -apple-system, sans-serif'
+                  }}>
+                    BMI Category
+                  </div>
+                  <div style={{
+                    fontSize: '16px',
+                    color: (() => {
+                      const bmi = userProfile.weight / Math.pow(userProfile.height / 100, 2);
+                      if (bmi < 18.5) return '#F59E0B';
+                      if (bmi < 25) return '#10B981';
+                      if (bmi < 30) return '#F59E0B';
+                      return '#EF4444';
+                    })(),
+                    fontFamily: 'system-ui, -apple-system, sans-serif'
+                  }}>
+                    {(() => {
+                      const bmi = userProfile.weight / Math.pow(userProfile.height / 100, 2);
+                      if (bmi < 18.5) return 'Underweight';
+                      if (bmi < 25) return 'Normal Weight';
+                      if (bmi < 30) return 'Overweight';
+                      return 'Obese';
+                    })()}
+                  </div>
+                </div>
+                
+                {userProfile.targetWeight && (
+                  <div>
+                    <div style={{
+                      fontSize: '14px',
+                      fontWeight: 'bold',
+                      color: isDark ? 'white' : 'black',
+                      marginBottom: '8px',
+                      fontFamily: 'system-ui, -apple-system, sans-serif'
+                    }}>
+                      Target Progress
+                    </div>
+                    <div style={{
+                      fontSize: '16px',
+                      color: isDark ? 'white' : 'black',
+                      fontFamily: 'system-ui, -apple-system, sans-serif'
+                    }}>
+                      {Math.abs(userProfile.weight - userProfile.targetWeight).toFixed(1)} kg {userProfile.weight > userProfile.targetWeight ? 'to lose' : 'to gain'}
+                    </div>
+                  </div>
+                )}
+
+                <div>
+                  <div style={{
+                    fontSize: '14px',
+                    fontWeight: 'bold',
+                    color: isDark ? 'white' : 'black',
+                    marginBottom: '8px',
+                    fontFamily: 'system-ui, -apple-system, sans-serif'
+                  }}>
+                    Age Group
+                  </div>
+                  <div style={{
+                    fontSize: '16px',
+                    color: isDark ? 'white' : 'black',
+                    fontFamily: 'system-ui, -apple-system, sans-serif'
+                  }}>
+                    {userProfile.age ? `${userProfile.age} years old` : 'Not set'}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {!userProfile?.height || !userProfile?.weight ? (
+            <div style={{
+              padding: '32px',
+              backgroundColor: isDark ? 'black' : 'white',
+              border: `2px solid ${isDark ? 'white' : 'black'}`,
+              textAlign: 'center',
+              marginBottom: '32px'
+            }}>
+              <div style={{
+                fontSize: '48px',
+                marginBottom: '16px'
+              }}>
+                📊
+              </div>
+              <h3 style={{
+                fontSize: '20px',
+                fontWeight: 'bold',
+                color: isDark ? 'white' : 'black',
+                marginBottom: '12px',
+                fontFamily: 'Georgia, "Times New Roman", Times, serif'
+              }}>
+                Complete Your Biometric Profile
+              </h3>
+              <p style={{
+                fontSize: '16px',
+                color: isDark ? '#a3a3a3' : '#6b7280',
+                marginBottom: '24px',
+                fontFamily: 'system-ui, -apple-system, sans-serif'
+              }}>
+                Add your height, weight, and other measurements to get personalized health insights and track your progress over time.
+              </p>
+              <button
+                onClick={() => setIsBiometricsModalOpen(true)}
+                style={{
+                  padding: '16px 32px',
+                  border: `2px solid ${isDark ? 'white' : 'black'}`,
+                  backgroundColor: isDark ? 'white' : 'black',
+                  color: isDark ? 'black' : 'white',
+                  fontSize: '16px',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                  fontFamily: 'system-ui, -apple-system, sans-serif',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
+                }}
+              >
+                Add Biometric Data
+              </button>
+            </div>
+          )}
+        </div>
+
         {/* AI Analysis Section */}
         <div style={{ marginTop: '64px' }}>
           <AIAnalysis
@@ -6490,6 +6813,19 @@ export default function FitnessDashboard({ user }) {
               meals: loggedMeals.filter(meal => new Date(meal.timestamp).toDateString() === selectedCalendarDate.toDateString()),
               userProfile: userProfile
             }), [selectedCalendarDate, loggedMeals, userProfile])}
+            exerciseData={useMemo(() => {
+              const workoutsForDate = loggedWorkouts.filter(workout => 
+                new Date(workout.timestamp).toDateString() === selectedCalendarDate.toDateString()
+              );
+              const totalDuration = workoutsForDate.reduce((total, workout) => total + (workout.totalDuration || 0), 0);
+              const totalCaloriesBurned = workoutsForDate.reduce((total, workout) => total + (workout.caloriesBurned || 0), 0);
+              return {
+                workouts: workoutsForDate,
+                totalDuration,
+                totalCaloriesBurned,
+                weeklyGoal: userProfile?.weeklyExerciseGoal || 150
+              };
+            }, [selectedCalendarDate, loggedWorkouts, userProfile])}
             biometricData={useMemo(() => userProfile ? {
               height: userProfile.height,
               weight: userProfile.weight,
@@ -6522,6 +6858,15 @@ export default function FitnessDashboard({ user }) {
         isDark={isDark}
         onWorkoutLogged={handleWorkoutRecorded}
         preSelectedDate={selectedCalendarDate}
+      />
+
+      {/* Biometrics Modal */}
+      <BiometricsModal
+        isOpen={isBiometricsModalOpen}
+        onClose={() => setIsBiometricsModalOpen(false)}
+        userProfile={userProfile}
+        onSave={handleBiometricsSave}
+        isDark={isDark}
       />
 
       {/* Water Tracking Modal */}
