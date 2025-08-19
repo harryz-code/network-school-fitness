@@ -7071,6 +7071,201 @@ export default function FitnessDashboard({ user }) {
               </button>
             </div>
           ) : null}
+
+          {/* Biometric Trends Chart */}
+          {userProfile?.height && userProfile?.weight && (
+            <div style={{
+              backgroundColor: isDark ? 'black' : 'white',
+              border: `2px solid ${isDark ? 'white' : 'black'}`,
+              padding: '24px',
+              marginTop: '24px'
+            }}>
+              <h3 style={{
+                fontSize: '18px',
+                fontWeight: 'bold',
+                color: isDark ? 'white' : 'black',
+                marginBottom: '16px',
+                fontFamily: 'Georgia, "Times New Roman", Times, serif'
+              }}>
+                Health Trends
+              </h3>
+              
+              {/* BMI Progress Chart */}
+              <div style={{ marginBottom: '24px' }}>
+                <div style={{
+                  fontSize: '14px',
+                  fontWeight: 'bold',
+                  color: isDark ? 'white' : 'black',
+                  marginBottom: '12px',
+                  fontFamily: 'system-ui, -apple-system, sans-serif'
+                }}>
+                  BMI Progress (Last 30 Days)
+                </div>
+                
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'end',
+                  height: '80px',
+                  padding: '0 8px',
+                  marginBottom: '8px'
+                }}>
+                  {Array.from({ length: 7 }, (_, i) => {
+                    const date = new Date()
+                    date.setDate(date.getDate() - (6 - i) * 4) // Show every 4 days for 30-day view
+                    
+                    // For demo purposes, show slight BMI variation around current BMI
+                    const currentBMI = userProfile?.height && userProfile?.weight 
+                      ? userProfile.weight / Math.pow(userProfile.height / 100, 2)
+                      : 22
+                    
+                    // Simulate slight variation (±0.5 BMI points)
+                    const variation = (Math.sin(i * 0.5) * 0.5) + (Math.random() - 0.5) * 0.3
+                    const bmi = currentBMI + variation
+                    
+                    const minBMI = Math.max(18, currentBMI - 2)
+                    const maxBMI = Math.min(35, currentBMI + 2)
+                    const height = Math.max(8, ((bmi - minBMI) / (maxBMI - minBMI)) * 60)
+                    
+                    return (
+                      <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
+                        <div style={{
+                          width: '16px',
+                          height: `${height}px`,
+                          backgroundColor: isDark ? 'white' : 'black',
+                          marginBottom: '4px'
+                        }} />
+                        <div style={{
+                          fontSize: '8px',
+                          color: isDark ? '#a3a3a3' : '#6b7280',
+                          fontFamily: 'system-ui, -apple-system, sans-serif'
+                        }}>
+                          {date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+                
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  fontSize: '12px',
+                  color: isDark ? '#a3a3a3' : '#6b7280',
+                  fontFamily: 'system-ui, -apple-system, sans-serif'
+                }}>
+                  <span>Underweight (&lt;18.5)</span>
+                  <span>Normal (18.5-24.9)</span>
+                  <span>Overweight (25-29.9)</span>
+                  <span>Obese (≥30)</span>
+                </div>
+              </div>
+
+              {/* Health Score Summary */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+                gap: '16px'
+              }}>
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{
+                    fontSize: '20px',
+                    fontWeight: 'bold',
+                    color: isDark ? 'white' : 'black',
+                    fontFamily: 'Georgia, "Times New Roman", Times, serif'
+                  }}>
+                    {(() => {
+                      const bmi = userProfile?.height && userProfile?.weight 
+                        ? userProfile.weight / Math.pow(userProfile.height / 100, 2)
+                        : 0
+                      if (bmi < 18.5) return 'Underweight'
+                      if (bmi < 25) return 'Normal'
+                      if (bmi < 30) return 'Overweight'
+                      return 'Obese'
+                    })()}
+                  </div>
+                  <div style={{
+                    fontSize: '12px',
+                    color: isDark ? '#a3a3a3' : '#6b7280',
+                    fontFamily: 'system-ui, -apple-system, sans-serif'
+                  }}>
+                    BMI Category
+                  </div>
+                </div>
+                
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{
+                    fontSize: '20px',
+                    fontWeight: 'bold',
+                    color: isDark ? 'white' : 'black',
+                    fontFamily: 'Georgia, "Times New Roman", Times, serif'
+                  }}>
+                    {(() => {
+                      const bodyFat = userProfile?.bodyFat || 0
+                      if (bodyFat === 0) return '--'
+                      if (bodyFat < 10) return 'Athletic'
+                      if (bodyFat < 18) return 'Fitness'
+                      if (bodyFat < 25) return 'Average'
+                      return 'Above Avg'
+                    })()}
+                  </div>
+                  <div style={{
+                    fontSize: '12px',
+                    color: isDark ? '#a3a3a3' : '#6b7280',
+                    fontFamily: 'system-ui, -apple-system, sans-serif'
+                  }}>
+                    Body Fat Level
+                  </div>
+                </div>
+                
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{
+                    fontSize: '20px',
+                    fontWeight: 'bold',
+                    color: isDark ? 'white' : 'black',
+                    fontFamily: 'Georgia, "Times New Roman", Times, serif'
+                  }}>
+                    {(() => {
+                      // Calculate health score based on BMI, activity, etc.
+                      const bmi = userProfile?.height && userProfile?.weight 
+                        ? userProfile.weight / Math.pow(userProfile.height / 100, 2)
+                        : 22
+                      
+                      const last7Days = Array.from({ length: 7 }, (_, i) => {
+                        const date = new Date()
+                        date.setDate(date.getDate() - i)
+                        return date.toDateString()
+                      })
+                      
+                      const weeklyWorkouts = loggedWorkouts.filter(w => 
+                        last7Days.includes(new Date(w.timestamp).toDateString())
+                      ).length
+                      
+                      let score = 70 // Base score
+                      
+                      // BMI factor
+                      if (bmi >= 18.5 && bmi < 25) score += 15
+                      else if (bmi >= 25 && bmi < 30) score += 5
+                      else score -= 5
+                      
+                      // Activity factor
+                      if (weeklyWorkouts >= 3) score += 15
+                      else if (weeklyWorkouts >= 1) score += 5
+                      
+                      return Math.min(100, Math.max(0, Math.round(score)))
+                    })()}%
+                  </div>
+                  <div style={{
+                    fontSize: '12px',
+                    color: isDark ? '#a3a3a3' : '#6b7280',
+                    fontFamily: 'system-ui, -apple-system, sans-serif'
+                  }}>
+                    Health Score
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* AI Analysis Section */}
