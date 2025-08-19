@@ -247,53 +247,183 @@ Provide 3 specific, actionable tips to improve nutrition.`
 
   // Rule-based biometric analysis
   getRuleBasedBiometricAnalysis(data) {
-    const { bmi, bodyFat, age, gender } = data
+    const { height, weight, bmi, bodyFat, age, gender } = data
     const insights = []
     const recommendations = []
+    const healthMetrics = {}
     let healthScore = 85
 
-    // BMI Analysis
+    // BMI Analysis with detailed categories
     let bmiCategory = ''
-    if (bmi < 18.5) {
+    let bmiStatus = ''
+    if (bmi < 16) {
+      bmiCategory = 'Severely Underweight'
+      bmiStatus = 'critical'
+      recommendations.push("⚠️ Seek immediate medical consultation for severe underweight")
+      healthScore -= 25
+    } else if (bmi < 18.5) {
       bmiCategory = 'Underweight'
-      recommendations.push("Consider consulting a nutritionist for healthy weight gain strategies")
+      bmiStatus = 'poor'
+      recommendations.push("🥗 Focus on healthy weight gain with nutrient-dense foods")
+      recommendations.push("💪 Add strength training to build lean muscle mass")
       healthScore -= 15
     } else if (bmi < 25) {
-      bmiCategory = 'Normal'
-      insights.push("✅ BMI is in the healthy range!")
-      healthScore += 10
+      bmiCategory = 'Normal Weight'
+      bmiStatus = 'excellent'
+      insights.push("✅ BMI is in the optimal healthy range!")
+      healthScore += 15
     } else if (bmi < 30) {
       bmiCategory = 'Overweight'
-      recommendations.push("Focus on gradual weight loss through diet and exercise")
+      bmiStatus = 'fair'
+      recommendations.push("🎯 Target 1-2 lbs weight loss per week through diet and exercise")
+      recommendations.push("🏃‍♀️ Increase cardio to 150+ minutes per week")
       healthScore -= 10
-    } else {
-      bmiCategory = 'Obese'
-      recommendations.push("Consider working with healthcare professionals for weight management")
+    } else if (bmi < 35) {
+      bmiCategory = 'Obesity Class I'
+      bmiStatus = 'poor'
+      recommendations.push("📋 Consider structured weight loss program")
+      recommendations.push("🏥 Regular health checkups recommended")
       healthScore -= 20
+    } else if (bmi < 40) {
+      bmiCategory = 'Obesity Class II'
+      bmiStatus = 'critical'
+      recommendations.push("🏥 Medical supervision for weight management strongly advised")
+      healthScore -= 30
+    } else {
+      bmiCategory = 'Obesity Class III'
+      bmiStatus = 'critical'
+      recommendations.push("🏥 Immediate medical consultation for severe obesity")
+      healthScore -= 35
     }
 
-    // Body Fat Analysis (if provided)
-    if (bodyFat) {
-      const idealBodyFat = gender === 'male' ? 
-        { min: 10, max: 20, optimal: 15 } : 
-        { min: 16, max: 25, optimal: 20 }
+    healthMetrics.bmi = {
+      value: Math.round(bmi * 10) / 10,
+      category: bmiCategory,
+      status: bmiStatus,
+      ideal: { min: 18.5, max: 24.9 }
+    }
 
-      if (bodyFat < idealBodyFat.min) {
-        recommendations.push("Body fat may be too low - ensure adequate nutrition")
-        healthScore -= 8
-      } else if (bodyFat > idealBodyFat.max) {
-        recommendations.push("Consider incorporating strength training to reduce body fat")
-        healthScore -= 12
+    // Body Fat Analysis with detailed ranges
+    if (bodyFat && bodyFat > 0) {
+      const bodyFatRanges = gender === 'male' ? {
+        essential: { min: 2, max: 5 },
+        athletes: { min: 6, max: 13 },
+        fitness: { min: 14, max: 17 },
+        average: { min: 18, max: 24 },
+        obese: { min: 25, max: 100 }
+      } : {
+        essential: { min: 10, max: 13 },
+        athletes: { min: 14, max: 20 },
+        fitness: { min: 21, max: 24 },
+        average: { min: 25, max: 31 },
+        obese: { min: 32, max: 100 }
+      }
+
+      let bodyFatCategory = ''
+      let bodyFatStatus = ''
+
+      if (bodyFat <= bodyFatRanges.essential.max) {
+        bodyFatCategory = 'Essential Fat'
+        bodyFatStatus = bodyFat < bodyFatRanges.essential.min ? 'critical' : 'poor'
+        if (bodyFat < bodyFatRanges.essential.min) {
+          recommendations.push("⚠️ Body fat dangerously low - seek medical advice")
+          healthScore -= 20
+        } else {
+          recommendations.push("⚡ Maintain current body fat with balanced nutrition")
+          healthScore += 10
+        }
+      } else if (bodyFat <= bodyFatRanges.athletes.max) {
+        bodyFatCategory = 'Athletic'
+        bodyFatStatus = 'excellent'
+        insights.push("🏆 Athletic body fat percentage - excellent fitness level!")
+        healthScore += 15
+      } else if (bodyFat <= bodyFatRanges.fitness.max) {
+        bodyFatCategory = 'Fitness'
+        bodyFatStatus = 'very good'
+        insights.push("💪 Great body fat percentage for fitness!")
+        healthScore += 10
+      } else if (bodyFat <= bodyFatRanges.average.max) {
+        bodyFatCategory = 'Average'
+        bodyFatStatus = 'good'
+        insights.push("👍 Body fat in acceptable range")
+        recommendations.push("🏋️‍♀️ Strength training can help improve body composition")
+        healthScore += 5
       } else {
-        insights.push("💪 Body fat percentage is in a healthy range!")
-        healthScore += 8
+        bodyFatCategory = 'Above Average'
+        bodyFatStatus = 'poor'
+        recommendations.push("🔥 Focus on fat loss through cardio and strength training")
+        recommendations.push("🍽️ Create moderate caloric deficit through diet")
+        healthScore -= 15
+      }
+
+      healthMetrics.bodyFat = {
+        value: bodyFat,
+        category: bodyFatCategory,
+        status: bodyFatStatus,
+        ranges: bodyFatRanges
       }
     }
 
-    // Age-based recommendations
-    if (age > 40) {
-      recommendations.push("Focus on strength training to maintain muscle mass")
-      recommendations.push("Ensure adequate calcium and vitamin D intake")
+    // Age-specific analysis and recommendations
+    let ageCategory = ''
+    if (age < 25) {
+      ageCategory = 'Young Adult'
+      recommendations.push("🏃‍♀️ Build strong fitness habits early for lifelong health")
+      recommendations.push("🦴 Focus on bone density through weight-bearing exercises")
+    } else if (age < 35) {
+      ageCategory = 'Adult'
+      recommendations.push("⚖️ Maintain metabolic health with regular exercise")
+      recommendations.push("💪 Prioritize strength training to preserve muscle mass")
+    } else if (age < 50) {
+      ageCategory = 'Middle-aged'
+      recommendations.push("🧘‍♀️ Include flexibility and mobility work in routine")
+      recommendations.push("❤️ Monitor cardiovascular health regularly")
+      if (gender === 'female') {
+        recommendations.push("🦴 Increase calcium and vitamin D for bone health")
+      }
+    } else if (age < 65) {
+      ageCategory = 'Mature Adult'
+      recommendations.push("🦴 Focus on bone health and fall prevention exercises")
+      recommendations.push("🧠 Include balance and coordination training")
+      recommendations.push("🏥 Regular health screenings become more important")
+    } else {
+      ageCategory = 'Senior'
+      recommendations.push("🚶‍♀️ Maintain mobility with gentle, regular movement")
+      recommendations.push("💊 Work closely with healthcare providers")
+      recommendations.push("🤝 Consider group fitness for social connection")
+    }
+
+    // Calculate ideal weight range
+    const heightInMeters = height / 100
+    const idealWeightMin = 18.5 * heightInMeters * heightInMeters
+    const idealWeightMax = 24.9 * heightInMeters * heightInMeters
+    
+    healthMetrics.weight = {
+      current: weight,
+      ideal: {
+        min: Math.round(idealWeightMin),
+        max: Math.round(idealWeightMax)
+      },
+      status: weight < idealWeightMin ? 'low' : weight > idealWeightMax ? 'high' : 'optimal'
+    }
+
+    // Calculate metabolic age approximation
+    let metabolicAge = age
+    if (bodyFat) {
+      const avgBodyFat = gender === 'male' ? 18 : 25
+      const bodyFatDiff = bodyFat - avgBodyFat
+      metabolicAge += Math.round(bodyFatDiff * 0.5) // Rough approximation
+    }
+    if (bmi > 25) {
+      metabolicAge += Math.round((bmi - 25) * 0.8)
+    } else if (bmi < 18.5) {
+      metabolicAge += Math.round((18.5 - bmi) * 1.2)
+    }
+
+    healthMetrics.metabolicAge = {
+      estimated: Math.max(age - 10, Math.min(age + 15, metabolicAge)),
+      chronological: age,
+      status: metabolicAge < age ? 'younger' : metabolicAge > age + 2 ? 'older' : 'matched'
     }
 
     healthScore = Math.max(0, Math.min(100, healthScore))
@@ -301,15 +431,97 @@ Provide 3 specific, actionable tips to improve nutrition.`
     return {
       score: healthScore,
       rating: this.getScoreRating(healthScore),
-      bmi: Math.round(bmi * 10) / 10,
-      bmiCategory,
       insights,
-      recommendations: recommendations.slice(0, 3),
-      targetRanges: {
-        bmi: { min: 18.5, max: 24.9 },
-        bodyFat: gender === 'male' ? { min: 10, max: 20 } : { min: 16, max: 25 }
+      recommendations: recommendations.slice(0, 4), // More recommendations for comprehensive analysis
+      healthMetrics,
+      ageCategory,
+      riskFactors: this.assessRiskFactors({ bmi, bodyFat, age, gender }),
+      goals: this.generateHealthGoals({ bmi, bodyFat, age, gender, healthScore })
+    }
+  }
+
+  // Assess health risk factors
+  assessRiskFactors({ bmi, bodyFat, age, gender }) {
+    const risks = []
+    
+    if (bmi >= 30) {
+      risks.push({ 
+        factor: 'Obesity', 
+        level: 'High', 
+        description: 'Increased risk of diabetes, heart disease, and other conditions' 
+      })
+    } else if (bmi >= 25) {
+      risks.push({ 
+        factor: 'Overweight', 
+        level: 'Moderate', 
+        description: 'Elevated risk of metabolic disorders' 
+      })
+    }
+
+    if (age >= 45) {
+      risks.push({ 
+        factor: 'Age', 
+        level: age >= 65 ? 'High' : 'Moderate', 
+        description: 'Age-related health risks increase' 
+      })
+    }
+
+    if (bodyFat) {
+      const highBodyFat = gender === 'male' ? 25 : 32
+      if (bodyFat >= highBodyFat) {
+        risks.push({ 
+          factor: 'High Body Fat', 
+          level: 'Moderate', 
+          description: 'May impact metabolic health and mobility' 
+        })
       }
     }
+
+    return risks
+  }
+
+  // Generate personalized health goals
+  generateHealthGoals({ bmi, bodyFat, age, gender, healthScore }) {
+    const goals = []
+
+    if (bmi > 25) {
+      const targetWeight = Math.round(24.9 * Math.pow(170/100, 2)) // Example for average height
+      goals.push({
+        type: 'Weight Management',
+        target: `Reach healthy BMI range (18.5-24.9)`,
+        timeline: '3-6 months',
+        priority: 'High'
+      })
+    }
+
+    if (bodyFat && ((gender === 'male' && bodyFat > 20) || (gender === 'female' && bodyFat > 25))) {
+      goals.push({
+        type: 'Body Composition',
+        target: `Reduce body fat to fitness range`,
+        timeline: '4-8 months',
+        priority: 'Medium'
+      })
+    }
+
+    if (age > 35) {
+      goals.push({
+        type: 'Strength Maintenance',
+        target: 'Preserve muscle mass through resistance training',
+        timeline: 'Ongoing',
+        priority: 'High'
+      })
+    }
+
+    if (healthScore < 70) {
+      goals.push({
+        type: 'Overall Health',
+        target: 'Improve health score to 80+',
+        timeline: '2-4 months',
+        priority: 'High'
+      })
+    }
+
+    return goals.slice(0, 3) // Limit to top 3 goals
   }
 
   // Fallback nutrition tips
@@ -353,6 +565,142 @@ Provide 3 specific, actionable tips to improve nutrition.`
     } catch (error) {
       console.error('AI Tips Error:', error)
       return null
+    }
+  }
+
+  // Get AI chat response for the coach
+  async getChatResponse(prompt) {
+    try {
+      const response = await this.callHuggingFaceAPI(this.textModel, prompt)
+      if (response && response.generated_text) {
+        // Clean up the response
+        let cleanResponse = response.generated_text.replace(/^.*?:/g, '').trim()
+        cleanResponse = cleanResponse.replace(/\n\n+/g, '\n\n')
+        return cleanResponse || "I'm here to help with your fitness and nutrition goals! What would you like to know?"
+      }
+      return "I'm here to help with your fitness and nutrition goals! What would you like to know?"
+    } catch (error) {
+      console.error('Error getting chat response:', error)
+      return "I'm having some technical difficulties, but I'm still here to help! Try asking about nutrition or workout advice."
+    }
+  }
+
+  // Get exercise analysis
+  async getExerciseAnalysis(exerciseData) {
+    try {
+      const { workouts, totalCaloriesBurned, totalDuration, weeklyGoal } = exerciseData
+      
+      return this.getRuleBasedExerciseAnalysis({
+        workouts,
+        totalCaloriesBurned: totalCaloriesBurned || 0,
+        totalDuration: totalDuration || 0,
+        weeklyGoal: weeklyGoal || 150 // WHO recommendation: 150 min moderate activity per week
+      })
+    } catch (error) {
+      console.error('Exercise Analysis Error:', error)
+      return this.getFallbackExerciseAnalysis()
+    }
+  }
+
+  // Rule-based exercise analysis
+  getRuleBasedExerciseAnalysis(data) {
+    const { workouts, totalCaloriesBurned, totalDuration, weeklyGoal } = data
+    const insights = []
+    const recommendations = []
+    let fitnessScore = 75
+
+    // Duration Analysis
+    const weeklyProgress = Math.min((totalDuration / weeklyGoal) * 100, 100)
+    if (weeklyProgress >= 100) {
+      insights.push("🎯 Excellent! You've met your weekly exercise goal!")
+      fitnessScore += 15
+    } else if (weeklyProgress >= 75) {
+      insights.push("💪 Great progress! You're close to your weekly goal")
+      fitnessScore += 10
+    } else if (weeklyProgress >= 50) {
+      insights.push("👍 Good start! Keep building your routine")
+      fitnessScore += 5
+    } else {
+      recommendations.push("📈 Aim for at least 150 minutes of moderate exercise per week")
+      fitnessScore -= 10
+    }
+
+    // Workout Variety Analysis
+    const workoutTypes = new Set(workouts.map(w => w.workout_type || w.type))
+    if (workoutTypes.size >= 3) {
+      insights.push("🌟 Excellent workout variety for balanced fitness!")
+      fitnessScore += 10
+    } else if (workoutTypes.size === 2) {
+      insights.push("👏 Good workout variety!")
+      fitnessScore += 5
+      recommendations.push("💡 Consider adding flexibility/yoga to your routine")
+    } else if (workoutTypes.size === 1) {
+      recommendations.push("🔄 Mix in different exercise types for balanced fitness")
+      fitnessScore -= 5
+    }
+
+    // Frequency Analysis
+    const workoutsThisWeek = workouts.length
+    if (workoutsThisWeek >= 4) {
+      insights.push("🔥 Outstanding workout frequency!")
+      fitnessScore += 10
+    } else if (workoutsThisWeek >= 3) {
+      insights.push("✅ Great workout consistency!")
+      fitnessScore += 5
+    } else if (workoutsThisWeek >= 1) {
+      recommendations.push("📅 Try to exercise at least 3-4 times per week")
+      fitnessScore -= 5
+    } else {
+      recommendations.push("🏃‍♀️ Start with 2-3 workouts this week")
+      fitnessScore -= 15
+    }
+
+    // Calorie burn analysis
+    if (totalCaloriesBurned > 0) {
+      if (totalCaloriesBurned >= 2000) {
+        insights.push("🔥 Impressive calorie burn this week!")
+        fitnessScore += 8
+      } else if (totalCaloriesBurned >= 1000) {
+        insights.push("💪 Good calorie burn from your workouts!")
+        fitnessScore += 5
+      }
+    }
+
+    fitnessScore = Math.max(0, Math.min(100, fitnessScore))
+
+    return {
+      score: fitnessScore,
+      rating: this.getScoreRating(fitnessScore),
+      weeklyProgress: Math.round(weeklyProgress),
+      insights,
+      recommendations: recommendations.slice(0, 3),
+      stats: {
+        workoutsThisWeek,
+        totalDuration,
+        totalCaloriesBurned,
+        workoutTypes: Array.from(workoutTypes)
+      }
+    }
+  }
+
+  // Fallback exercise analysis
+  getFallbackExerciseAnalysis() {
+    return {
+      score: 70,
+      rating: { text: 'Good', emoji: '👍', color: '#34D399' },
+      weeklyProgress: 0,
+      insights: ["Start tracking workouts for personalized insights!"],
+      recommendations: [
+        "🏃‍♀️ Aim for 150 minutes of moderate exercise per week",
+        "💪 Include both cardio and strength training",
+        "🧘‍♀️ Don't forget flexibility and recovery days"
+      ],
+      stats: {
+        workoutsThisWeek: 0,
+        totalDuration: 0,
+        totalCaloriesBurned: 0,
+        workoutTypes: []
+      }
     }
   }
 

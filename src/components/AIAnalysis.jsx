@@ -5,10 +5,12 @@ import aiService from '../services/aiService'
 function AIAnalysis({ 
   dailyData, 
   biometricData, 
+  exerciseData,
   isDark = false, 
   selectedDate = new Date() 
 }) {
   const [nutritionAnalysis, setNutritionAnalysis] = useState(null)
+  const [exerciseAnalysis, setExerciseAnalysis] = useState(null)
   const [biometricAnalysis, setBiometricAnalysis] = useState(null)
   const [loading, setLoading] = useState(false)
   const [activeTab, setActiveTab] = useState('nutrition')
@@ -21,6 +23,10 @@ function AIAnalysis({
   const hasBiometricData = useMemo(() => {
     return biometricData && biometricData.height && biometricData.weight
   }, [biometricData?.height, biometricData?.weight])
+
+  const hasExerciseData = useMemo(() => {
+    return exerciseData && exerciseData.workouts && exerciseData.workouts.length > 0
+  }, [exerciseData?.workouts])
 
   // Memoize the selected date string to prevent unnecessary re-renders
   const selectedDateString = useMemo(() => {
@@ -55,6 +61,17 @@ function AIAnalysis({
           setNutritionAnalysis(null)
         }
 
+        // Only run exercise analysis if there's data
+        if (exerciseData && exerciseData.workouts && exerciseData.workouts.length > 0) {
+          console.log('AI Analysis - Getting exercise analysis...')
+          const exerciseResult = await aiService.getExerciseAnalysis(exerciseData)
+          console.log('AI Analysis - Exercise result:', exerciseResult)
+          setExerciseAnalysis(exerciseResult)
+        } else {
+          console.log('AI Analysis - No exercise data, skipping analysis')
+          setExerciseAnalysis(null)
+        }
+
         // Only run biometric analysis if there's data
         if (biometricData && (biometricData.height && biometricData.weight)) {
           console.log('AI Analysis - Getting biometric analysis...')
@@ -68,6 +85,7 @@ function AIAnalysis({
       } catch (error) {
         console.error('AI Analysis Error:', error)
         setNutritionAnalysis(null)
+        setExerciseAnalysis(null)
         setBiometricAnalysis(null)
       } finally {
         clearTimeout(analysisTimeout)
@@ -85,10 +103,10 @@ function AIAnalysis({
       setNutritionAnalysis(null)
       setBiometricAnalysis(null)
     }
-  }, [hasNutritionData, hasBiometricData, selectedDateString, dailyData?.calories, dailyData?.protein, dailyData?.carbs, dailyData?.fat, dailyData?.fiber, dailyData?.meals?.length])
+  }, [hasNutritionData, hasExerciseData, hasBiometricData, selectedDateString, dailyData?.calories, dailyData?.protein, dailyData?.carbs, dailyData?.fat, dailyData?.fiber, dailyData?.meals?.length, exerciseData?.workouts?.length])
 
   // Don't render anything if no data to analyze
-  if (!hasNutritionData && !hasBiometricData) {
+  if (!hasNutritionData && !hasExerciseData && !hasBiometricData) {
     return null // Don't render the component at all
   }
 
@@ -157,7 +175,7 @@ function AIAnalysis({
             letterSpacing: '-0.025em',
             fontFamily: 'Georgia, "Times New Roman", Times, serif'
           }}>
-            AI Health Analysis
+            AI
           </h3>
         </div>
         <p style={{
@@ -206,6 +224,27 @@ function AIAnalysis({
           🥗 Nutrition
         </button>
         <button
+          onClick={() => setActiveTab('exercise')}
+          style={{
+            flex: 1,
+            padding: '16px 24px',
+            border: 'none',
+            backgroundColor: activeTab === 'exercise' ? 
+              (isDark ? 'white' : 'black') : 'transparent',
+            color: activeTab === 'exercise' ? 
+              (isDark ? 'black' : 'white') : (isDark ? 'white' : 'black'),
+            fontWeight: 'bold',
+            fontSize: '14px',
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            fontFamily: 'system-ui, -apple-system, sans-serif',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease'
+          }}
+        >
+          💪 Exercise
+        </button>
+        <button
           onClick={() => setActiveTab('biometrics')}
           style={{
             flex: 1,
@@ -232,6 +271,10 @@ function AIAnalysis({
       <div style={{ padding: '32px' }}>
         {activeTab === 'nutrition' && nutritionAnalysis && (
           <NutritionAnalysisView analysis={nutritionAnalysis} isDark={isDark} />
+        )}
+        
+        {activeTab === 'exercise' && exerciseAnalysis && (
+          <ExerciseAnalysisView analysis={exerciseAnalysis} isDark={isDark} />
         )}
         
         {activeTab === 'biometrics' && biometricAnalysis && (
@@ -671,6 +714,336 @@ function EmptyState({ icon, title, description, isDark }) {
       }}>
         {description}
       </p>
+    </div>
+  )
+}
+
+function ExerciseAnalysisView({ analysis, isDark }) {
+  return (
+    <div>
+      {/* Overall Score */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '32px',
+        padding: '24px',
+        backgroundColor: isDark ? 'black' : 'white',
+        border: `2px solid ${isDark ? 'white' : 'black'}`
+      }}>
+        <div>
+          <div style={{
+            fontSize: '48px',
+            fontWeight: 'bold',
+            color: isDark ? 'white' : 'black',
+            fontFamily: 'Georgia, "Times New Roman", Times, serif',
+            lineHeight: '1'
+          }}>
+            {analysis.score}
+          </div>
+          <p style={{
+            margin: '8px 0 0 0',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            fontFamily: 'system-ui, -apple-system, sans-serif',
+            color: isDark ? 'white' : 'black'
+          }}>
+            Fitness Score
+          </p>
+        </div>
+        <div style={{
+          textAlign: 'right'
+        }}>
+          <div style={{
+            fontSize: '24px',
+            marginBottom: '4px'
+          }}>
+            {analysis.rating.emoji}
+          </div>
+          <div style={{
+            fontSize: '18px',
+            fontWeight: 'bold',
+            color: isDark ? 'white' : 'black',
+            fontFamily: 'Georgia, "Times New Roman", Times, serif'
+          }}>
+            {analysis.rating.text}
+          </div>
+        </div>
+      </div>
+
+      {/* Weekly Progress */}
+      <div style={{ marginBottom: '32px' }}>
+        <h4 style={{
+          margin: '0 0 16px 0',
+          fontSize: '18px',
+          fontWeight: 'bold',
+          color: isDark ? 'white' : 'black',
+          fontFamily: 'Georgia, "Times New Roman", Times, serif'
+        }}>
+          Weekly Progress
+        </h4>
+        <div style={{
+          padding: '20px',
+          backgroundColor: isDark ? 'black' : 'white',
+          border: `1px solid ${isDark ? 'white' : 'black'}`
+        }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '12px'
+          }}>
+            <span style={{ 
+              color: isDark ? 'white' : 'black',
+              fontSize: '14px',
+              fontWeight: 'bold'
+            }}>
+              Exercise Goal Progress
+            </span>
+            <span style={{ 
+              color: isDark ? 'white' : 'black',
+              fontSize: '14px',
+              fontWeight: 'bold'
+            }}>
+              {analysis.weeklyProgress}%
+            </span>
+          </div>
+          <div style={{
+            width: '100%',
+            height: '8px',
+            backgroundColor: isDark ? '#333' : '#e5e5e5',
+            position: 'relative'
+          }}>
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              height: '100%',
+              width: `${Math.min(analysis.weeklyProgress, 100)}%`,
+              backgroundColor: isDark ? 'white' : 'black'
+            }} />
+          </div>
+        </div>
+      </div>
+
+      {/* Exercise Stats */}
+      {analysis.stats && (
+        <div style={{ marginBottom: '32px' }}>
+          <h4 style={{
+            margin: '0 0 16px 0',
+            fontSize: '18px',
+            fontWeight: 'bold',
+            color: isDark ? 'white' : 'black',
+            fontFamily: 'Georgia, "Times New Roman", Times, serif'
+          }}>
+            This Week's Stats
+          </h4>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+            gap: '16px'
+          }}>
+            <div style={{
+              padding: '16px',
+              backgroundColor: isDark ? 'black' : 'white',
+              border: `1px solid ${isDark ? 'white' : 'black'}`,
+              textAlign: 'center'
+            }}>
+              <div style={{
+                fontSize: '24px',
+                fontWeight: 'bold',
+                color: isDark ? 'white' : 'black',
+                fontFamily: 'Georgia, "Times New Roman", Times, serif'
+              }}>
+                {analysis.stats.workoutsThisWeek}
+              </div>
+              <div style={{
+                fontSize: '12px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                color: isDark ? '#a3a3a3' : '#6b7280',
+                fontFamily: 'system-ui, -apple-system, sans-serif'
+              }}>
+                Workouts
+              </div>
+            </div>
+            <div style={{
+              padding: '16px',
+              backgroundColor: isDark ? 'black' : 'white',
+              border: `1px solid ${isDark ? 'white' : 'black'}`,
+              textAlign: 'center'
+            }}>
+              <div style={{
+                fontSize: '24px',
+                fontWeight: 'bold',
+                color: isDark ? 'white' : 'black',
+                fontFamily: 'Georgia, "Times New Roman", Times, serif'
+              }}>
+                {analysis.stats.totalDuration}
+              </div>
+              <div style={{
+                fontSize: '12px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                color: isDark ? '#a3a3a3' : '#6b7280',
+                fontFamily: 'system-ui, -apple-system, sans-serif'
+              }}>
+                Minutes
+              </div>
+            </div>
+            <div style={{
+              padding: '16px',
+              backgroundColor: isDark ? 'black' : 'white',
+              border: `1px solid ${isDark ? 'white' : 'black'}`,
+              textAlign: 'center'
+            }}>
+              <div style={{
+                fontSize: '24px',
+                fontWeight: 'bold',
+                color: isDark ? 'white' : 'black',
+                fontFamily: 'Georgia, "Times New Roman", Times, serif'
+              }}>
+                {analysis.stats.totalCaloriesBurned}
+              </div>
+              <div style={{
+                fontSize: '12px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                color: isDark ? '#a3a3a3' : '#6b7280',
+                fontFamily: 'system-ui, -apple-system, sans-serif'
+              }}>
+                Calories
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Workout Types */}
+      {analysis.stats?.workoutTypes?.length > 0 && (
+        <div style={{ marginBottom: '32px' }}>
+          <h4 style={{
+            margin: '0 0 16px 0',
+            fontSize: '18px',
+            fontWeight: 'bold',
+            color: isDark ? 'white' : 'black',
+            fontFamily: 'Georgia, "Times New Roman", Times, serif'
+          }}>
+            Exercise Variety
+          </h4>
+          <div style={{
+            display: 'flex',
+            gap: '8px',
+            flexWrap: 'wrap'
+          }}>
+            {analysis.stats.workoutTypes.map((type, index) => (
+              <span
+                key={index}
+                style={{
+                  padding: '6px 12px',
+                  backgroundColor: isDark ? 'white' : 'black',
+                  color: isDark ? 'black' : 'white',
+                  fontSize: '12px',
+                  fontWeight: 'bold',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  fontFamily: 'system-ui, -apple-system, sans-serif'
+                }}
+              >
+                {type}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Insights */}
+      {analysis.insights?.length > 0 && (
+        <div style={{ marginBottom: '32px' }}>
+          <h4 style={{
+            margin: '0 0 16px 0',
+            fontSize: '18px',
+            fontWeight: 'bold',
+            color: isDark ? 'white' : 'black',
+            fontFamily: 'Georgia, "Times New Roman", Times, serif'
+          }}>
+            🎯 Key Insights
+          </h4>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px'
+          }}>
+            {analysis.insights.map((insight, index) => (
+              <div
+                key={index}
+                style={{
+                  padding: '16px',
+                  backgroundColor: isDark ? 'black' : 'white',
+                  border: `1px solid ${isDark ? 'white' : 'black'}`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px'
+                }}
+              >
+                <CheckCircle size={20} color={isDark ? 'white' : 'black'} />
+                <span style={{
+                  fontSize: '14px',
+                  color: isDark ? 'white' : 'black',
+                  fontFamily: 'system-ui, -apple-system, sans-serif'
+                }}>
+                  {insight}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Recommendations */}
+      {analysis.recommendations?.length > 0 && (
+        <div>
+          <h4 style={{
+            margin: '0 0 16px 0',
+            fontSize: '18px',
+            fontWeight: 'bold',
+            color: isDark ? 'white' : 'black',
+            fontFamily: 'Georgia, "Times New Roman", Times, serif'
+          }}>
+            💡 Recommendations
+          </h4>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px'
+          }}>
+            {analysis.recommendations.map((rec, index) => (
+              <div
+                key={index}
+                style={{
+                  padding: '16px',
+                  backgroundColor: isDark ? 'black' : 'white',
+                  border: `1px solid ${isDark ? 'white' : 'black'}`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px'
+                }}
+              >
+                <Target size={20} color={isDark ? 'white' : 'black'} />
+                <span style={{
+                  fontSize: '14px',
+                  color: isDark ? 'white' : 'black',
+                  fontFamily: 'system-ui, -apple-system, sans-serif'
+                }}>
+                  {rec}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

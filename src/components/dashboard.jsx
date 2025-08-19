@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react"
 import StatsModal from "./StatsModal"
 import AIAnalysis from "./AIAnalysis"
+import WorkoutLogging from "./WorkoutLogging"
 import { useAuth } from "../contexts/AuthContext"
 import { 
   saveUserProfile, 
@@ -5874,7 +5875,7 @@ export default function FitnessDashboard({ user }) {
   const handleWorkoutRecorded = async (workoutData) => {
     const newWorkout = {
       ...workoutData,
-      timestamp: new Date().toISOString()
+      timestamp: workoutData.timestamp || new Date().toISOString()
     }
     
     // Update local state immediately for UI responsiveness
@@ -5885,13 +5886,15 @@ export default function FitnessDashboard({ user }) {
     try {
       await saveWorkout({
         exercise_type: workoutData.type,
-        duration_minutes: workoutData.duration,
-        intensity: workoutData.intensity,
+        duration_minutes: workoutData.totalDuration || workoutData.duration || 0,
+        intensity: workoutData.intensity || 'moderate',
         calories_burned: workoutData.caloriesBurned,
-        notes: workoutData.notes,
+        notes: workoutData.notes || '',
+        workout_name: workoutData.name,
+        exercises: JSON.stringify(workoutData.exercises || []),
         timestamp: newWorkout.timestamp
       })
-      console.log('Workout saved to database')
+      console.log('Detailed workout saved to database')
     } catch (error) {
       console.error('Error saving workout:', error)
     }
@@ -6512,13 +6515,13 @@ export default function FitnessDashboard({ user }) {
         preSelectedDate={selectedCalendarDate}
       />
       
-      {/* Workout Recording Modal */}
-      <WorkoutRecordingModal 
+      {/* Workout Logging Modal */}
+      <WorkoutLogging 
         isOpen={isWorkoutModalOpen} 
         onClose={() => setIsWorkoutModalOpen(false)} 
         isDark={isDark}
-        userProfile={userProfile}
-        onWorkoutRecorded={handleWorkoutRecorded}
+        onWorkoutLogged={handleWorkoutRecorded}
+        preSelectedDate={selectedCalendarDate}
       />
 
       {/* Water Tracking Modal */}
