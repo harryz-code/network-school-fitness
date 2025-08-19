@@ -5905,14 +5905,17 @@ export default function FitnessDashboard({ user }) {
   // Handle biometric data save
   const handleBiometricsSave = async (biometricData) => {
     try {
+      console.log('Attempting to save biometric data:', biometricData)
+      
       // Update local state immediately for UI responsiveness
       setUserProfile(prev => ({ ...prev, ...biometricData }))
       
       // Save to database
-      await saveUserProfile(biometricData)
-      console.log('Biometric data saved successfully')
+      const result = await saveUserProfile(biometricData)
+      console.log('Biometric data saved successfully:', result)
     } catch (error) {
       console.error('Error saving biometric data:', error)
+      console.error('Error details:', error.message, error.stack)
       throw error // Re-throw to let the modal handle the error display
     }
   }
@@ -6510,7 +6513,7 @@ export default function FitnessDashboard({ user }) {
               fontFamily: 'Georgia, "Times New Roman", Times, serif',
               margin: 0
             }}>
-              📊 Data
+              Data
             </h2>
             <button
               onClick={() => setIsBiometricsModalOpen(true)}
@@ -6522,9 +6525,7 @@ export default function FitnessDashboard({ user }) {
                 fontSize: '14px',
                 fontWeight: 'bold',
                 cursor: 'pointer',
-                fontFamily: 'system-ui, -apple-system, sans-serif',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em'
+                fontFamily: 'system-ui, -apple-system, sans-serif'
               }}
             >
               Update Biometrics
@@ -6557,9 +6558,7 @@ export default function FitnessDashboard({ user }) {
                   : '--'}
               </div>
               <div style={{
-                fontSize: '12px',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
+                fontSize: '14px',
                 fontWeight: 'bold',
                 color: isDark ? '#a3a3a3' : '#6b7280',
                 fontFamily: 'system-ui, -apple-system, sans-serif'
@@ -6585,9 +6584,7 @@ export default function FitnessDashboard({ user }) {
                 {userProfile?.weight || '--'}
               </div>
               <div style={{
-                fontSize: '12px',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
+                fontSize: '14px',
                 fontWeight: 'bold',
                 color: isDark ? '#a3a3a3' : '#6b7280',
                 fontFamily: 'system-ui, -apple-system, sans-serif'
@@ -6613,9 +6610,7 @@ export default function FitnessDashboard({ user }) {
                 {userProfile?.height || '--'}
               </div>
               <div style={{
-                fontSize: '12px',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
+                fontSize: '14px',
                 fontWeight: 'bold',
                 color: isDark ? '#a3a3a3' : '#6b7280',
                 fontFamily: 'system-ui, -apple-system, sans-serif'
@@ -6641,9 +6636,7 @@ export default function FitnessDashboard({ user }) {
                 {userProfile?.bodyFat || '--'}
               </div>
               <div style={{
-                fontSize: '12px',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
+                fontSize: '14px',
                 fontWeight: 'bold',
                 color: isDark ? '#a3a3a3' : '#6b7280',
                 fontFamily: 'system-ui, -apple-system, sans-serif'
@@ -6757,14 +6750,8 @@ export default function FitnessDashboard({ user }) {
               textAlign: 'center',
               marginBottom: '32px'
             }}>
-              <div style={{
-                fontSize: '48px',
-                marginBottom: '16px'
-              }}>
-                📊
-              </div>
               <h3 style={{
-                fontSize: '20px',
+                fontSize: '24px',
                 fontWeight: 'bold',
                 color: isDark ? 'white' : 'black',
                 marginBottom: '12px',
@@ -6790,15 +6777,13 @@ export default function FitnessDashboard({ user }) {
                   fontSize: '16px',
                   fontWeight: 'bold',
                   cursor: 'pointer',
-                  fontFamily: 'system-ui, -apple-system, sans-serif',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.05em'
+                  fontFamily: 'system-ui, -apple-system, sans-serif'
                 }}
               >
                 Add Biometric Data
               </button>
             </div>
-          )}
+          ) : null}
         </div>
 
         {/* AI Analysis Section */}
