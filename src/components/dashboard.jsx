@@ -1440,13 +1440,89 @@ function FoodLoggingModal({ isOpen, onClose, isDark = false, onMealLogged, preSe
     { id: 3071, name: "Nasi Lemak (small)", calories: 400, protein: 10, carbs: 45, fat: 18, fiber: 2, serving: "1 small pack" },
     { id: 3072, name: "Kuih Seri Muka", calories: 180, protein: 3, carbs: 30, fat: 5, fiber: 1, serving: "1 piece" },
 
-    // Indian breakfast items
+    // Indian breakfast items (Expanded)
     { id: 3080, name: "Idli", calories: 60, protein: 2, carbs: 12, fat: 0.4, fiber: 1, serving: "1 piece" },
     { id: 3081, name: "Dosa (plain)", calories: 170, protein: 4, carbs: 30, fat: 3, fiber: 2, serving: "1 piece" },
     { id: 3082, name: "Vada (medu)", calories: 190, protein: 4, carbs: 22, fat: 10, fiber: 2, serving: "1 piece" },
     { id: 3083, name: "Upma", calories: 200, protein: 5, carbs: 30, fat: 7, fiber: 3, serving: "1 bowl" },
     { id: 3084, name: "Poha", calories: 250, protein: 5, carbs: 45, fat: 5, fiber: 3, serving: "1 bowl" },
-    { id: 3085, name: "Aloo Paratha", calories: 320, protein: 7, carbs: 45, fat: 12, fiber: 4, serving: "1 piece" }
+    { id: 3085, name: "Aloo Paratha", calories: 320, protein: 7, carbs: 45, fat: 12, fiber: 4, serving: "1 piece" },
+    { id: 3086, name: "Butter Chicken with Rice", calories: 520, protein: 32, carbs: 45, fat: 24, fiber: 2, serving: "1 serving" },
+    { id: 3087, name: "Chicken Tikka Masala with Rice", calories: 480, protein: 30, carbs: 42, fat: 22, fiber: 3, serving: "1 serving" },
+    { id: 3088, name: "Vegetable Curry with Rice", calories: 350, protein: 12, carbs: 58, fat: 8, fiber: 8, serving: "1 serving" },
+    { id: 3089, name: "Dal (Lentil Curry) with Rice", calories: 320, protein: 18, carbs: 52, fat: 4, fiber: 12, serving: "1 serving" },
+    { id: 3090, name: "Palak Paneer with Rice", calories: 420, protein: 20, carbs: 45, fat: 18, fiber: 6, serving: "1 serving" },
+    { id: 3091, name: "Masala Dosa", calories: 280, protein: 8, carbs: 45, fat: 8, fiber: 4, serving: "1 piece" },
+    { id: 3092, name: "Chole Bhature", calories: 450, protein: 15, carbs: 65, fat: 15, fiber: 8, serving: "1 serving" },
+    { id: 3093, name: "Puri Sabzi", calories: 380, protein: 10, carbs: 55, fat: 14, fiber: 6, serving: "1 serving" },
+
+    // More Malaysian breakfast items
+    { id: 3100, name: "Nasi Lemak (regular)", calories: 550, protein: 15, carbs: 65, fat: 25, fiber: 3, serving: "1 regular pack" },
+    { id: 3101, name: "Coconut Rice", calories: 320, protein: 5, carbs: 52, fat: 12, fiber: 2, serving: "1 cup" },
+    { id: 3102, name: "Chicken Curry with Rice", calories: 480, protein: 28, carbs: 45, fat: 22, fiber: 2, serving: "1 serving" },
+    { id: 3103, name: "Rendang with Rice", calories: 520, protein: 25, carbs: 48, fat: 26, fiber: 3, serving: "1 serving" },
+    { id: 3104, name: "Roti Telur (egg)", calories: 380, protein: 12, carbs: 45, fat: 16, fiber: 2, serving: "1 piece" },
+    { id: 3105, name: "Teh Tarik", calories: 120, protein: 4, carbs: 18, fat: 4, fiber: 0, serving: "1 cup" },
+    { id: 3106, name: "Kopi O", calories: 5, protein: 0, carbs: 1, fat: 0, fiber: 0, serving: "1 cup" },
+    { id: 3107, name: "Kuih Lapis", calories: 160, protein: 2, carbs: 28, fat: 4, fiber: 1, serving: "1 piece" },
+    { id: 3108, name: "Onde-onde", calories: 140, protein: 2, carbs: 25, fat: 4, fiber: 2, serving: "3 pieces" },
+
+    // More Chinese breakfast items & Dim Sum
+    { id: 3110, name: "Pork Congee", calories: 240, protein: 14, carbs: 34, fat: 6, fiber: 0, serving: "1 bowl" },
+    { id: 3111, name: "Fish Congee", calories: 200, protein: 15, carbs: 33, fat: 3, fiber: 0, serving: "1 bowl" },
+    { id: 3112, name: "Century Egg Congee", calories: 230, protein: 10, carbs: 35, fat: 6, fiber: 0, serving: "1 bowl" },
+    { id: 3113, name: "Steamed Pork Bun (Char Siu Bao)", calories: 200, protein: 8, carbs: 28, fat: 6, fiber: 1, serving: "1 bun" },
+    { id: 3114, name: "Steamed Custard Bun", calories: 180, protein: 5, carbs: 32, fat: 4, fiber: 1, serving: "1 bun" },
+    { id: 3115, name: "Har Gow (Shrimp Dumpling)", calories: 45, protein: 3, carbs: 5, fat: 1, fiber: 0, serving: "1 piece" },
+    { id: 3116, name: "Siu Mai (Pork Dumpling)", calories: 55, protein: 4, carbs: 4, fat: 3, fiber: 0, serving: "1 piece" },
+    { id: 3117, name: "Wonton Soup", calories: 180, protein: 8, carbs: 20, fat: 7, fiber: 1, serving: "1 bowl" },
+
+    // Western breakfast items
+    { id: 3120, name: "Pork Sausage", calories: 280, protein: 12, carbs: 2, fat: 25, fiber: 0, serving: "2 links" },
+    { id: 3121, name: "Chicken Sausage", calories: 180, protein: 14, carbs: 3, fat: 12, fiber: 0, serving: "2 links" },
+    { id: 3122, name: "Turkey Bacon", calories: 60, protein: 8, carbs: 0, fat: 3, fiber: 0, serving: "2 strips" },
+    { id: 3123, name: "Pork Bacon", calories: 90, protein: 6, carbs: 0, fat: 7, fiber: 0, serving: "2 strips" },
+    { id: 3124, name: "Baked Beans", calories: 155, protein: 6, carbs: 29, fat: 1, fiber: 6, serving: "1/2 cup" },
+    { id: 3125, name: "Hash Browns", calories: 150, protein: 2, carbs: 15, fat: 9, fiber: 2, serving: "1/2 cup" },
+    { id: 3126, name: "Pancakes (3 medium)", calories: 350, protein: 8, carbs: 58, fat: 10, fiber: 2, serving: "3 pancakes" },
+    { id: 3127, name: "French Toast", calories: 220, protein: 8, carbs: 28, fat: 9, fiber: 2, serving: "2 slices" },
+    { id: 3128, name: "Waffles", calories: 290, protein: 6, carbs: 37, fat: 14, fiber: 1, serving: "2 waffles" },
+    { id: 3129, name: "Avocado Toast", calories: 280, protein: 8, carbs: 30, fat: 18, fiber: 12, serving: "2 slices" },
+
+    // More fruits
+    { id: 3130, name: "Mango (sliced)", calories: 107, protein: 1, carbs: 28, fat: 0, fiber: 3, serving: "1 cup" },
+    { id: 3131, name: "Grapes", calories: 104, protein: 1, carbs: 27, fat: 0, fiber: 1, serving: "1 cup" },
+    { id: 3132, name: "Kiwi", calories: 61, protein: 1, carbs: 15, fat: 0, fiber: 3, serving: "1 medium" },
+    { id: 3133, name: "Strawberries", calories: 49, protein: 1, carbs: 12, fat: 0, fiber: 3, serving: "1 cup" },
+    { id: 3134, name: "Blueberries", calories: 84, protein: 1, carbs: 21, fat: 0, fiber: 4, serving: "1 cup" },
+
+    // Coffee options
+    { id: 3140, name: "Black Coffee", calories: 5, protein: 0, carbs: 1, fat: 0, fiber: 0, serving: "1 cup" },
+    { id: 3141, name: "Espresso", calories: 3, protein: 0, carbs: 0, fat: 0, fiber: 0, serving: "1 shot" },
+    { id: 3142, name: "Americano", calories: 5, protein: 0, carbs: 1, fat: 0, fiber: 0, serving: "1 cup" },
+    { id: 3143, name: "Cappuccino", calories: 80, protein: 4, carbs: 8, fat: 4, fiber: 0, serving: "1 cup" },
+    { id: 3144, name: "Latte", calories: 120, protein: 6, carbs: 12, fat: 6, fiber: 0, serving: "1 cup" },
+    { id: 3145, name: "Flat White", calories: 100, protein: 5, carbs: 9, fat: 5, fiber: 0, serving: "1 cup" },
+    { id: 3146, name: "Macchiato", calories: 15, protein: 1, carbs: 2, fat: 1, fiber: 0, serving: "1 cup" },
+    { id: 3147, name: "Mocha", calories: 200, protein: 8, carbs: 26, fat: 8, fiber: 2, serving: "1 cup" },
+    { id: 3148, name: "Frappuccino", calories: 240, protein: 4, carbs: 50, fat: 3, fiber: 0, serving: "1 cup" },
+    { id: 3149, name: "Iced Coffee (black)", calories: 5, protein: 0, carbs: 1, fat: 0, fiber: 0, serving: "1 cup" },
+    { id: 3150, name: "Cold Brew", calories: 5, protein: 0, carbs: 1, fat: 0, fiber: 0, serving: "1 cup" },
+
+    // Desserts & Ice Cream
+    { id: 3160, name: "Vanilla Ice Cream", calories: 140, protein: 2, carbs: 16, fat: 7, fiber: 0, serving: "1/2 cup" },
+    { id: 3161, name: "Chocolate Ice Cream", calories: 160, protein: 3, carbs: 20, fat: 8, fiber: 1, serving: "1/2 cup" },
+    { id: 3162, name: "Strawberry Ice Cream", calories: 130, protein: 2, carbs: 18, fat: 6, fiber: 0, serving: "1/2 cup" },
+    { id: 3163, name: "Cookies & Cream Ice Cream", calories: 170, protein: 3, carbs: 20, fat: 9, fiber: 1, serving: "1/2 cup" },
+    { id: 3164, name: "Mint Chocolate Chip Ice Cream", calories: 150, protein: 3, carbs: 16, fat: 8, fiber: 0, serving: "1/2 cup" },
+    { id: 3165, name: "Chocolate Chip Cookie", calories: 160, protein: 2, carbs: 22, fat: 8, fiber: 1, serving: "1 cookie" },
+    { id: 3166, name: "Oatmeal Cookie", calories: 140, protein: 2, carbs: 20, fat: 6, fiber: 1, serving: "1 cookie" },
+    { id: 3167, name: "Glazed Donut", calories: 260, protein: 3, carbs: 31, fat: 14, fiber: 1, serving: "1 donut" },
+    { id: 3168, name: "Chocolate Donut", calories: 280, protein: 4, carbs: 35, fat: 15, fiber: 2, serving: "1 donut" },
+    { id: 3169, name: "Apple Pie", calories: 320, protein: 3, carbs: 52, fat: 12, fiber: 3, serving: "1 slice" },
+    { id: 3170, name: "Cheesecake", calories: 400, protein: 6, carbs: 32, fat: 28, fiber: 1, serving: "1 slice" },
+    { id: 3171, name: "Tiramisu", calories: 350, protein: 6, carbs: 35, fat: 20, fiber: 1, serving: "1 slice" },
+    { id: 3172, name: "Chocolate Cake", calories: 380, protein: 4, carbs: 58, fat: 16, fiber: 3, serving: "1 slice" }
   ]
 
   // Lunch food database (organized by day)
