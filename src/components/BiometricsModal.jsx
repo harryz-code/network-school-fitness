@@ -6,6 +6,7 @@ const BiometricsModal = ({
   onClose, 
   userProfile, 
   onSave, 
+  onSaveWeightHistory,
   isDark = false 
 }) => {
   const [formData, setFormData] = useState({
@@ -83,7 +84,25 @@ const BiometricsModal = ({
         updatedAt: new Date().toISOString()
       };
 
+      // Save profile data
       await onSave(profileData);
+      
+      // Also save to weight history if weight or body fat changed
+      if (formData.weight || formData.bodyFat) {
+        const weightHistoryData = {
+          date: new Date().toISOString().split('T')[0],
+          weight: parseFloat(formData.weight),
+          bodyFat: formData.bodyFat ? parseFloat(formData.bodyFat) : null,
+          targetWeight: formData.targetWeight ? parseFloat(formData.targetWeight) : null,
+          notes: `Updated via Biometrics Modal`
+        };
+        
+        // Call onSaveWeightHistory if provided
+        if (onSaveWeightHistory) {
+          await onSaveWeightHistory(weightHistoryData);
+        }
+      }
+      
       onClose();
     } catch (error) {
       console.error('Error saving biometrics:', error);

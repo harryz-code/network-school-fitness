@@ -354,3 +354,106 @@ export const getUserWaterLogs = async () => {
   if (error) throw error
   return data || []
 }
+
+// Weight history operations
+export const saveWeightHistory = async (weightData) => {
+  const user = await getCurrentUser()
+  if (!user) throw new Error('No authenticated user')
+
+  // Calculate lean mass if weight and body fat are provided
+  let leanMass = null
+  if (weightData.weight && weightData.bodyFat) {
+    leanMass = weightData.weight * (1 - weightData.bodyFat / 100)
+  }
+
+  // Calculate goal distances if target values are provided
+  let goalDistanceWeight = null
+  let goalDistanceBodyFat = null
+  if (weightData.targetWeight) {
+    goalDistanceWeight = weightData.weight - weightData.targetWeight
+  }
+  if (weightData.targetBodyFat) {
+    goalDistanceBodyFat = weightData.bodyFat - weightData.targetBodyFat
+  }
+
+  const historyData = {
+    date: weightData.date,
+    weight: weightData.weight,
+    body_fat: weightData.bodyFat,
+    lean_mass: leanMass,
+    goal_distance_weight: goalDistanceWeight,
+    goal_distance_body_fat: goalDistanceBodyFat,
+    notes: weightData.notes
+  }
+
+  // Handle guest mode
+  if (isGuestUser(user)) {
+    const guestData = getGuestData()
+    if (!guestData.weightHistory) guestData.weightHistory = []
+    
+    const newEntry = {
+      id: Date.now().toString(),
+      user_id: 'guest',
+      ...historyData,
+      created_at: new Date().toISOString()
+    }
+    
+    // Check if entry for this date already exists
+    const existingIndex = guestData.weightHistory.findIndex(entry => 
+      entry.date === weightData.date
+    )
+    
+    if (existingIndex >= 0) {
+      // Update existing entry
+      guestData.weightHistory[existingIndex] = newEntry
+    } else {
+      // Add new entry
+      guestData.weightHistory.push(newEntry)
+    }
+    
+    saveGuestData(guestData)
+    return newEntry
+  }
+
+  // For database users, use upsert to handle duplicates
+  const { data, error } = await supabase
+    .from('weight_history')
+    .upsert({
+      user_id: user.id,
+      ...historyData
+    })
+    .select()
+
+  if (error) {
+    console.error('❌ Weight history save error:', error)
+    throw error
+  }
+  
+  console.log('✅ Weight history saved successfully:', data[0])
+  return data[0]
+}
+
+export const getUserWeightHistory = async () => {
+  const user = await getCurrentUser()
+  if (!user) throw new Error('No authenticated user')
+
+  // Handle guest mode
+  if (isGuestUser(user)) {
+    const guestData = getGuestData()
+    const weightHistory = guestData.weightHistory || []
+    return weightHistory.sort((a, b) => new Date(b.date) - new Date(a.date))
+  }
+
+  const { data, error } = await supabase
+    .from('weight_history')
+    .select('*')
+    .eq('user_id', user.id)
+    .order('date', { ascending: false })
+
+  if (error) {
+    console.error('❌ Weight history fetch error:', error)
+    throw error
+  }
+  
+  return data || []
+}

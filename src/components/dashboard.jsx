@@ -4,6 +4,7 @@ import AIAnalysis from "./AIAnalysis"
 import WorkoutLogging from "./WorkoutLogging"
 import BiometricsModal from "./BiometricsModal"
 import TrendReport from "./TrendReport"
+import WeightHistoryList from "./WeightHistoryList"
 import { useAuth } from "../contexts/AuthContext"
 import { 
   saveUserProfile, 
@@ -14,7 +15,9 @@ import {
   saveWorkout, 
   getUserWorkouts,
   saveWaterLog, 
-  getUserWaterLogs 
+  getUserWaterLogs,
+  saveWeightHistory,
+  getUserWeightHistory
 } from "../services/dataService"
 import {
   Plus,
@@ -5468,6 +5471,7 @@ export default function FitnessDashboard({ user }) {
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false)
   const [isBiometricsModalOpen, setIsBiometricsModalOpen] = useState(false)
   const [userProfile, setUserProfile] = useState(null) // Store user profile data
+  const [weightHistory, setWeightHistory] = useState([])
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false) // New state for onboarding
   const [selectedCalendarDate, setSelectedCalendarDate] = useState(new Date()) // Calendar selected date
 
@@ -5565,10 +5569,11 @@ export default function FitnessDashboard({ user }) {
         // Load additional data (meals, workouts, water) separately
         // This way if profile fails, we can still load other data
         try {
-          const [meals, workouts, waterLogs] = await Promise.all([
+          const [meals, workouts, waterLogs, weightHistoryData] = await Promise.all([
             getUserMeals().catch(err => { console.error('Error loading meals:', err); return [] }),
             getUserWorkouts().catch(err => { console.error('Error loading workouts:', err); return [] }),
-            getUserWaterLogs().catch(err => { console.error('Error loading water logs:', err); return [] })
+            getUserWaterLogs().catch(err => { console.error('Error loading water logs:', err); return [] }),
+            getUserWeightHistory().catch(err => { console.error('Error loading weight history:', err); return [] })
           ])
 
           console.log('Loaded data - Meals:', meals.length, 'Workouts:', workouts.length, 'Water logs:', waterLogs.length)
@@ -5597,6 +5602,8 @@ export default function FitnessDashboard({ user }) {
             amount: log.amount_ml,
             timestamp: log.timestamp
           })))
+
+          setWeightHistory(weightHistoryData)
 
         } catch (dataError) {
           console.error('Error loading additional data:', dataError)
@@ -5920,6 +5927,51 @@ export default function FitnessDashboard({ user }) {
       console.error('Error saving biometric data:', error)
       console.error('Error details:', error.message, error.stack)
       throw error // Re-throw to let the modal handle the error display
+    }
+  }
+
+  // Handle weight history save
+  const handleWeightHistorySave = async (weightData) => {
+    try {
+      console.log('Attempting to save weight history:', weightData)
+      
+      // Save to database
+      const result = await saveWeightHistory(weightData)
+      console.log('Weight history saved successfully:', result)
+      
+      // Update local state
+      setWeightHistory(prev => {
+        const existingIndex = prev.findIndex(entry => entry.date === weightData.date)
+        if (existingIndex >= 0) {
+          // Update existing entry
+          const updated = [...prev]
+          updated[existingIndex] = result
+          return updated
+        } else {
+          // Add new entry
+          return [result, ...prev]
+        }
+      })
+      
+      return result
+    } catch (error) {
+      console.error('Error saving weight history:', error)
+      throw error
+    }
+  }
+
+  // Handle weight history delete
+  const handleWeightHistoryDelete = async (entryId) => {
+    try {
+      console.log('Attempting to delete weight history entry:', entryId)
+      
+      // Remove from local state
+      setWeightHistory(prev => prev.filter(entry => entry.id !== entryId))
+      
+      // TODO: Add delete function to dataService if needed
+      console.log('Weight history entry deleted from local state')
+    } catch (error) {
+      console.error('Error deleting weight history:', error)
     }
   }
 
@@ -7023,49 +7075,110 @@ export default function FitnessDashboard({ user }) {
                     alignItems: 'end',
                     height: '120px',
                     padding: '0 8px',
-                    marginBottom: '8px'
+                    marginBottom: '8px',
+                    gap: '4px'
                   }}>
-                    <div style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }}>
+                    {weightHistory.length > 0 ? (
+                      // Show historical data
+                      weightHistory.slice(0, 7).reverse().map((entry, index) => {
+                        const maxWeight = Math.max(...weightHistory.map(e => e.weight))
+                        const minWeight = Math.min(...weightHistory.map(e => e.weight))
+                        const weightRange = maxWeight - minWeight || 1
+                        const height = Math.max(20, ((entry.weight - minWeight) / weightRange) * 80)
+                        
+                        return (
+                          <div key={entry.id || index} style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flex: 1
+                          }}>
+                            <div style={{
+                              width: '16px',
+                              height: `${height}px`,
+                              backgroundColor: isDark ? 'white' : 'black',
+                              marginBottom: '4px',
+                              position: 'relative'
+                            }}>
+                              {/* Hover tooltip */}
+                              <div style={{
+                                position: 'absolute',
+                                top: '-30px',
+                                left: '50%',
+                                transform: 'translateX(-50%)',
+                                background: isDark ? 'white' : 'black',
+                                color: isDark ? 'black' : 'white',
+                                padding: '4px 8px',
+                                fontSize: '12px',
+                                fontFamily: 'system-ui, -apple-system, sans-serif',
+                                opacity: 0,
+                                transition: 'opacity 0.2s',
+                                pointerEvents: 'none',
+                                whiteSpace: 'nowrap'
+                              }}
+                              className="weight-tooltip"
+                              >
+                                {entry.weight}kg
+                                <br />
+                                {new Date(entry.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                              </div>
+                            </div>
+                            <div style={{
+                              fontSize: '8px',
+                              color: isDark ? '#a3a3a3' : '#6b7280',
+                              fontFamily: 'system-ui, -apple-system, sans-serif',
+                              textAlign: 'center'
+                            }}>
+                              {new Date(entry.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                            </div>
+                          </div>
+                        )
+                      })
+                    ) : (
+                      // Show current weight only
                       <div style={{
-                        width: '32px',
-                        height: '80px',
-                        backgroundColor: isDark ? 'white' : 'black',
-                        marginBottom: '4px',
-                        position: 'relative'
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center'
                       }}>
-                        {/* Hover tooltip */}
                         <div style={{
-                          position: 'absolute',
-                          top: '-30px',
-                          left: '50%',
-                          transform: 'translateX(-50%)',
-                          background: isDark ? 'white' : 'black',
-                          color: isDark ? 'black' : 'white',
-                          padding: '4px 8px',
-                          fontSize: '12px',
-                          fontFamily: 'system-ui, -apple-system, sans-serif',
-                          opacity: 0,
-                          transition: 'opacity 0.2s',
-                          pointerEvents: 'none'
-                        }}
-                        className="weight-tooltip"
-                        >
-                          {userProfile.weight}kg
+                          width: '32px',
+                          height: '80px',
+                          backgroundColor: isDark ? 'white' : 'black',
+                          marginBottom: '4px',
+                          position: 'relative'
+                        }}>
+                          {/* Hover tooltip */}
+                          <div style={{
+                            position: 'absolute',
+                            top: '-30px',
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                            background: isDark ? 'white' : 'black',
+                            color: isDark ? 'black' : 'white',
+                            padding: '4px 8px',
+                            fontSize: '12px',
+                            fontFamily: 'system-ui, -apple-system, sans-serif',
+                            opacity: 0,
+                            transition: 'opacity 0.2s',
+                            pointerEvents: 'none'
+                          }}
+                          className="weight-tooltip"
+                          >
+                            {userProfile.weight}kg
+                          </div>
+                        </div>
+                        <div style={{
+                          fontSize: '10px',
+                          color: isDark ? '#a3a3a3' : '#6b7280',
+                          fontFamily: 'system-ui, -apple-system, sans-serif'
+                        }}>
+                          Today
                         </div>
                       </div>
-                      <div style={{
-                        fontSize: '10px',
-                        color: isDark ? '#a3a3a3' : '#6b7280',
-                        fontFamily: 'system-ui, -apple-system, sans-serif'
-                      }}>
-                        Today
-                      </div>
-                    </div>
+                    )}
                   </div>
                 </div>
 
@@ -7086,63 +7199,132 @@ export default function FitnessDashboard({ user }) {
                     alignItems: 'end',
                     height: '120px',
                     padding: '0 8px',
-                    marginBottom: '8px'
+                    marginBottom: '8px',
+                    gap: '4px'
                   }}>
-                    {userProfile?.bodyFat ? (
-                      <div style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}>
-                        <div style={{
-                          width: '32px',
-                          height: `${Math.min(80, (userProfile.bodyFat / 40) * 80)}px`,
-                          backgroundColor: isDark ? 'white' : 'black',
-                          marginBottom: '4px',
-                          position: 'relative'
-                        }}>
-                          {/* Hover tooltip */}
+                    {(() => {
+                      const bodyFatEntries = weightHistory.filter(entry => entry.body_fat !== null)
+                      
+                      if (bodyFatEntries.length > 0) {
+                        // Show historical data
+                        return bodyFatEntries.slice(0, 7).reverse().map((entry, index) => {
+                          const maxBodyFat = Math.max(...bodyFatEntries.map(e => e.body_fat))
+                          const minBodyFat = Math.min(...bodyFatEntries.map(e => e.body_fat))
+                          const bodyFatRange = maxBodyFat - minBodyFat || 1
+                          const height = Math.max(20, ((entry.body_fat - minBodyFat) / bodyFatRange) * 80)
+                          
+                          return (
+                            <div key={entry.id || index} style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              flex: 1
+                            }}>
+                              <div style={{
+                                width: '16px',
+                                height: `${height}px`,
+                                backgroundColor: isDark ? 'white' : 'black',
+                                marginBottom: '4px',
+                                position: 'relative'
+                              }}>
+                                {/* Hover tooltip */}
+                                <div style={{
+                                  position: 'absolute',
+                                  top: '-30px',
+                                  left: '50%',
+                                  transform: 'translateX(-50%)',
+                                  background: isDark ? 'white' : 'black',
+                                  color: isDark ? 'black' : 'white',
+                                  padding: '4px 8px',
+                                  fontSize: '12px',
+                                  fontFamily: 'system-ui, -apple-system, sans-serif',
+                                  opacity: 0,
+                                  transition: 'opacity 0.2s',
+                                  pointerEvents: 'none',
+                                  whiteSpace: 'nowrap'
+                                }}
+                                className="bodyfat-tooltip"
+                                >
+                                  {entry.body_fat}%
+                                  <br />
+                                  {new Date(entry.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                                </div>
+                              </div>
+                              <div style={{
+                                fontSize: '8px',
+                                color: isDark ? '#a3a3a3' : '#6b7280',
+                                fontFamily: 'system-ui, -apple-system, sans-serif',
+                                textAlign: 'center'
+                              }}>
+                                {new Date(entry.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                              </div>
+                            </div>
+                          )
+                        })
+                      } else if (userProfile?.bodyFat) {
+                        // Show current body fat only
+                        return (
                           <div style={{
-                            position: 'absolute',
-                            top: '-30px',
-                            left: '50%',
-                            transform: 'translateX(-50%)',
-                            background: isDark ? 'white' : 'black',
-                            color: isDark ? 'black' : 'white',
-                            padding: '4px 8px',
-                            fontSize: '12px',
-                            fontFamily: 'system-ui, -apple-system, sans-serif',
-                            opacity: 0,
-                            transition: 'opacity 0.2s',
-                            pointerEvents: 'none'
-                          }}
-                          className="bodyfat-tooltip"
-                          >
-                            {userProfile.bodyFat}%
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                          }}>
+                            <div style={{
+                              width: '32px',
+                              height: `${Math.min(80, (userProfile.bodyFat / 40) * 80)}px`,
+                              backgroundColor: isDark ? 'white' : 'black',
+                              marginBottom: '4px',
+                              position: 'relative'
+                            }}>
+                              {/* Hover tooltip */}
+                              <div style={{
+                                position: 'absolute',
+                                top: '-30px',
+                                left: '50%',
+                                transform: 'translateX(-50%)',
+                                background: isDark ? 'white' : 'black',
+                                color: isDark ? 'black' : 'white',
+                                padding: '4px 8px',
+                                fontSize: '12px',
+                                fontFamily: 'system-ui, -apple-system, sans-serif',
+                                opacity: 0,
+                                transition: 'opacity 0.2s',
+                                pointerEvents: 'none'
+                              }}
+                              className="bodyfat-tooltip"
+                              >
+                                {userProfile.bodyFat}%
+                              </div>
+                            </div>
+                            <div style={{
+                              fontSize: '10px',
+                              color: isDark ? '#a3a3a3' : '#6b7280',
+                              fontFamily: 'system-ui, -apple-system, sans-serif'
+                            }}>
+                              Today
+                            </div>
                           </div>
-                        </div>
-                        <div style={{
-                          fontSize: '10px',
-                          color: isDark ? '#a3a3a3' : '#6b7280',
-                          fontFamily: 'system-ui, -apple-system, sans-serif'
-                        }}>
-                          Today
-                        </div>
-                      </div>
-                    ) : (
-                      <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        height: '100%',
-                        color: isDark ? '#a3a3a3' : '#6b7280',
-                        fontSize: '12px',
-                        fontFamily: 'system-ui, -apple-system, sans-serif'
-                      }}>
-                        No body fat data
-                      </div>
-                    )}
+                        )
+                                             } else {
+                         // No body fat data
+                         return (
+                           <div style={{
+                             display: 'flex',
+                             alignItems: 'center',
+                             justifyContent: 'center',
+                             height: '100%',
+                             color: isDark ? '#a3a3a3' : '#6b7280',
+                             fontSize: '12px',
+                             fontFamily: 'system-ui, -apple-system, sans-serif'
+                           }}>
+                             No data
+                           </div>
+                         )
+                       }
+                     })()}
+                  </div>
                   </div>
                 </div>
 
@@ -7327,6 +7509,22 @@ export default function FitnessDashboard({ user }) {
           )}
         </div>
 
+        {/* Weight History Section */}
+        {userProfile?.height && userProfile?.weight && (
+          <div style={{ marginTop: '32px' }}>
+            <WeightHistoryList
+              weightHistory={weightHistory}
+              onAddEntry={handleWeightHistorySave}
+              onEditEntry={(entry) => {
+                // TODO: Implement edit functionality
+                console.log('Edit entry:', entry)
+              }}
+              onDeleteEntry={handleWeightHistoryDelete}
+              isDark={isDark}
+            />
+          </div>
+        )}
+
         {/* Trends Section */}
         <div style={{ marginTop: '64px' }}>
           <div style={{
@@ -7422,16 +7620,18 @@ export default function FitnessDashboard({ user }) {
         isDark={isDark}
         onWorkoutLogged={handleWorkoutRecorded}
         preSelectedDate={selectedCalendarDate}
+        userProfile={userProfile}
       />
 
       {/* Biometrics Modal */}
-      <BiometricsModal
-        isOpen={isBiometricsModalOpen}
-        onClose={() => setIsBiometricsModalOpen(false)}
-        userProfile={userProfile}
-        onSave={handleBiometricsSave}
-        isDark={isDark}
-      />
+              <BiometricsModal
+          isOpen={isBiometricsModalOpen}
+          onClose={() => setIsBiometricsModalOpen(false)}
+          userProfile={userProfile}
+          onSave={handleBiometricsSave}
+          onSaveWeightHistory={handleWeightHistorySave}
+          isDark={isDark}
+        />
 
       {/* Water Tracking Modal */}
       <WaterTrackingModal
