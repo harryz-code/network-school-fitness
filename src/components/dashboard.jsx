@@ -7345,49 +7345,126 @@ export default function FitnessDashboard({ user }) {
                     alignItems: 'end',
                     height: '120px',
                     padding: '0 8px',
-                    marginBottom: '8px'
+                    marginBottom: '8px',
+                    gap: '4px'
                   }}>
-                    <div style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }}>
-                      <div style={{
-                        width: '32px',
-                        height: `${Math.min(80, ((userProfile.weight / Math.pow(userProfile.height / 100, 2)) / 35) * 80)}px`,
-                        backgroundColor: isDark ? 'white' : 'black',
-                        marginBottom: '4px',
-                        position: 'relative'
-                      }}>
-                        {/* Hover tooltip */}
-                        <div style={{
-                          position: 'absolute',
-                          top: '-30px',
-                          left: '50%',
-                          transform: 'translateX(-50%)',
-                          background: isDark ? 'white' : 'black',
-                          color: isDark ? 'black' : 'white',
-                          padding: '4px 8px',
-                          fontSize: '12px',
-                          fontFamily: 'system-ui, -apple-system, sans-serif',
-                          opacity: 0,
-                          transition: 'opacity 0.2s',
-                          pointerEvents: 'none'
-                        }}
-                        className="bmi-tooltip"
-                        >
-                          {(userProfile.weight / Math.pow(userProfile.height / 100, 2)).toFixed(1)}
-                        </div>
-                      </div>
-                      <div style={{
-                        fontSize: '10px',
-                        color: isDark ? '#a3a3a3' : '#6b7280',
-                        fontFamily: 'system-ui, -apple-system, sans-serif'
-                      }}>
-                        Today
-                      </div>
-                    </div>
+                    {(() => {
+                      // Calculate BMI for each weight history entry
+                      const bmiEntries = weightHistory
+                        .filter(entry => entry.weight && userProfile?.height)
+                        .map(entry => ({
+                          ...entry,
+                          bmi: entry.weight / Math.pow(userProfile.height / 100, 2)
+                        }))
+                      
+                      if (bmiEntries.length > 0) {
+                        // Show historical data
+                        return bmiEntries.slice(0, 7).reverse().map((entry, index) => {
+                          const maxBMI = Math.max(...bmiEntries.map(e => e.bmi))
+                          const minBMI = Math.min(...bmiEntries.map(e => e.bmi))
+                          const bmiRange = maxBMI - minBMI || 1
+                          const height = Math.max(20, ((entry.bmi - minBMI) / bmiRange) * 80)
+                          
+                          return (
+                            <div key={entry.id || index} style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              flex: 1
+                            }}>
+                              <div style={{
+                                width: '16px',
+                                height: `${height}px`,
+                                backgroundColor: isDark ? 'white' : 'black',
+                                marginBottom: '4px',
+                                position: 'relative'
+                              }}>
+                                {/* Hover tooltip */}
+                                <div style={{
+                                  position: 'absolute',
+                                  top: '-30px',
+                                  left: '50%',
+                                  transform: 'translateX(-50%)',
+                                  background: isDark ? 'white' : 'black',
+                                  color: isDark ? 'black' : 'white',
+                                  padding: '4px 8px',
+                                  fontSize: '12px',
+                                  fontFamily: 'system-ui, -apple-system, sans-serif',
+                                  opacity: 0,
+                                  transition: 'opacity 0.2s',
+                                  pointerEvents: 'none',
+                                  whiteSpace: 'nowrap'
+                                }}
+                                className="bmi-tooltip"
+                                >
+                                  {entry.bmi.toFixed(1)}
+                                  <br />
+                                  {new Date(entry.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                                </div>
+                              </div>
+                              <div style={{
+                                fontSize: '8px',
+                                color: isDark ? '#a3a3a3' : '#6b7280',
+                                fontFamily: 'system-ui, -apple-system, sans-serif',
+                                textAlign: 'center'
+                              }}>
+                                {new Date(entry.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                              </div>
+                            </div>
+                          )
+                        })
+                      } else {
+                        // Show current BMI only
+                        const currentBMI = userProfile?.height && userProfile?.weight 
+                          ? userProfile.weight / Math.pow(userProfile.height / 100, 2)
+                          : 0
+                        
+                        return (
+                          <div style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                          }}>
+                            <div style={{
+                              width: '32px',
+                              height: `${Math.min(80, (currentBMI / 35) * 80)}px`,
+                              backgroundColor: isDark ? 'white' : 'black',
+                              marginBottom: '4px',
+                              position: 'relative'
+                            }}>
+                              {/* Hover tooltip */}
+                              <div style={{
+                                position: 'absolute',
+                                top: '-30px',
+                                left: '50%',
+                                transform: 'translateX(-50%)',
+                                background: isDark ? 'white' : 'black',
+                                color: isDark ? 'black' : 'white',
+                                padding: '4px 8px',
+                                fontSize: '12px',
+                                fontFamily: 'system-ui, -apple-system, sans-serif',
+                                opacity: 0,
+                                transition: 'opacity 0.2s',
+                                pointerEvents: 'none'
+                              }}
+                              className="bmi-tooltip"
+                              >
+                                {currentBMI.toFixed(1)}
+                              </div>
+                            </div>
+                            <div style={{
+                              fontSize: '10px',
+                              color: isDark ? '#a3a3a3' : '#6b7280',
+                              fontFamily: 'system-ui, -apple-system, sans-serif'
+                            }}>
+                              Today
+                            </div>
+                          </div>
+                        )
+                      }
+                    })()}
                   </div>
                 </div>
               </div>
@@ -7509,21 +7586,168 @@ export default function FitnessDashboard({ user }) {
           )}
         </div>
 
-        {/* Weight History Section */}
-        {userProfile?.height && userProfile?.weight && (
-          <div style={{ marginTop: '32px' }}>
-            <WeightHistoryList
-              weightHistory={weightHistory}
-              onAddEntry={handleWeightHistorySave}
-              onEditEntry={(entry) => {
-                // TODO: Implement edit functionality
-                console.log('Edit entry:', entry)
-              }}
-              onDeleteEntry={handleWeightHistoryDelete}
-              isDark={isDark}
-            />
-          </div>
-        )}
+                  {/* Goal Progress Summary */}
+          {userProfile?.height && userProfile?.weight && (
+            <div style={{ marginTop: '32px' }}>
+              <div style={{
+                backgroundColor: isDark ? 'black' : 'white',
+                border: `2px solid ${isDark ? 'white' : 'black'}`,
+                padding: '24px',
+                marginBottom: '24px'
+              }}>
+                <h3 style={{
+                  fontSize: '18px',
+                  fontWeight: 'bold',
+                  color: isDark ? 'white' : 'black',
+                  marginBottom: '20px',
+                  fontFamily: 'Georgia, "Times New Roman", Times, serif'
+                }}>
+                  Goal Progress
+                </h3>
+                
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                  gap: '20px'
+                }}>
+                  {/* Weight Goal */}
+                  <div style={{
+                    padding: '16px',
+                    border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
+                    backgroundColor: isDark ? '#374151' : '#f9fafb'
+                  }}>
+                    <div style={{
+                      fontSize: '14px',
+                      fontWeight: 'bold',
+                      color: isDark ? '#9ca3af' : '#6b7280',
+                      marginBottom: '8px',
+                      fontFamily: 'system-ui, -apple-system, sans-serif'
+                    }}>
+                      Weight Goal
+                    </div>
+                    <div style={{
+                      fontSize: '24px',
+                      fontWeight: 'bold',
+                      color: isDark ? 'white' : 'black',
+                      marginBottom: '4px',
+                      fontFamily: 'Georgia, "Times New Roman", Times, serif'
+                    }}>
+                      {userProfile.targetWeight ? (
+                        `${userProfile.weight} → ${userProfile.targetWeight} kg`
+                      ) : (
+                        `${userProfile.weight} kg`
+                      )}
+                    </div>
+                    {userProfile.targetWeight && (
+                      <div style={{
+                        fontSize: '14px',
+                        color: userProfile.weight > userProfile.targetWeight ? '#10b981' : '#ef4444',
+                        fontFamily: 'system-ui, -apple-system, sans-serif'
+                      }}>
+                        {userProfile.weight > userProfile.targetWeight 
+                          ? `${(userProfile.weight - userProfile.targetWeight).toFixed(1)} kg to lose`
+                          : `${(userProfile.targetWeight - userProfile.weight).toFixed(1)} kg to gain`
+                        }
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Body Fat Goal */}
+                  <div style={{
+                    padding: '16px',
+                    border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
+                    backgroundColor: isDark ? '#374151' : '#f9fafb'
+                  }}>
+                    <div style={{
+                      fontSize: '14px',
+                      fontWeight: 'bold',
+                      color: isDark ? '#9ca3af' : '#6b7280',
+                      marginBottom: '8px',
+                      fontFamily: 'system-ui, -apple-system, sans-serif'
+                    }}>
+                      Body Fat Goal
+                    </div>
+                    <div style={{
+                      fontSize: '24px',
+                      fontWeight: 'bold',
+                      color: isDark ? 'white' : 'black',
+                      marginBottom: '4px',
+                      fontFamily: 'Georgia, "Times New Roman", Times, serif'
+                    }}>
+                      {userProfile.bodyFat ? `${userProfile.bodyFat}%` : 'Not set'}
+                    </div>
+                    {userProfile.bodyFat && (
+                      <div style={{
+                        fontSize: '14px',
+                        color: isDark ? '#9ca3af' : '#6b7280',
+                        fontFamily: 'system-ui, -apple-system, sans-serif'
+                      }}>
+                        {userProfile.bodyFat < 15 ? 'Athletic level' :
+                         userProfile.bodyFat < 20 ? 'Fitness level' :
+                         userProfile.bodyFat < 25 ? 'Average level' : 'Above average'}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Progress Streak */}
+                  <div style={{
+                    padding: '16px',
+                    border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
+                    backgroundColor: isDark ? '#374151' : '#f9fafb'
+                  }}>
+                    <div style={{
+                      fontSize: '14px',
+                      fontWeight: 'bold',
+                      color: isDark ? '#9ca3af' : '#6b7280',
+                      marginBottom: '8px',
+                      fontFamily: 'system-ui, -apple-system, sans-serif'
+                    }}>
+                      Tracking Streak
+                    </div>
+                    <div style={{
+                      fontSize: '24px',
+                      fontWeight: 'bold',
+                      color: isDark ? 'white' : 'black',
+                      marginBottom: '4px',
+                      fontFamily: 'Georgia, "Times New Roman", Times, serif'
+                    }}>
+                      {weightHistory.length} entries
+                    </div>
+                    <div style={{
+                      fontSize: '14px',
+                      color: isDark ? '#9ca3af' : '#6b7280',
+                      fontFamily: 'system-ui, -apple-system, sans-serif'
+                    }}>
+                      {weightHistory.length > 0 ? (
+                        `Last: ${new Date(weightHistory[0].date).toLocaleDateString('en-US', { 
+                          month: 'short', 
+                          day: 'numeric' 
+                        })}`
+                      ) : (
+                        'Start tracking today!'
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Weight History Section */}
+          {userProfile?.height && userProfile?.weight && (
+            <div style={{ marginTop: '32px' }}>
+              <WeightHistoryList
+                weightHistory={weightHistory}
+                onAddEntry={handleWeightHistorySave}
+                onEditEntry={(entry) => {
+                  // TODO: Implement edit functionality
+                  console.log('Edit entry:', entry)
+                }}
+                onDeleteEntry={handleWeightHistoryDelete}
+                isDark={isDark}
+              />
+            </div>
+          )}
 
         {/* Trends Section */}
         <div style={{ marginTop: '64px' }}>
